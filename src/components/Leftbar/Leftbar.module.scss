@@ -1,0 +1,30 @@
+@import '../../main.scss';
+
+.Leftbar {
+  position: absolute;
+  left: 0;
+  background: $dark;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 0 10px 10px 0;
+
+  button {
+    @include resetButtons()
+  }
+}
+
+.move {}
+
+.line {}
+
+.circle {}
+
+.triangle {}
+
+.rectangle {}
+
+.shape {}
+
+.text {}
+
+.image {}

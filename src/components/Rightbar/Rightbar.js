@@ -1,5 +1,5 @@
 import React, { useContext }from 'react'
-import classes from 'Rightbar.module.scss'
+import classes from './Rightbar.module.scss'
 import Context from '../../context/context'
 
 const Rightbar = () => {

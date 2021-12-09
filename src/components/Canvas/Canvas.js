@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import classes from 'Canvas.module.scss'
+import classes from './Canvas.module.scss'
 import Context from '../../context/context'
 
 const Canvas = () => {
