@@ -4,13 +4,13 @@ import reducer from "./reducer"
 import Context from './context'
 
 const Store = ({ children }) => {
-  useReducer(reducer, initState)
+  const [store, dispatch] = useReducer(reducer, initState)
 
   // methods
 
   return (
     <Context.Provider value={{
-      
+      store
     }}>
       { children }
     </Context.Provider>
