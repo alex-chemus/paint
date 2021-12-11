@@ -1,18 +1,17 @@
-import React, { useContext, useRef, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import classes from './Canvas.module.scss'
-import Context from '../../context/context'
 import EasyC from '../../EasyC'
+import { useSelector } from 'react-redux'
 
 const Canvas = () => {
-  const { store } = useContext(Context)
+  const canvasObjects = useSelector(state => state.canvasObjects)
   const canvas = useRef(null)
 
   useEffect(() => {
     if (!canvas) return
-    console.log(canvas)
-    const sheet = new EasyC(canvas.current, store.canvasObjects)
+    const sheet = new EasyC(canvas.current, canvasObjects)
     sheet.draw()
-  }, [store.canvasObjects])
+  }, [canvasObjects])
 
   return (
     <canvas 

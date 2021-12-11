@@ -26,14 +26,11 @@ $gray: #eee;
 @mixin panelButtons() {
   @include resetButtons();
   padding: 10px;
-  transition: all .2s;
+  transition: background-color .2s;
+  transition: color .1s;
 
   &:hover {
     background-color: $bg;
-  }
-
-  &.selected {
-    color: $accent;
   }
 }
 
