@@ -15,8 +15,11 @@ body {
 
   min-height: 100vh;
   box-sizing: border-box;
-  padding: 50px 266px 50px 40px;
+  padding: 50px 266px 50px 85px;
   background: $bg;
+
+  display: grid;
+  grid-template: 1fr / 1fr;
 }
 
 code {

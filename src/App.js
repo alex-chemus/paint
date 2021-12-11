@@ -1,5 +1,5 @@
-import React from 'react'
-import Store from './context/store'
+import React, { useEffect, useContext } from 'react'
+//import Store from './context/store'
 // components
 import Canvas from './components/Canvas/Canvas'
 import Leftbar from './components/Leftbar/Leftbar'
@@ -9,17 +9,16 @@ import Topbar from './components/Topbar/Topbar'
 function App() {
   /*
     todos:
-    - убрать паддинги у панелей, добавить их дочерним элементам
     - сделать валидацию (достаточно широкий экран, мышь) и элемент-ворнинг
   */
 
   return (
-    <Store>
+    <>
       <Topbar/>
       <Leftbar/>
       <Rightbar/>
       <Canvas/>
-    </Store>
+    </>
   );
 }
 
