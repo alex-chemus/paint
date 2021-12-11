@@ -7,6 +7,12 @@ import Rightbar from './components/Rightbar/Rightbar'
 import Topbar from './components/Topbar/Topbar'
 
 function App() {
+  /*
+    todos:
+    - убрать паддинги у панелей, добавить их дочерним элементам
+    - сделать валидацию (достаточно широкий экран, мышь) и элемент-ворнинг
+  */
+
   return (
     <Store>
       <Topbar/>

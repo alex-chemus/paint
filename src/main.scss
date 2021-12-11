@@ -7,7 +7,7 @@ $gray: #eee;
   font-family: 'Roboto';
   line-height: auto;
   color: $color;
-  padding: 0;
+  //padding: 0;
   margin: 0;
 }
 
@@ -21,4 +21,24 @@ $gray: #eee;
   background: transparent;
   padding: 0;
   border: none;
+}
+
+@mixin panelButtons() {
+  @include resetButtons();
+  padding: 10px;
+  transition: all .2s;
+
+  &:hover {
+    background-color: $bg;
+  }
+
+  &.selected {
+    color: $accent;
+  }
+}
+
+@mixin flex($jc, $ai) {
+  display: flex;
+  justify-content: $jc;
+  align-items: $ai;
 }
