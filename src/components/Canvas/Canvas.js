@@ -4,6 +4,7 @@ import EasyC from '../../EasyC'
 import { useSelector, useDispatch } from 'react-redux'
 // templates
 import setCircle from '../../templates/circle'
+import setRectangle from '../../templates/rectangle'
 
 const Canvas = () => {
   // state
@@ -50,23 +51,27 @@ const Canvas = () => {
     if (!endPosition || !startPosition) return
     switch (currentTool) {
       case 'circle':
-        /*const circle = setCircle({
-          startPosition,
-          endPosition,
-          params: {}
-        })*/
         setCurrentObject(setCircle({
           startPosition,
           endPosition,
           params: {}
         }))
-        const canvas = new EasyC(canvasRef.current, [...canvasObjects, currentObject])
-        canvas.draw()
         break
       
+      case 'rectangle':
+        setCurrentObject(setRectangle({
+          startPosition,
+          endPosition,
+          params: {}
+        }))
+        break
+
       default: 
         break
     }
+
+    const canvas = new EasyC(canvasRef.current, [...canvasObjects, currentObject])
+    canvas.draw()
   }
 
   const setCoords = (event, func, callback=()=>{}) => {
