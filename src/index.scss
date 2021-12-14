@@ -22,6 +22,11 @@ body {
   grid-template: 1fr / 1fr;
 }
 
+#root {
+  display: grid;
+  grid-template: 1fr / 1fr;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
