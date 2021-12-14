@@ -64,7 +64,7 @@ const Canvas = () => {
         canvas.draw()
         break
       
-        default: 
+      default: 
         break
     }
   }
@@ -103,6 +103,7 @@ const Canvas = () => {
       setCurrentObject(null)
     })
   }
+  //document.addEventListener('mouseup', setEnd)
 
   const onMove = event => {
     if (!clicked) return
@@ -125,6 +126,7 @@ const Canvas = () => {
       //onClick={currentTool==='move' ? move : draw}
       onMouseDown={setStart}
       onMouseUp={setEnd}
+      onMouseLeave={setEnd}
       onMouseMove={onMove}
       width={document.body.clientWidth - 266 - 85}
       height={document.body.clientHeight - 100}
