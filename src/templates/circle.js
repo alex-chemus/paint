@@ -16,21 +16,21 @@ const sheet = {
 }
 
 const setCircle = ({startPosition, endPosition, params}) => {
-  /* params: {
-      startPosition,
-      endPosition,
-      params
-    }*/
+  const radius = Math.max(
+    Math.abs(endPosition.x - startPosition.x) / 2,
+    Math.abs(endPosition.y - startPosition.y) / 2
+  )
+  const x = endPosition.x > startPosition.x ? startPosition.x + radius : startPosition.x - radius
+  const y = endPosition.y > startPosition.y ? startPosition.y + radius : startPosition.y - radius
 
   const circle = {
     ...sheet,
     ...params,
-    x: Math.abs(endPosition.x + startPosition.x) / 2,
-    y: Math.abs(endPosition.y + startPosition.y) / 2,
-    radius: Math.max(
-      Math.abs(endPosition.x - startPosition.x) / 2,
-      Math.abs(endPosition.y - startPosition.y) / 2
-    ),
+    radius,
+    x,
+    y
+    //x: (endPosition.x + startPosition.x) / 2,
+    //y: (endPosition.y + startPosition.y) / 2,
   }
 
   return circle

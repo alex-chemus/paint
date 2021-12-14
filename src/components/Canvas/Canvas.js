@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 // templates
 import setCircle from '../../templates/circle'
 import setRectangle from '../../templates/rectangle'
+import setLine from '../../templates/line'
 
 const Canvas = () => {
   // state
@@ -36,7 +37,7 @@ const Canvas = () => {
   useEffect(() => {
     setCanvasWidth(canvasRef.current.width)
     setCanvasHeight(canvasRef.current.height)
-    console.log(canvasRef.current.width)
+    //console.log(canvasRef.current.width)
   }, [canvasRef])
 
 
@@ -63,6 +64,16 @@ const Canvas = () => {
           startPosition,
           endPosition,
           params: {}
+        }))
+        break
+
+      case 'line':
+        setCurrentObject(setLine({
+          startPosition,
+          endPosition,
+          params: {},
+          canvasHeight,
+          canvasWidth
         }))
         break
 
@@ -98,9 +109,10 @@ const Canvas = () => {
 
   const setEnd = event => {
     setCoords(event, setEndPosition, (coords) => {
-      console.log('end: ', coords)
+      //if (startPosition) console.log('end: ', coords.x-startPosition.x, coords.y-startPosition.y)
+      //console.log(coords)
       setClicked(false)
-      console.log(currentObject)
+      ///console.log(currentObject)
       dispatch({
         type: 'add canvas object',
         value: currentObject
@@ -131,7 +143,7 @@ const Canvas = () => {
       //onClick={currentTool==='move' ? move : draw}
       onMouseDown={setStart}
       onMouseUp={setEnd}
-      onMouseLeave={setEnd}
+      
       onMouseMove={onMove}
       width={document.body.clientWidth - 266 - 85}
       height={document.body.clientHeight - 100}
