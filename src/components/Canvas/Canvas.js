@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import setCircle from '../../templates/circle'
 import setRectangle from '../../templates/rectangle'
 import setLine from '../../templates/line'
+import setTriangle from '../../templates/triangle'
 
 const Canvas = () => {
   // state
@@ -77,6 +78,16 @@ const Canvas = () => {
         }))
         break
 
+      case 'triangle':
+        setCurrentObject(setTriangle({
+          startPosition,
+          endPosition,
+          params: {},
+          canvasWidth,
+          canvasHeight
+        }))
+        break
+
       default: 
         break
     }
@@ -101,7 +112,6 @@ const Canvas = () => {
 
   const setStart = event => {
     setCoords(event, setStartPosition, (coords) => {
-      console.log('start: ', coords)
       setEndPosition(null)
       setClicked(true)
     })
@@ -143,7 +153,7 @@ const Canvas = () => {
       //onClick={currentTool==='move' ? move : draw}
       onMouseDown={setStart}
       onMouseUp={setEnd}
-      
+      onMouseLeave={setEnd}
       onMouseMove={onMove}
       width={document.body.clientWidth - 266 - 85}
       height={document.body.clientHeight - 100}
