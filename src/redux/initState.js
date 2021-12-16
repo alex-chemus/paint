@@ -13,18 +13,6 @@ const initState = {
         coord: { x: true, y: true }
       },
     },
-    // test circle
-    /*{
-      type: 'circle',
-      x: 0.5,
-      y: 0.5,
-      radius: 0.2,
-      relative: { 
-        coord: { x: true, y: true },
-        radius: true,
-      },
-      fill: '#999'
-    }*/
   ],
   // rectangle, triangle, circle, shape, text, image, move (default for resizing)
   currentTool: 'move',

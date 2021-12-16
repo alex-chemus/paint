@@ -13,7 +13,8 @@
   }
 }
 
-.save {
+.save,
+.clear {
   @include p2()
 }
 
