@@ -9,27 +9,43 @@ const reducer = (state=initState, action) => {
       }
 
     case 'add canvas object':
+      if (state.currentVersion !== null) {
+        return {
+          ...state,
+          canvasVersions: [
+            ...state.canvasVersions, 
+            ...state.interimVersions, 
+            [...state.canvasObjects, action.value]
+          ],
+          interimVersions: [],
+          currentVersion: null,
+          canvasObjects: [...state.canvasObjects, action.value]
+          
+        }
+      }
+      const pushObjects = [...state.canvasObjects, action.value]
       return {
         ...state,
-        canvasObjects: [...state.canvasObjects, action.value],
+        canvasVersions: [...state.canvasVersions, pushObjects],
+        canvasObjects: pushObjects,
       }
 
     case 'clear':
-      console.log('clear')
       return {
         ...state,
-        canvasObjects: [{
-          type: 'rectangle',
-          x: 0,
-          y: 0,
-          width: 2,
-          height: 2,
-          fill: '#fff',
-          relative: {
-            size: { width: true, height: true },
-            coord: { x: true, y: true }
-          },
-        }]
+        canvasObjects: state.canvasVersions[0],
+        canvasVersions: [...state.canvasVersions, state.canvasVersions[0]]
+      }
+
+    case 'undo':
+      const currentVersion = Math.max(state.currentVersion!==null ? state.currentVersion-1 : state.canvasVersions.length-2, 0)
+      if (state.currentVersion === currentVersion) return { ...state }
+      const interimVersions = [...state.interimVersions, state.canvasVersions[currentVersion]]
+      return {
+        ...state,
+        currentVersion,
+        interimVersions,
+        canvasObjects: interimVersions[interimVersions.length-1]
       }
 
     default: 

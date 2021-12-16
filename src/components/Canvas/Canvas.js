@@ -111,6 +111,7 @@ const Canvas = () => {
   }
 
   const setStart = event => {
+    if (currentTool === 'move') return
     setCoords(event, setStartPosition, (coords) => {
       setEndPosition(null)
       setClicked(true)
@@ -118,6 +119,7 @@ const Canvas = () => {
   }
 
   const setEnd = event => {
+    if (currentTool === 'move' || !startPosition) return
     setCoords(event, setEndPosition, (coords) => {
       //if (startPosition) console.log('end: ', coords.x-startPosition.x, coords.y-startPosition.y)
       //console.log(coords)
@@ -128,6 +130,8 @@ const Canvas = () => {
         value: currentObject
       })
       setCurrentObject(null)
+      setStartPosition(null)
+      setEndPosition(null)
     })
   }
   //document.addEventListener('mouseup', setEnd)
