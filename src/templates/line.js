@@ -25,9 +25,12 @@ const sheet = {
     x: 100, y: 100
   },
   z: 0,
-  stroke: '#00',
-  opacity: 0,
-  rotate: 0,
+  stroke: {
+    color: '#000',
+    width: 1,
+  },
+  opacity: null,
+  rotate: null,
   scale: {x: 1, y: 1}
 }
 

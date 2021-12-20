@@ -17,9 +17,11 @@ const drawLine = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
   
   if (object.rotate) ctx.save()
+  if (object.opacity) ctx.globalAlpha = object.opacity
 
   ctx.scale(object.scale.x, object.scale.y)
-  ctx.strokeStyle = object.stroke
+  ctx.strokeStyle = object.stroke.color
+  ctx.lineWidth = object.stroke.width
   ctx.beginPath()
   ctx.moveTo(start.x, start.y)
   ctx.lineTo(end.x, end.y)
@@ -40,6 +42,16 @@ const drawLine = (ctx, object, size) => {
 const drawRect = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
 
+  if (object.rotate) ctx.save()
+  if (object.opacity) ctx.globalAlpha = object.opacity
+
+  if (object.shadow) {
+    ctx.shadowOffsetX = object.shadow.x
+    ctx.shadowOffsetY = object.shadow.y
+    ctx.shadowBlur = object.shadow.blur
+    ctx.shadowColor = object.shadow.color
+  }
+  ctx.scale(object.scale.x, object.scale.y)
   ctx.fillStyle = object.fill
   ctx.fillRect(
     Math.min(start.x, end.x), 
@@ -47,6 +59,35 @@ const drawRect = (ctx, object, size) => {
     Math.abs(end.x - start.x),
     Math.abs(end.y - start.y)
   )
+  
+  if (object.shadow) {
+    ctx.shadowOffsetX = null
+    ctx.shadowOffsetY = null
+    ctx.shadowBlur = null
+    ctx.shadowColor = null
+  }
+
+  if (object.stroke) {
+    ctx.strokeStyle = object.stroke.color
+    ctx.lineWidth = object.stroke.width
+    ctx.strokeRect(
+      Math.min(start.x, end.x), 
+      Math.min(start.y, end.y),
+      Math.abs(end.x - start.x),
+      Math.abs(end.y - start.y)
+    )
+  }
+
+  if (object.rotate) {
+    const translate = {
+      x: Math.abs(start.x - end.x) / 2,
+      y: Math.abs(start.y - end.y) / 2
+    }
+    ctx.translate(translate.x, translate.y) // translate to the shape center
+    ctx.rotate(object.rotate)
+    ctx.translate(-translate.x, -translate.y) // translate back
+    ctx.restore()
+  }
 }
 
 const render = (canvas, objects) => {
