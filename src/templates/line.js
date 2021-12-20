@@ -25,8 +25,10 @@ const sheet = {
     x: 100, y: 100
   },
   z: 0,
-  stroke: '#000',
-  fill: 'rgba(0, 0, 0, 1)'
+  stroke: '#00',
+  opacity: 0,
+  rotate: 0,
+  scale: {x: 1, y: 1}
 }
 
 const setLine = ({ startPosition, endPosition, params, canvasHeight, canvasWidth }) => {

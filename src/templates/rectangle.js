@@ -25,9 +25,11 @@ const sheet = {
     x: 0, y: 0,
   },
   z: 0,
-  scale: 0,
-  fill: 'rgba(0, 0, 0, 1)',
+  scale: {x: 1, y: 1},
+  fill: '#000',
+  opacity: 0,
   stroke: 0,
+  rotate: 0,
 }
 
 const setRectangle = ({startPosition, endPosition, params}) => {

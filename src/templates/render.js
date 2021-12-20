@@ -15,11 +15,26 @@ const setAbsCoords = (object, size) => {
 
 const drawLine = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
+  
+  if (object.rotate) ctx.save()
 
+  ctx.scale(object.scale.x, object.scale.y)
+  ctx.strokeStyle = object.stroke
   ctx.beginPath()
   ctx.moveTo(start.x, start.y)
   ctx.lineTo(end.x, end.y)
   ctx.stroke()
+
+  if (object.rotate) {
+    const translate = {
+      x: Math.abs(start.x - end.x) / 2,
+      y: Math.abs(start.y - end.y) / 2
+    }
+    ctx.translate(translate.x, translate.y) // translate to the shape center
+    ctx.rotate(object.rotate)
+    ctx.translate(-translate.x, -translate.y) // translate back
+    ctx.restore()
+  }
 }
 
 const drawRect = (ctx, object, size) => {
