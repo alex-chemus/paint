@@ -35,7 +35,7 @@ const Canvas = () => {
     if (!canvasRef) return
     /*const canvas = new EasyC(canvasRef.current, canvasObjects)
     canvas.draw()*/
-    //render(canvasRef.current, canvasObjects)
+    render(canvasRef.current, canvasObjects)
   }, [canvasObjects])
 
   useEffect(() => {
