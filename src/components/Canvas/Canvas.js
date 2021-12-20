@@ -1,12 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react'
 import classes from './Canvas.module.scss'
-import EasyC from '../../EasyC'
+//import EasyC from '../../EasyC'
+import render from '../../templates/render'
 import { useSelector, useDispatch } from 'react-redux'
 // templates
 import setCircle from '../../templates/circle'
 import setRectangle from '../../templates/rectangle'
 import setLine from '../../templates/line'
 import setTriangle from '../../templates/triangle'
+import setHanlders from '../../templates/image'
 
 const Canvas = () => {
   // state
@@ -31,18 +33,53 @@ const Canvas = () => {
   //effects
   useEffect(() => {
     if (!canvasRef) return
-    const canvas = new EasyC(canvasRef.current, canvasObjects)
-    canvas.draw()
+    /*const canvas = new EasyC(canvasRef.current, canvasObjects)
+    canvas.draw()*/
+    //render(canvasRef.current, canvasObjects)
   }, [canvasObjects])
 
   useEffect(() => {
     setCanvasWidth(canvasRef.current.width)
     setCanvasHeight(canvasRef.current.height)
-    //console.log(canvasRef.current.width)
   }, [canvasRef])
+
+  useEffect(() => {
+    setHanlders(canvasRef.current, currentTool, setCurrentObject)
+    if (currentTool==='image') {
+      //console.log(currentTool)
+      setCurrentObject({
+        type: 'text',
+        value: 'Drag an Image Here',
+        font: 'Arial',
+        x: 0.5,
+        y: 0.5,
+        relative: {
+          coord: {x: true, y: true}
+        },
+        size: '20',
+        align: 'center',
+        fill: '#ccc'
+      })
+      //console.log('from currentTool effect: ', currentObject)
+    } else {
+      //console.log(currentTool)
+      setCurrentObject({})
+      //console.log('from currentTool effect: ', currentObject)
+    }
+  }, [currentTool, canvasRef])
+
+  useEffect(() => {
+    if (!currentObject) return
+    /*const canvas = new EasyC(canvasRef.current, [...canvasObjects, currentObject])
+    canvas.draw()*/
+    //console.log('from current object')
+    render(canvasRef.current, [...canvasObjects, currentObject])
+  }, [currentObject])
 
 
   // methods
+  //setHanlders(canvasRef.current, currentTool, setCurrentObject)
+
   /*
     draw:
     клик - задать изначальные координаты
@@ -91,12 +128,9 @@ const Canvas = () => {
       default: 
         break
     }
-
-    const canvas = new EasyC(canvasRef.current, [...canvasObjects, currentObject])
-    canvas.draw()
   }
 
-  const setCoords = (event, func, callback=()=>{}) => {
+  const setCoords = (event, func=()=>{}, callback=()=>{}) => {
     // координаты в пикселях
     const coordX = event.clientX-85
     const coordY = event.clientY-50
@@ -121,10 +155,7 @@ const Canvas = () => {
   const setEnd = event => {
     if (currentTool === 'move' || !startPosition) return
     setCoords(event, setEndPosition, (coords) => {
-      //if (startPosition) console.log('end: ', coords.x-startPosition.x, coords.y-startPosition.y)
-      //console.log(coords)
       setClicked(false)
-      ///console.log(currentObject)
       dispatch({
         type: 'add canvas object',
         value: currentObject
@@ -141,11 +172,6 @@ const Canvas = () => {
     setCoords(event, setEndPosition, draw)
   } 
 
-
-  // move, resize, rotate current layer
-  const move = () => {
-    //console.log('move')
-  }
 
   const cls = [classes.Canvas]
   cls.push(currentTool==='move' ? classes['cursor-grab'] : classes['cursor-crosshair'])

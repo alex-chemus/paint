@@ -3,15 +3,14 @@ const initState = {
     // basic sheet
     {
       type: 'rectangle',
-      x: 0,
-      y: 0,
-      width: 2,
-      height: 2,
-      fill: '#fff',
-      relative: {
-        size: { width: true, height: true },
-        coord: { x: true, y: true }
+      start: {
+        x: 0, y: 0
       },
+      end: {
+        x: 1, y: 1
+      },
+      z: 0,
+      fill: 'rgba(255, 255, 255, 1)',
     },
   ],
   // rectangle, triangle, circle, shape, text, image, move (default for resizing)
@@ -20,15 +19,14 @@ const initState = {
     // basic sheet
     {
       type: 'rectangle',
-      x: 0,
-      y: 0,
-      width: 2,
-      height: 2,
-      fill: '#fff',
-      relative: {
-        size: { width: true, height: true },
-        coord: { x: true, y: true }
+      start: {
+        x: 0, y: 0
       },
+      end: {
+        x: 1, y: 1
+      },
+      z: 0,
+      fill: 'rgba(255, 255, 255, 1)',
     },
   ]],
   interimVersions: [],

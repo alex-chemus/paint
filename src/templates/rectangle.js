@@ -1,4 +1,4 @@
-const sheet = {
+/*const sheet = {
   type: 'rectangle',
   x: 0,
   y: 0,
@@ -14,16 +14,37 @@ const sheet = {
   scale: 0,
   rotate: 0,
   stroke: 0,
+}*/
+
+const sheet = {
+  type: 'rectangle',
+  start: {
+    x: 0, y: 0,
+  },
+  end: {
+    x: 0, y: 0,
+  },
+  z: 0,
+  scale: 0,
+  fill: 'rgba(0, 0, 0, 1)',
+  stroke: 0,
 }
 
 const setRectangle = ({startPosition, endPosition, params}) => {
-  const rectangle = {
+  /*const rectangle = {
     ...sheet,
     ...params,
     x: Math.abs(endPosition.x + startPosition.x) / 2,
     y: Math.abs(endPosition.y + startPosition.y) / 2,
     width: Math.abs(endPosition.x - startPosition.x),
     height: Math.abs(endPosition.y - startPosition.y)
+  }*/
+
+  const rectangle = {
+    ...sheet,
+    ...params,
+    start: startPosition,
+    end: endPosition,
   }
 
   return rectangle

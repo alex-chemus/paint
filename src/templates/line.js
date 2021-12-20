@@ -1,4 +1,4 @@
-const sheet = {
+/*const sheet = {
   type: 'rectangle',
   x: 0,
   y: 0,
@@ -14,23 +14,34 @@ const sheet = {
   //scale: 0,
   rotate: 0,
   stroke: 0,
+}*/
+
+const sheet = {
+  type: 'line',
+  start: {
+    x: 0, y: 0
+  },
+  end: {
+    x: 100, y: 100
+  },
+  z: 0,
+  stroke: '#000',
+  fill: 'rgba(0, 0, 0, 1)'
 }
 
 const setLine = ({ startPosition, endPosition, params, canvasHeight, canvasWidth }) => {
-  const coefficient = canvasHeight / canvasWidth
+  /*const coefficient = canvasHeight / canvasWidth
   const dx = endPosition.x - startPosition.x
   const dy = (endPosition.y - startPosition.y) * coefficient
 
   const width = Math.sqrt(dy**2 + dx**2)
-  const arccos = endPosition.y > startPosition.y ? Math.acos(dx / width) : -Math.acos(dx / width)
+  const arccos = endPosition.y > startPosition.y ? Math.acos(dx / width) : -Math.acos(dx / width)*/
 
   const line = {
     ...sheet,
     ...params,
-    width,
-    x: (endPosition.x + startPosition.x) / 2,
-    y: (endPosition.y + startPosition.y) / 2,
-    rotate: arccos
+    start: startPosition,
+    end: endPosition
   }
 
   return line

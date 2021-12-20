@@ -1,5 +1,4 @@
-import React, { useEffect, useContext } from 'react'
-//import Store from './context/store'
+import React from 'react'
 // components
 import Canvas from './components/Canvas/Canvas'
 import Leftbar from './components/Leftbar/Leftbar'
