@@ -31,6 +31,7 @@ const sheet = {
   stroke: null,
   rotate: null,
   shadow: null,
+  canvas: null,
 }
 
 const setRectangle = ({startPosition, endPosition, params}) => {

@@ -9,10 +9,11 @@ const sheet = {
   scale: {x: 1, y: 1},
   rotate: null,
   stroke: null,
-  shadow: null
+  shadow: null,
+  canvas: null,
 }
 
-const setTriangle = ({startPosition, endPosition, params, canvasWidth, canvasHeight}) => {
+const setTriangle = ({startPosition, endPosition, params}) => {
   /*const coefficient = canvasHeight / canvasWidth
   const dx = endPosition.x - startPosition.x
   const dy = endPosition.y - startPosition.y

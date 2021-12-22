@@ -4,7 +4,7 @@ import classes from './Rightbar.module.scss'
 const Rightbar = () => {
 
   return (
-    <div></div>
+    <div className='rightbar' style={{display: 'none'}}></div>
   )
 }
 

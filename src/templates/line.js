@@ -31,10 +31,11 @@ const sheet = {
   },
   opacity: null,
   rotate: null,
-  scale: {x: 1, y: 1}
+  scale: {x: 1, y: 1},
+  canvas: null,
 }
 
-const setLine = ({ startPosition, endPosition, params, canvasHeight, canvasWidth }) => {
+const setLine = ({ startPosition, endPosition, params }) => {
   /*const coefficient = canvasHeight / canvasWidth
   const dx = endPosition.x - startPosition.x
   const dy = (endPosition.y - startPosition.y) * coefficient
@@ -48,6 +49,8 @@ const setLine = ({ startPosition, endPosition, params, canvasHeight, canvasWidth
     start: startPosition,
     end: endPosition
   }
+
+  console.log(params)
 
   return line
 }

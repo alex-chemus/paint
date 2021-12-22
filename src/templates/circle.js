@@ -8,6 +8,7 @@ const sheet = {
   opacity: 0,
   stroke: null,
   shadow: null,
+  canvas: null,
 }
 
 const setCircle = ({startPosition, endPosition, params}) => {

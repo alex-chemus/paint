@@ -227,9 +227,52 @@ const drawTriangle = (ctx, object, size) => {
   if (object.rotate) ctx.restore()
 }
 
-const drawImage = (ctx, object, size) => {}
+const drawImage = (ctx, object, size) => {
+  if (object.rotate) {
+    ctx.save()
+    ctx.translate(object.x, object.y) // translate to the shape center
+    ctx.rotate(object.rotate)
+  }
+  if (object.opacity) ctx.globalAlpha = object.opacity
 
-const render = (canvas, objects) => {
+  if (object.shadow) {
+    ctx.shadowOffsetX = object.shadow.x
+    ctx.shadowOffsetY = object.shadow.y
+    ctx.shadowBlur = object.shadow.blur
+    ctx.shadowColor = object.shadow.color
+  }
+  ctx.scale(object.scale.x, object.scale.y)
+
+  const img = new Image(object.width, object.height)
+  img.src = object.src
+  if (object.rotate) {
+    img.onload = () => ctx.drawImage(img, 0, 0)
+  } else {
+    img.onload = () => ctx.drawImage(img, object.x, object.y)
+  }
+
+  if (object.shadow) {
+    ctx.shadowOffsetX = null
+    ctx.shadowOffsetY = null
+    ctx.shadowBlur = null
+    ctx.shadowColor = null
+  }
+
+  if (object.stroke) {
+    ctx.strokeStyle = object.stroke.color
+    ctx.lineWidth = object.stroke.width
+    ctx.lineJoin = 'round'
+    if (object.rotate) { 
+      ctx.strokeRect(0, 0, object.width, object.height)
+    } else {
+      ctx.strokeRect(object.x, object.y, object.width, object.height)
+    }
+  }
+
+  if (object.rotate) ctx.restore()
+}
+
+/*const render = (canvas, objects) => {
   const ctx = canvas.getContext('2d')
 
   objects.sort((a, b) => {
@@ -268,10 +311,38 @@ const render = (canvas, objects) => {
         })
         break
 
+      case 'image':
+        drawImage(ctx, object, {
+          width: canvas.width,
+          height: canvas.height
+        })
+        break
+
       default: 
         break
     }
   })
+}*/
+
+const render = (object, size, ref) => {
+  if (!object.canvas) { 
+    //console.log('object from render: ', object)
+    object.canvas = document.createElement('canvas')
+    object.canvas.height = size.height
+    object.canvas.width = size.width
+    ref.current.append(object.canvas)
+  }
+
+  const ctx = object.canvas.getContext('2d')
+  
+  switch (object?.type) {
+    case 'rectangle':
+      drawRect(ctx, object, size)
+      break
+
+    default:
+      break
+  }
 }
 
 export default render

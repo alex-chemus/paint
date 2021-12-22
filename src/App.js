@@ -1,6 +1,6 @@
 import React from 'react'
 // components
-import Canvas from './components/Canvas/Canvas'
+import CanvasContainer from './components/CanvasContainer/CanvasContainer'
 import Leftbar from './components/Leftbar/Leftbar'
 import Rightbar from './components/Rightbar/Rightbar'
 import Topbar from './components/Topbar/Topbar'
@@ -9,8 +9,9 @@ function App() {
   /*
     todos:
     - сделать валидацию (достаточно широкий экран, мышь) и элемент-ворнинг
-    - сделать шаблоны дла каждого инструмента (слой, фабрика и т.д.),
-    поместить в templates
+    - сделать, чтобы при обнулении currentObject создавался новый канвас,
+    значение которого будет передаваться в рендер.
+    также надо подумать, как сделать это с картинками
     - закоментить код (а то вообще пипяу)
   */
 
@@ -19,7 +20,7 @@ function App() {
       <Topbar/>
       <Leftbar/>
       <Rightbar/>
-      <Canvas/>
+      <CanvasContainer/>
     </>
   );
 }

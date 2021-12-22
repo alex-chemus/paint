@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import classes from './Canvas.module.scss'
+import classes from './CanvasContainer.module.scss'
 //import EasyC from '../../EasyC'
 import render from '../../templates/render'
 import { useSelector, useDispatch } from 'react-redux'
@@ -10,12 +10,12 @@ import setLine from '../../templates/line'
 import setTriangle from '../../templates/triangle'
 import setHanlders from '../../templates/image'
 
-const Canvas = () => {
+const CanvasContainer = () => {
   // state
   const [startPosition, setStartPosition] = useState(null)
   const [endPosition, setEndPosition] = useState(null)
-  const [canvasWidth, setCanvasWidth] = useState(0)
-  const [canvasHeight, setCanvasHeight] = useState(0)
+  const [containerWidth, setContainerWidth] = useState(document.body.clientWidth - 266 - 85)
+  const [containerHeight, setContainerHeight] = useState(document.body.clientHeight - 100)
   const [clicked, setClicked] = useState(false)
   const [currentObject, setCurrentObject] = useState()
 
@@ -27,26 +27,24 @@ const Canvas = () => {
 
 
   // refs
-  const canvasRef = useRef(null)
+  const containerRef = useRef(null)
 
 
   //effects
   useEffect(() => {
-    if (!canvasRef) return
-    /*const canvas = new EasyC(canvasRef.current, canvasObjects)
-    canvas.draw()*/
-    render(canvasRef.current, canvasObjects)
+    if (!containerRef.current) return
+    canvasObjects.forEach(item => {
+      render(item, {
+        width: containerWidth,
+        height: containerHeight
+      }, containerRef)
+    })
   }, [canvasObjects])
 
   useEffect(() => {
-    setCanvasWidth(canvasRef.current.width)
-    setCanvasHeight(canvasRef.current.height)
-  }, [canvasRef])
-
-  useEffect(() => {
-    setHanlders(canvasRef.current, currentTool, setCurrentObject)
+    const addImage = img => dispatch({ type: 'add canvas object', value: img })
+    setHanlders(containerRef.current, currentTool, addImage)
     if (currentTool==='image') {
-      //console.log(currentTool)
       setCurrentObject({
         type: 'text',
         value: 'Drag an Image Here',
@@ -60,20 +58,20 @@ const Canvas = () => {
         align: 'center',
         fill: '#ccc'
       })
-      //console.log('from currentTool effect: ', currentObject)
     } else {
-      //console.log(currentTool)
-      setCurrentObject({})
-      //console.log('from currentTool effect: ', currentObject)
+      setCurrentObject()
     }
-  }, [currentTool, canvasRef])
+  }, [currentTool, containerRef])
 
   useEffect(() => {
-    if (!currentObject) return
-    /*const canvas = new EasyC(canvasRef.current, [...canvasObjects, currentObject])
-    canvas.draw()*/
-    //console.log('from current object')
-    render(canvasRef.current, [...canvasObjects, currentObject])
+    if (!currentObject || !containerRef) return
+    const objects = [...canvasObjects, currentObject]
+    objects.forEach(item => {
+      render(item, {
+        width: containerWidth,
+        height: containerHeight
+      }, containerRef)
+    })
   }, [currentObject])
 
 
@@ -93,7 +91,9 @@ const Canvas = () => {
         setCurrentObject(setCircle({
           startPosition,
           endPosition,
-          params: {}
+          params: {
+            canvas: currentObject?.canvas ? currentObject.canvas : null
+          }
         }))
         break
       
@@ -101,17 +101,20 @@ const Canvas = () => {
         setCurrentObject(setRectangle({
           startPosition,
           endPosition,
-          params: {}
+          params: {
+            canvas: currentObject?.canvas ? currentObject.canvas : null
+          }
         }))
+        console.log(currentObject)
         break
 
       case 'line':
         setCurrentObject(setLine({
           startPosition,
           endPosition,
-          params: {},
-          canvasHeight,
-          canvasWidth
+          params: {
+            canvas: currentObject?.canvas ? currentObject.canvas : null
+          },
         }))
         break
 
@@ -119,9 +122,9 @@ const Canvas = () => {
         setCurrentObject(setTriangle({
           startPosition,
           endPosition,
-          params: {},
-          canvasWidth,
-          canvasHeight
+          params: {
+            canvas: currentObject?.canvas ? currentObject.canvas : null
+          },
         }))
         break
 
@@ -136,8 +139,8 @@ const Canvas = () => {
     const coordY = event.clientY-50
     // координаты относительно холста
     const coords = {
-      x: coordX / canvasWidth,
-      y: coordY / canvasHeight
+      x: coordX / containerWidth,
+      y: coordY / containerHeight
     }
 
     func(coords)
@@ -173,23 +176,22 @@ const Canvas = () => {
   } 
 
 
-  const cls = [classes.Canvas]
+  const cls = [classes.CanvasContainer]
   cls.push(currentTool==='move' ? classes['cursor-grab'] : classes['cursor-crosshair'])
 
   return (
-    <canvas 
+    <div 
       className={cls.join(' ')} 
-      ref={canvasRef}
+      ref={containerRef}
       //onClick={currentTool==='move' ? move : draw}
       onMouseDown={setStart}
       onMouseUp={setEnd}
       onMouseLeave={setEnd}
       onMouseMove={onMove}
-      width={document.body.clientWidth - 266 - 85}
-      height={document.body.clientHeight - 100}
-    >
-    </canvas>
+      width={containerWidth}
+      height={containerHeight}
+    ></div>
   )
 }
 
-export default Canvas
+export default CanvasContainer
