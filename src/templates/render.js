@@ -70,6 +70,7 @@ const drawRect = (ctx, object, size) => {
   if (object.stroke) {
     ctx.strokeStyle = object.stroke.color
     ctx.lineWidth = object.stroke.width
+    ctx.lineJoin = 'round'
     ctx.strokeRect(
       Math.min(start.x, end.x), 
       Math.min(start.y, end.y),
@@ -137,7 +138,66 @@ const drawCircle = (ctx, object, size) => {
   }
 }
 
-const drawTriangle = (ctx, object, size) => {}
+const drawTriangle = (ctx, object, size) => {
+  const [start, end] = setAbsCoords(object, size)
+
+  if (object.rotate) ctx.save()
+  if (object.opacity) ctx.globalAlpha = object.opacity
+
+  ctx.scale(object.scale.x, object.scale.y)
+  ctx.fillStyle = object.fill
+  
+  // todo: сделать строук сразу же при чертеже треугольника
+  if (object.stroke) {
+    ctx.strokeStyle = object.stroke.color
+    ctx.lineWidth = object.stroke.width
+  }
+  ctx.lineJoin = 'round'
+
+  ctx.beginPath()
+  ctx.moveTo(
+    Math.min(start.x, end.x) + Math.abs(start.x - end.x) / 2,
+    Math.min(start.y, end.y)
+  )
+  ctx.lineTo(
+    Math.max(start.x, end.x),
+    Math.max(start.y, end.y)
+  )
+  ctx.lineTo(
+    Math.min(start.x, end.x),
+    Math.max(start.y, end.y)
+  )
+  ctx.lineTo(
+    Math.min(start.x, end.x) + Math.abs(start.x - end.x) / 2,
+    Math.min(start.y, end.y)
+  )
+  ctx.closePath()
+  if (object.shadow) {
+    ctx.shadowOffsetX = object.shadow.x
+    ctx.shadowOffsetY = object.shadow.y
+    ctx.shadowBlur = object.shadow.blur
+    ctx.shadowColor = object.shadow.color
+  }
+  ctx.fill()
+  if (object.shadow) {
+    ctx.shadowOffsetX = null
+    ctx.shadowOffsetY = null
+    ctx.shadowBlur = null
+    ctx.shadowColor = null
+  }
+  ctx.stroke()
+
+  if (object.rotate) {
+    const translate = {
+      x: Math.abs(start.x - end.x) / 2,
+      y: Math.abs(start.y - end.y) / 2
+    }
+    ctx.translate(translate.x, translate.y) // translate to the shape center
+    ctx.rotate(object.rotate)
+    ctx.translate(-translate.x, -translate.y) // translate back
+    ctx.restore()
+  }
+}
 
 const drawImage = (ctx, object, size) => {}
 
@@ -168,6 +228,13 @@ const render = (canvas, objects) => {
 
       case 'circle':
         drawCircle(ctx, object, {
+          width: canvas.width,
+          height: canvas.height
+        })
+        break
+
+      case 'triangle':
+        drawTriangle(ctx, object, {
           width: canvas.width,
           height: canvas.height
         })

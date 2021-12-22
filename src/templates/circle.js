@@ -22,7 +22,7 @@ const setCircle = ({startPosition, endPosition, params}) => {
     ...sheet,
     ...params,
     start: startPosition,
-    end: endPosition
+    end: endPosition 
   }
 
   return circle
