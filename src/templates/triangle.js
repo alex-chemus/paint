@@ -8,16 +8,8 @@ const sheet = {
   opacity: 0,
   scale: {x: 1, y: 1},
   rotate: null,
-  stroke: {
-    width: 10, 
-    color: 'blue'
-  },
-  shadow: {
-    x: 0, 
-    y: 0,
-    blur: 50,
-    color: 'red'
-  }
+  stroke: null,
+  shadow: null
 }
 
 const setTriangle = ({startPosition, endPosition, params, canvasWidth, canvasHeight}) => {

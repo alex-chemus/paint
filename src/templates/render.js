@@ -42,7 +42,16 @@ const drawLine = (ctx, object, size) => {
 const drawRect = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
 
-  if (object.rotate) ctx.save()
+  if (object.rotate) {
+    ctx.save()
+    const translate = {
+      x: Math.min(start.x, end.x) + Math.abs(start.x - end.x) / 2,
+      y: Math.min(start.y, end.y) + Math.abs(start.y - end.y) / 2
+    }
+    console.log(translate)
+    ctx.translate(translate.x, translate.y) // translate to the shape center
+    ctx.rotate(object.rotate)
+  }
   if (object.opacity) ctx.globalAlpha = object.opacity
 
   if (object.shadow) {
@@ -53,12 +62,21 @@ const drawRect = (ctx, object, size) => {
   }
   ctx.scale(object.scale.x, object.scale.y)
   ctx.fillStyle = object.fill
-  ctx.fillRect(
-    Math.min(start.x, end.x), 
-    Math.min(start.y, end.y),
-    Math.abs(end.x - start.x),
-    Math.abs(end.y - start.y)
-  )
+  if (object.rotate) { 
+    ctx.fillRect(
+      -Math.abs(start.x - end.x) / 2,
+      -Math.abs(start.y - end.y) / 2,
+      Math.abs(end.x - start.x),
+      Math.abs(end.y - start.y)
+    )
+  } else {
+    ctx.fillRect(
+      Math.min(start.x, end.x), 
+      Math.min(start.y, end.y),
+      Math.abs(end.x - start.x),
+      Math.abs(end.y - start.y)
+    )
+  }
   
   if (object.shadow) {
     ctx.shadowOffsetX = null
@@ -71,24 +89,24 @@ const drawRect = (ctx, object, size) => {
     ctx.strokeStyle = object.stroke.color
     ctx.lineWidth = object.stroke.width
     ctx.lineJoin = 'round'
-    ctx.strokeRect(
-      Math.min(start.x, end.x), 
-      Math.min(start.y, end.y),
-      Math.abs(end.x - start.x),
-      Math.abs(end.y - start.y)
-    )
+    if (object.rotate) { 
+      ctx.strokeRect(
+        -Math.abs(start.x - end.x) / 2,
+        -Math.abs(start.y - end.y) / 2,
+        Math.abs(end.x - start.x),
+        Math.abs(end.y - start.y)
+      )
+    } else {
+      ctx.strokeRect(
+        Math.min(start.x, end.x), 
+        Math.min(start.y, end.y),
+        Math.abs(end.x - start.x),
+        Math.abs(end.y - start.y)
+      )
+    }
   }
 
-  if (object.rotate) {
-    const translate = {
-      x: Math.abs(start.x - end.x) / 2,
-      y: Math.abs(start.y - end.y) / 2
-    }
-    ctx.translate(translate.x, translate.y) // translate to the shape center
-    ctx.rotate(object.rotate)
-    ctx.translate(-translate.x, -translate.y) // translate back
-    ctx.restore()
-  }
+  if (object.rotate) ctx.restore()
 }
 
 const drawCircle = (ctx, object, size) => {
@@ -141,7 +159,16 @@ const drawCircle = (ctx, object, size) => {
 const drawTriangle = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
 
-  if (object.rotate) ctx.save()
+  if (object.rotate) {
+    ctx.save()
+    const translate = {
+      x: Math.min(start.x, end.x) + Math.abs(start.x - end.x) / 2,
+      y: Math.min(start.y, end.y) + Math.abs(start.y - end.y) / 2
+    }
+    //console.log(translate)
+    ctx.translate(translate.x, translate.y) // translate to the shape center
+    ctx.rotate(object.rotate)
+  }
   if (object.opacity) ctx.globalAlpha = object.opacity
 
   ctx.scale(object.scale.x, object.scale.y)
@@ -155,22 +182,32 @@ const drawTriangle = (ctx, object, size) => {
   ctx.lineJoin = 'round'
 
   ctx.beginPath()
-  ctx.moveTo(
-    Math.min(start.x, end.x) + Math.abs(start.x - end.x) / 2,
-    Math.min(start.y, end.y)
-  )
-  ctx.lineTo(
-    Math.max(start.x, end.x),
-    Math.max(start.y, end.y)
-  )
-  ctx.lineTo(
-    Math.min(start.x, end.x),
-    Math.max(start.y, end.y)
-  )
-  ctx.lineTo(
-    Math.min(start.x, end.x) + Math.abs(start.x - end.x) / 2,
-    Math.min(start.y, end.y)
-  )
+  if (object.rotate) {
+    const dx = Math.abs(start.x-end.x)
+    const dy = Math.abs(start.y - end.y)
+    ctx.moveTo(0, -dy / 2)
+    ctx.lineTo(dx / 2, dy / 2)
+    ctx.lineTo(-dx / 2, dy / 2)
+    ctx.lineTo(0, -Math.abs(start.y - end.y) / 2)
+  }
+  else {
+    ctx.moveTo(
+      Math.min(start.x, end.x) + Math.abs(start.x - end.x) / 2,
+      Math.min(start.y, end.y)
+    )
+    ctx.lineTo(
+      Math.max(start.x, end.x),
+      Math.max(start.y, end.y)
+    )
+    ctx.lineTo(
+      Math.min(start.x, end.x),
+      Math.max(start.y, end.y)
+    )
+    ctx.lineTo(
+      Math.min(start.x, end.x) + Math.abs(start.x - end.x) / 2,
+      Math.min(start.y, end.y)
+    )
+  }
   ctx.closePath()
   if (object.shadow) {
     ctx.shadowOffsetX = object.shadow.x
@@ -187,16 +224,7 @@ const drawTriangle = (ctx, object, size) => {
   }
   ctx.stroke()
 
-  if (object.rotate) {
-    const translate = {
-      x: Math.abs(start.x - end.x) / 2,
-      y: Math.abs(start.y - end.y) / 2
-    }
-    ctx.translate(translate.x, translate.y) // translate to the shape center
-    ctx.rotate(object.rotate)
-    ctx.translate(-translate.x, -translate.y) // translate back
-    ctx.restore()
-  }
+  if (object.rotate) ctx.restore()
 }
 
 const drawImage = (ctx, object, size) => {}
