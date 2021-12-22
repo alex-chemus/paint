@@ -90,6 +90,57 @@ const drawRect = (ctx, object, size) => {
   }
 }
 
+const drawCircle = (ctx, object, size) => {
+  const [start, end] = setAbsCoords(object, size)
+
+  if (object.opacity) ctx.globalAlpha = object.opacity
+  if (object.shadow) {
+    ctx.shadowOffsetX = object.shadow.x
+    ctx.shadowOffsetY = object.shadow.y
+    ctx.shadowBlur = object.shadow.blur
+    ctx.shadowColor = object.shadow.color
+  }
+
+  ctx.scale(object.scale.x, object.scale.y)
+  ctx.fillStyle = object.fill
+  ctx.beginPath()
+  ctx.arc(
+    start.x, start.y, 
+    Math.sqrt(
+      (end.x - start.x)**2 + (end.y - start.y)**2
+    ),
+    0, Math.PI*2
+  )
+  ctx.fill()
+  ctx.closePath()
+
+  if (object.shadow) {
+    ctx.shadowOffsetX = null
+    ctx.shadowOffsetY = null
+    ctx.shadowBlur = null
+    ctx.shadowColor = null
+  }
+
+  if (object.stroke) {
+    ctx.strokeStyle = object.stroke.color
+    ctx.lineWidth = object.stroke.width
+    ctx.beginPath()
+  ctx.arc(
+    start.x, start.y, 
+    Math.sqrt(
+      (end.x - start.x)**2 + (end.y - start.y)**2
+    ),
+    0, Math.PI*2
+  )
+  ctx.stroke()
+  ctx.closePath()
+  }
+}
+
+const drawTriangle = (ctx, object, size) => {}
+
+const drawImage = (ctx, object, size) => {}
+
 const render = (canvas, objects) => {
   const ctx = canvas.getContext('2d')
 
@@ -110,6 +161,13 @@ const render = (canvas, objects) => {
 
       case 'rectangle': 
         drawRect(ctx, object, {
+          width: canvas.width,
+          height: canvas.height
+        })
+        break
+
+      case 'circle':
+        drawCircle(ctx, object, {
           width: canvas.width,
           height: canvas.height
         })
