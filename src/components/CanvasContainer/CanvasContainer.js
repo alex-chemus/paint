@@ -8,6 +8,7 @@ import setCircle from '../../templates/circle'
 import setRectangle from '../../templates/rectangle'
 import setLine from '../../templates/line'
 import setTriangle from '../../templates/triangle'
+import setText from '../../templates/text'
 import setHanlders from '../../templates/image'
 
 const CanvasContainer = () => {
@@ -34,7 +35,6 @@ const CanvasContainer = () => {
   // rerender all changes in store
   useEffect(() => {
     if (!containerRef?.current) return
-    //console.log('canvas objects changed')
     if (!canvasObjects[0]?.canvas) {
       dispatch({
         type: 'add init canvas',
@@ -62,8 +62,6 @@ const CanvasContainer = () => {
       })
     })
   }, [canvasObjects])
-
-  // insert text for image drag'n'drop
 
   // render currentObject on change
   useEffect(() => {
@@ -167,14 +165,28 @@ const CanvasContainer = () => {
   function setStart(event) {
     if (currentTool === 'move') return
     setCoords(event, setStartPosition, (coords) => {
+      if (currentTool === 'text') {
+        dispatch({
+          type: 'add canvas object',
+          value: setText({coords, size: {
+            width: containerWidth,
+            height: containerHeight,
+          }, params: {
+            canvas: createCanvas(containerRef),
+            
+          }})
+        })
+      }
+
       setEndPosition(null)
-      setClicked(true)
+      setClicked(currentTool !== 'text')
     })
   }
 
   function setEnd(event) {
     if (currentTool === 'move' || !startPosition) return
     setCoords(event, setEndPosition, (coords) => {
+      if (!currentObject) return
       setClicked(false)
       dispatch({
         type: 'add canvas object',

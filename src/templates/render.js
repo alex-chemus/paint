@@ -13,6 +13,12 @@ const setAbsCoords = (object, size) => {
   return [start, end]
 }
 
+const setAbsXY = (object, size) => {
+  const x = object.x * size.width
+  const y = object.y * size.height
+  return [x, y]
+}
+
 const drawLine = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
   ctx.clearRect(0, 0, size.width, size.height)
@@ -179,7 +185,6 @@ const drawTriangle = (ctx, object, size) => {
   ctx.scale(object.scale.x, object.scale.y)
   ctx.fillStyle = object.fill
   
-  // todo: сделать строук сразу же при чертеже треугольника
   if (object.stroke) {
     ctx.strokeStyle = object.stroke.color
     ctx.lineWidth = object.stroke.width
@@ -252,13 +257,9 @@ const drawImage = (ctx, object, size) => {
   const img = new Image()
   img.src = object.src
   if (object.rotate) {
-    if (object.width && object.height) {
-      img.onload = () => ctx.drawImage(img, 0, 0, object.width, object.height)
-    } else img.onload = () => ctx.drawImage(img, 0, 0)
+    img.onload = () => ctx.drawImage(img, 0, 0, object.width, object.height)
   } else {
-    if (object.width && object.height) {
-      img.onload = () => ctx.drawImage(img, object.x, object.y, object.width, object.height)
-    } else img.onload = () => ctx.drawImage(img, object.x, object.y)
+    img.onload = () => ctx.drawImage(img, object.x, object.y, object.width, object.height)
   }
 
   if (object.shadow) {
@@ -282,6 +283,28 @@ const drawImage = (ctx, object, size) => {
   if (object.rotate) ctx.restore()
 }
 
+const drawText = (ctx, object, size) => {
+  const [x, y] = setAbsXY(object, size)
+  ctx.clearRect(0, 0, size.width, size.height)
+
+  if (object.rotate) {
+    ctx.save()
+    ctx.translate(x, y) // translate to the shape center
+    ctx.rotate(object.rotate)
+  }
+  if (object.opacity) ctx.globalAlpha = object.opacity
+
+  ctx.scale(object.scale.x, object.scale.y)
+  ctx.fillStyle = 'black'
+
+  const fontSize = object.font.size * size.height
+  ctx.font = `${object.font.style} ${object.font.weight} ${fontSize}px/${object.font.height}em ${object.font.family}`
+  ctx.fillText(object.value, x, y)
+
+  if (object.stroke) ctx.strokeText(object.value, x, y)
+  if (object.rotate) ctx.restore()
+}
+
 const render = (object, size) => {
   const ctx = object.canvas.getContext('2d')
   
@@ -289,23 +312,21 @@ const render = (object, size) => {
     case 'rectangle':
       drawRect(ctx, object, size)
       break
-
     case 'line':
       drawLine(ctx, object, size)
       break
-
     case 'circle':
       drawCircle(ctx, object, size)
       break
-
     case 'triangle':
       drawTriangle(ctx, object, size)
       break
-
     case 'image':
       drawImage(ctx, object, size)
       break
-
+    case 'text':
+      drawText(ctx, object, size)
+      break
     default:
       break
   }
