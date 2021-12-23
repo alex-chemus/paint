@@ -238,10 +238,14 @@ const drawTriangle = (ctx, object, size) => {
 }
 
 const drawImage = (ctx, object, size) => {
+  const [x, y] = setAbsXY(object, size)
+  const width = object.width * size.width
+  const height = object.height * size.height
+
   ctx.clearRect(0, 0, size.width, size.height)
   if (object.rotate) {
     ctx.save()
-    ctx.translate(object.x, object.y) // translate to the shape center
+    ctx.translate(x, y) // translate to the shape center
     ctx.rotate(object.rotate)
   }
   if (object.opacity) ctx.globalAlpha = object.opacity
@@ -257,9 +261,9 @@ const drawImage = (ctx, object, size) => {
   const img = new Image()
   img.src = object.src
   if (object.rotate) {
-    img.onload = () => ctx.drawImage(img, 0, 0, object.width, object.height)
+    img.onload = () => ctx.drawImage(img, 0, 0, width, height)
   } else {
-    img.onload = () => ctx.drawImage(img, object.x, object.y, object.width, object.height)
+    img.onload = () => ctx.drawImage(img, x, y, width, height)
   }
 
   if (object.shadow) {
@@ -274,9 +278,9 @@ const drawImage = (ctx, object, size) => {
     ctx.lineWidth = object.stroke.width
     ctx.lineJoin = 'round'
     if (object.rotate) { 
-      ctx.strokeRect(0, 0, object.width, object.height)
+      ctx.strokeRect(0, 0, width, height)
     } else {
-      ctx.strokeRect(object.x, object.y, object.width, object.height)
+      ctx.strokeRect(x, y, width, height)
     }
   }
 
