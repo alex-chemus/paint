@@ -278,58 +278,6 @@ const drawImage = (ctx, object, size) => {
   if (object.rotate) ctx.restore()
 }
 
-/*const render = (canvas, objects) => {
-  const ctx = canvas.getContext('2d')
-
-  objects.sort((a, b) => {
-    if (a.z > b.z) return 1
-    if (a.z === b.z) return 0
-    if (a.z < b.z) return -1
-  })
-
-  objects.forEach(object => {
-    switch(object?.type) {
-      case 'line':
-        drawLine(ctx, object, {
-          width: canvas.width,
-          height: canvas.height
-        })
-        break
-
-      case 'rectangle': 
-        drawRect(ctx, object, {
-          width: canvas.width,
-          height: canvas.height
-        })
-        break
-
-      case 'circle':
-        drawCircle(ctx, object, {
-          width: canvas.width,
-          height: canvas.height
-        })
-        break
-
-      case 'triangle':
-        drawTriangle(ctx, object, {
-          width: canvas.width,
-          height: canvas.height
-        })
-        break
-
-      case 'image':
-        drawImage(ctx, object, {
-          width: canvas.width,
-          height: canvas.height
-        })
-        break
-
-      default: 
-        break
-    }
-  })
-}*/
-
 const render = (object, size) => {
   /*if (!object.canvas) { 
     //console.log('object from render: ', object)

@@ -35,12 +35,10 @@ const CanvasContainer = () => {
     if (!containerRef?.current) return
     //console.log('canvas objects changed')
     if (!canvasObjects[0]?.canvas) {
-      //console.log('no init canvas')
       dispatch({
         type: 'add init canvas',
         value: createCanvas(containerRef)
       })
-      //console.log('render canvas objects after mounting')
       canvasObjects.forEach(item => {
         render(item, {
           width: containerWidth,
@@ -49,8 +47,15 @@ const CanvasContainer = () => {
       })
       return
     }
-    //console.log('render canvas objects')
+
+    // remove all children, and then append them,
+    // so removed canvas objects aren't rendered
+    const children = containerRef.current.children
+    for (let i=0; i<children.length; i++) {
+      children[i].remove()
+    }
     canvasObjects.forEach(item => {
+      containerRef.current.append(item.canvas)
       render(item, {
         width: containerWidth,
         height: containerHeight
@@ -82,14 +87,6 @@ const CanvasContainer = () => {
 
   useEffect(() => {
     if (!currentObject || !containerRef) return
-    /*const objects = [...canvasObjects, currentObject]
-    objects.forEach(item => {
-      render(item, {
-        width: containerWidth,
-        height: containerHeight
-      })
-    })*/
-    //console.log('render current object')
     render(currentObject, {
       width: containerWidth,
       height: containerHeight
@@ -98,15 +95,6 @@ const CanvasContainer = () => {
 
 
   // methods
-  //setHanlders(canvasRef.current, currentTool, setCurrentObject)
-
-  /*
-    draw:
-    клик - задать изначальные координаты
-    движение - изменить финальные координаты + ререндер
-  */
-  // draw a new object on top of the sheet
-  //const createCanvas = (containerRef) => {
   function createCanvas(containerRef) {
     if (!containerRef?.current) return
     const canvas = document.createElement('canvas')
