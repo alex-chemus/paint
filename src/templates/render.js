@@ -249,12 +249,16 @@ const drawImage = (ctx, object, size) => {
   }
   ctx.scale(object.scale.x, object.scale.y)
 
-  const img = new Image(object.width, object.height)
+  const img = new Image()
   img.src = object.src
   if (object.rotate) {
-    img.onload = () => ctx.drawImage(img, 0, 0)
+    if (object.width && object.height) {
+      img.onload = () => ctx.drawImage(img, 0, 0, object.width, object.height)
+    } else img.onload = () => ctx.drawImage(img, 0, 0)
   } else {
-    img.onload = () => ctx.drawImage(img, object.x, object.y)
+    if (object.width && object.height) {
+      img.onload = () => ctx.drawImage(img, object.x, object.y, object.width, object.height)
+    } else img.onload = () => ctx.drawImage(img, object.x, object.y)
   }
 
   if (object.shadow) {
@@ -279,14 +283,6 @@ const drawImage = (ctx, object, size) => {
 }
 
 const render = (object, size) => {
-  /*if (!object.canvas) { 
-    //console.log('object from render: ', object)
-    object.canvas = document.createElement('canvas')
-    object.canvas.height = size.height
-    object.canvas.width = size.width
-    ref.current.append(object.canvas)
-  }*/
-
   const ctx = object.canvas.getContext('2d')
   
   switch (object?.type) {
@@ -304,6 +300,10 @@ const render = (object, size) => {
 
     case 'triangle':
       drawTriangle(ctx, object, size)
+      break
+
+    case 'image':
+      drawImage(ctx, object, size)
       break
 
     default:

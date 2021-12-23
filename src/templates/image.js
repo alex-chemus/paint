@@ -2,8 +2,8 @@ const sheet = {
   type: 'image',
   x: 0, 
   y: 0,
-  width: 50,
-  height: 50,
+  width: null,
+  height: null,
   src: '',
   z: 0,
   scale: {x: 1, y: 1},
@@ -20,28 +20,40 @@ const setImage = ({ params }) => {
   }
 }
 
-const setHanlders = (canvas, currentTool, callback=()=>{}) => {
-  const events = ['dragover', 'dragleave', 'dragend']
-  events.forEach(type => {
-    canvas.addEventListener(type, event => {
-      event.preventDefault()
-    })
-  })
+const setHanlders = (container, currentTool, callback=()=>{}, createCanvas) => {
+  const onDragOver = event => event.preventDefault()
+  container.current.addEventListener('dragover', onDragOver)
 
-  canvas.addEventListener('drop', event => {
+  const onDragLeave = event => event.preventDefault()
+  container.current.addEventListener('dragleave', onDragLeave)
+
+  const onDragEnd = event => event.preventDefault()
+  container.current.addEventListener('dragend', onDragEnd)
+
+  const onDrop = event => {
     if (currentTool !== 'image') return
     event.preventDefault()
 
     if (event.dataTransfer.files.length) {
       // blob -> url
       const url = URL.createObjectURL(event.dataTransfer.files[0])
+      const canvas = createCanvas(container)
       callback(setImage({
         params: { 
-          src: url
+          src: url,
+          canvas
         }
       }))
     }
-  })
+  }
+  container.current.addEventListener('drop', onDrop)
+
+  return () => {
+    container.current.removeEventListener('dragover', onDragOver)
+    container.current.removeEventListener('dragleave', onDragLeave)
+    container.current.removeEventListener('dragend', onDragEnd)
+    container.current.removeEventListener('drop', onDrop)
+  }
 }
 
 export default setHanlders

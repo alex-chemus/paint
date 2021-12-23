@@ -31,6 +31,7 @@ const CanvasContainer = () => {
 
 
   //effects
+  // rerender all changes in store
   useEffect(() => {
     if (!containerRef?.current) return
     //console.log('canvas objects changed')
@@ -47,7 +48,6 @@ const CanvasContainer = () => {
       })
       return
     }
-
     // remove all children, and then append them,
     // so removed canvas objects aren't rendered
     const children = containerRef.current.children
@@ -63,28 +63,9 @@ const CanvasContainer = () => {
     })
   }, [canvasObjects])
 
-  useEffect(() => {
-    const addImage = img => dispatch({ type: 'add canvas object', value: img })
-    setHanlders(containerRef.current, currentTool, addImage)
-    if (currentTool==='image') {
-      setCurrentObject({
-        type: 'text',
-        value: 'Drag an Image Here',
-        font: 'Arial',
-        x: 0.5,
-        y: 0.5,
-        relative: {
-          coord: {x: true, y: true}
-        },
-        size: '20',
-        align: 'center',
-        fill: '#ccc'
-      })
-    } else {
-      setCurrentObject()
-    }
-  }, [currentTool])
+  // insert text for image drag'n'drop
 
+  // render currentObject on change
   useEffect(() => {
     if (!currentObject || !containerRef) return
     render(currentObject, {
@@ -92,6 +73,23 @@ const CanvasContainer = () => {
       height: containerHeight
     })
   }, [currentObject])
+
+  // insert text for image drag'n'drop and set/reset drag'n'drop handlers
+  useEffect(() => {
+    const addImage = img => dispatch({ type: 'add canvas object', value: img })
+    const createCanvasWrapper = (width, height) => {
+      const containerWidth = width
+      const containerHeight = height
+      return createCanvas
+    }
+    const removeHanlders = setHanlders(
+      containerRef, 
+      currentTool, 
+      addImage, 
+      createCanvasWrapper(containerWidth, containerHeight)
+    )
+    return removeHanlders
+  }, [currentTool])
 
 
   // methods
@@ -101,7 +99,6 @@ const CanvasContainer = () => {
     canvas.width = containerWidth
     canvas.height = containerHeight
     containerRef.current.append(canvas)
-    //console.log('from createCanvas: ', canvas)
     return canvas
   }
 
@@ -126,7 +123,6 @@ const CanvasContainer = () => {
             canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef)
           }
         }))
-        //console.log(currentObject)
         break
 
       case 'line':
