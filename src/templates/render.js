@@ -15,6 +15,8 @@ const setAbsCoords = (object, size) => {
 
 const drawLine = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
+  ctx.clearRect(0, 0, size.width, size.height)
+  //console.log('draw line')
   
   if (object.rotate) ctx.save()
   if (object.opacity) ctx.globalAlpha = object.opacity
@@ -41,6 +43,7 @@ const drawLine = (ctx, object, size) => {
 
 const drawRect = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
+  ctx.clearRect(0, 0, size.width, size.height)
 
   if (object.rotate) {
     ctx.save()
@@ -48,7 +51,7 @@ const drawRect = (ctx, object, size) => {
       x: Math.min(start.x, end.x) + Math.abs(start.x - end.x) / 2,
       y: Math.min(start.y, end.y) + Math.abs(start.y - end.y) / 2
     }
-    console.log(translate)
+    //console.log(translate)
     ctx.translate(translate.x, translate.y) // translate to the shape center
     ctx.rotate(object.rotate)
   }
@@ -111,6 +114,7 @@ const drawRect = (ctx, object, size) => {
 
 const drawCircle = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
+  ctx.clearRect(0, 0, size.width, size.height)
 
   if (object.opacity) ctx.globalAlpha = object.opacity
   if (object.shadow) {
@@ -158,6 +162,7 @@ const drawCircle = (ctx, object, size) => {
 
 const drawTriangle = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
+  ctx.clearRect(0, 0, size.width, size.height)
 
   if (object.rotate) {
     ctx.save()
@@ -228,6 +233,7 @@ const drawTriangle = (ctx, object, size) => {
 }
 
 const drawImage = (ctx, object, size) => {
+  ctx.clearRect(0, 0, size.width, size.height)
   if (object.rotate) {
     ctx.save()
     ctx.translate(object.x, object.y) // translate to the shape center
@@ -324,20 +330,32 @@ const drawImage = (ctx, object, size) => {
   })
 }*/
 
-const render = (object, size, ref) => {
-  if (!object.canvas) { 
+const render = (object, size) => {
+  /*if (!object.canvas) { 
     //console.log('object from render: ', object)
     object.canvas = document.createElement('canvas')
     object.canvas.height = size.height
     object.canvas.width = size.width
     ref.current.append(object.canvas)
-  }
+  }*/
 
   const ctx = object.canvas.getContext('2d')
   
   switch (object?.type) {
     case 'rectangle':
       drawRect(ctx, object, size)
+      break
+
+    case 'line':
+      drawLine(ctx, object, size)
+      break
+
+    case 'circle':
+      drawCircle(ctx, object, size)
+      break
+
+    case 'triangle':
+      drawTriangle(ctx, object, size)
       break
 
     default:

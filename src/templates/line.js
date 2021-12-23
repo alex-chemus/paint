@@ -50,7 +50,7 @@ const setLine = ({ startPosition, endPosition, params }) => {
     end: endPosition
   }
 
-  console.log(params)
+  //console.log('line params: ', params)
 
   return line
 }

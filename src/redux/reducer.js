@@ -8,6 +8,21 @@ const reducer = (state=initState, action) => {
         currentTool: action.value,
       }
 
+    case 'add init canvas':
+      console.log('from reducer')
+      const canvasObjects = state.canvasObjects
+      canvasObjects[0].canvas = action.value
+      //console.log('new canvas objects: ', canvasObjects)
+      const canvasVersions = state.canvasVersions
+      canvasVersions[0][0].canvas = action.value
+      //console.log('new canvas versions: ', canvasVersions)
+
+      return {
+        ...state,
+        canvasObjects,
+        canvasVersions
+      }
+
     case 'add canvas object':
       if (state.currentVersion !== null) {
         return {

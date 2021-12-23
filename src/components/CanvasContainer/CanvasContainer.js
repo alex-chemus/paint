@@ -32,12 +32,29 @@ const CanvasContainer = () => {
 
   //effects
   useEffect(() => {
-    if (!containerRef.current) return
+    if (!containerRef?.current) return
+    //console.log('canvas objects changed')
+    if (!canvasObjects[0]?.canvas) {
+      //console.log('no init canvas')
+      dispatch({
+        type: 'add init canvas',
+        value: createCanvas(containerRef)
+      })
+      //console.log('render canvas objects after mounting')
+      canvasObjects.forEach(item => {
+        render(item, {
+          width: containerWidth,
+          height: containerHeight
+        })
+      })
+      return
+    }
+    //console.log('render canvas objects')
     canvasObjects.forEach(item => {
       render(item, {
         width: containerWidth,
         height: containerHeight
-      }, containerRef)
+      })
     })
   }, [canvasObjects])
 
@@ -61,16 +78,21 @@ const CanvasContainer = () => {
     } else {
       setCurrentObject()
     }
-  }, [currentTool, containerRef])
+  }, [currentTool])
 
   useEffect(() => {
     if (!currentObject || !containerRef) return
-    const objects = [...canvasObjects, currentObject]
+    /*const objects = [...canvasObjects, currentObject]
     objects.forEach(item => {
       render(item, {
         width: containerWidth,
         height: containerHeight
-      }, containerRef)
+      })
+    })*/
+    //console.log('render current object')
+    render(currentObject, {
+      width: containerWidth,
+      height: containerHeight
     })
   }, [currentObject])
 
@@ -84,7 +106,18 @@ const CanvasContainer = () => {
     движение - изменить финальные координаты + ререндер
   */
   // draw a new object on top of the sheet
-  const draw = () => {
+  //const createCanvas = (containerRef) => {
+  function createCanvas(containerRef) {
+    if (!containerRef?.current) return
+    const canvas = document.createElement('canvas')
+    canvas.width = containerWidth
+    canvas.height = containerHeight
+    containerRef.current.append(canvas)
+    //console.log('from createCanvas: ', canvas)
+    return canvas
+  }
+
+  function draw() {
     if (!endPosition || !startPosition) return
     switch (currentTool) {
       case 'circle':
@@ -92,7 +125,7 @@ const CanvasContainer = () => {
           startPosition,
           endPosition,
           params: {
-            canvas: currentObject?.canvas ? currentObject.canvas : null
+            canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef)
           }
         }))
         break
@@ -102,10 +135,10 @@ const CanvasContainer = () => {
           startPosition,
           endPosition,
           params: {
-            canvas: currentObject?.canvas ? currentObject.canvas : null
+            canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef)
           }
         }))
-        console.log(currentObject)
+        //console.log(currentObject)
         break
 
       case 'line':
@@ -113,7 +146,7 @@ const CanvasContainer = () => {
           startPosition,
           endPosition,
           params: {
-            canvas: currentObject?.canvas ? currentObject.canvas : null
+            canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef)
           },
         }))
         break
@@ -123,7 +156,7 @@ const CanvasContainer = () => {
           startPosition,
           endPosition,
           params: {
-            canvas: currentObject?.canvas ? currentObject.canvas : null
+            canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef)
           },
         }))
         break
@@ -133,7 +166,7 @@ const CanvasContainer = () => {
     }
   }
 
-  const setCoords = (event, func=()=>{}, callback=()=>{}) => {
+  function setCoords(event, func=()=>{}, callback=()=>{}) {
     // координаты в пикселях
     const coordX = event.clientX-85
     const coordY = event.clientY-50
@@ -147,7 +180,7 @@ const CanvasContainer = () => {
     callback(coords)
   }
 
-  const setStart = event => {
+  function setStart(event) {
     if (currentTool === 'move') return
     setCoords(event, setStartPosition, (coords) => {
       setEndPosition(null)
@@ -155,7 +188,7 @@ const CanvasContainer = () => {
     })
   }
 
-  const setEnd = event => {
+  function setEnd(event) {
     if (currentTool === 'move' || !startPosition) return
     setCoords(event, setEndPosition, (coords) => {
       setClicked(false)
@@ -170,7 +203,7 @@ const CanvasContainer = () => {
   }
   //document.addEventListener('mouseup', setEnd)
 
-  const onMove = event => {
+  function onMove(event) {
     if (!clicked) return
     setCoords(event, setEndPosition, draw)
   } 
@@ -183,7 +216,6 @@ const CanvasContainer = () => {
     <div 
       className={cls.join(' ')} 
       ref={containerRef}
-      //onClick={currentTool==='move' ? move : draw}
       onMouseDown={setStart}
       onMouseUp={setEnd}
       onMouseLeave={setEnd}
