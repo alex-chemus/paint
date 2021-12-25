@@ -1,0 +1,52 @@
+@import '../../main.scss';
+
+.Rightbar {
+  background: $dark;
+  position: absolute;
+  right: 0;
+  box-sizing: border-box;
+  border-radius: 20px 0 0 20px;
+  width: 226px;
+  height: calc(100vh - 100px);
+  display: grid;
+  grid-template-rows: 1fr 5px 1fr;
+}
+
+section {
+  text-align: center;
+}
+
+.layers {
+  list-style: none;
+  padding: 0;
+  
+  ul {
+    @include flex(flex-start, stretch);
+    flex-direction: column-reverse;
+  }
+
+  .layer {
+    padding: 5px 10px 5px 20px;
+    @include textParams(#ccc);
+    font-size: 12px;
+    font-family: 'Roboto';
+    @include flex(flex-start, center);
+    cursor: pointer;
+    
+    &.selected {
+      background: $bg;
+    }
+  }
+}
+
+.line {
+  height: 5px;
+  background: $bg;
+}
+
+h2 {
+  @include textParams(white);
+  font-family: 'Roboto';
+  font-weight: normal;
+  margin: 20px 0 30px;
+}

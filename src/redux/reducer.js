@@ -31,8 +31,8 @@ const reducer = (state=initState, action) => {
           ],
           interimVersions: [],
           currentVersion: null,
-          canvasObjects: [...state.canvasObjects, action.value]
-          
+          canvasObjects: [...state.canvasObjects, action.value],
+          currentLayer: action.value.id
         }
       }
       const pushObjects = [...state.canvasObjects, action.value]
@@ -40,6 +40,7 @@ const reducer = (state=initState, action) => {
         ...state,
         canvasVersions: [...state.canvasVersions, pushObjects],
         canvasObjects: pushObjects,
+        currentLayer: action.value.id
       }
 
     case 'clear':
@@ -58,6 +59,12 @@ const reducer = (state=initState, action) => {
         currentVersion,
         interimVersions,
         canvasObjects: interimVersions[interimVersions.length-1]
+      }
+
+    case 'set current layer':
+      return {
+        ...state,
+        currentLayer: action.value
       }
 
     default: 

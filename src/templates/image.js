@@ -5,6 +5,7 @@ const sheet = {
   width: 0.2,
   height: 0.2,
   src: '',
+  id: 0,
   z: 0,
   scale: {x: 1, y: 1},
   opacity: null,
@@ -20,7 +21,7 @@ const setImage = ({ params }) => {
   }
 }
 
-const setHanlders = (container, currentTool, callback=()=>{}, createCanvas) => {
+const setHanlders = (container, currentTool, callback=()=>{}, createCanvas, topObject) => {
   const onDragOver = event => event.preventDefault()
   container.current.addEventListener('dragover', onDragOver)
 
@@ -41,7 +42,9 @@ const setHanlders = (container, currentTool, callback=()=>{}, createCanvas) => {
       callback(setImage({
         params: { 
           src: url,
-          canvas
+          canvas,
+          id: Date.now(),
+          z: topObject.z + 1
         }
       }))
     }

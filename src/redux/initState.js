@@ -9,7 +9,8 @@ const initState = {
       end: {
         x: 1, y: 1
       },
-      z: 0,
+      id: 0,
+      z: 1,
       fill: 'white',
       opacity: null,
       rotate: null,
@@ -30,7 +31,8 @@ const initState = {
       end: {
         x: 1, y: 1
       },
-      z: 0,
+      id: 0,
+      z: 1,
       fill: 'white',
       rotate: null,
       stroke: null,
@@ -41,6 +43,7 @@ const initState = {
   ]],
   interimVersions: [],
   currentVersion: null,
+  currentLayer: 0 // id of the layer
 }
 
 export default initState 

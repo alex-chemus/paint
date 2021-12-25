@@ -50,8 +50,6 @@ const CanvasContainer = () => {
       })
       return
     }
-    // remove all children, and then append them,
-    // so removed canvas objects aren't rendered
     /*const children = containerRef.current.children
     for (let i=0; i<children.length; i++) {
       children[i].remove()
@@ -102,7 +100,8 @@ const CanvasContainer = () => {
       containerRef, 
       currentTool, 
       addImage, 
-      createCanvasWrapper(containerWidth, containerHeight)
+      createCanvasWrapper(containerWidth, containerHeight),
+      canvasObjects.find(item => item.z === canvasObjects.length)
     )
     return removeHanlders
   }, [currentTool])
@@ -165,13 +164,16 @@ const CanvasContainer = () => {
   // methods
   function draw() {
     if (!endPosition || !startPosition) return
+    const topObject = canvasObjects.find(item => item.z === canvasObjects.length)
     switch (currentTool) {
       case 'circle':
         setCurrentObject(setCircle({
           startPosition,
           endPosition,
           params: {
-            canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef)
+            canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef),
+            id: Date.now(),
+            z: topObject.z + 1
           }
         }))
         break
@@ -181,7 +183,9 @@ const CanvasContainer = () => {
           startPosition,
           endPosition,
           params: {
-            canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef)
+            canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef),
+            id: Date.now(),
+            z: topObject.z + 1
           }
         }))
         break
@@ -191,7 +195,9 @@ const CanvasContainer = () => {
           startPosition,
           endPosition,
           params: {
-            canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef)
+            canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef),
+            id: Date.now(),
+            z: topObject.z + 1
           },
         }))
         break
@@ -201,7 +207,9 @@ const CanvasContainer = () => {
           startPosition,
           endPosition,
           params: {
-            canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef)
+            canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef),
+            id: Date.now(),
+            z: topObject.z + 1
           },
         }))
         break
@@ -229,6 +237,7 @@ const CanvasContainer = () => {
     if (currentTool === 'move') return
     setCoords(event, setStartPosition, (coords) => {
       if (currentTool === 'text') {
+        const topObject = canvasObjects.find(item => item.z === canvasObjects.length)
         dispatch({
           type: 'add canvas object',
           value: setText({coords, size: {
@@ -236,7 +245,8 @@ const CanvasContainer = () => {
             height: containerHeight,
           }, params: {
             canvas: createCanvas(containerRef),
-            
+            id: Date.now(),
+            z: topObject.z + 1
           }})
         })
       }
@@ -260,7 +270,6 @@ const CanvasContainer = () => {
       setEndPosition(null)
     })
   }
-  //document.addEventListener('mouseup', setEnd)
 
   function onMove(event) {
     if (!clicked) return

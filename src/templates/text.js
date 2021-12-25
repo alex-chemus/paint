@@ -1,6 +1,7 @@
 const sheet = {
   type: 'text',
   x: 0, y: 0,
+  id: 0,
   z: 0,
   fill: null, // text color
   stroke: null, // {width, color}
