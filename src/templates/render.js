@@ -21,8 +21,6 @@ const setAbsXY = (object, size) => {
 
 const drawLine = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
-  ctx.clearRect(0, 0, size.width, size.height)
-  //console.log('draw line')
   
   if (object.rotate) ctx.save()
   if (object.opacity) ctx.globalAlpha = object.opacity
@@ -49,7 +47,6 @@ const drawLine = (ctx, object, size) => {
 
 const drawRect = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
-  ctx.clearRect(0, 0, size.width, size.height)
 
   if (object.rotate) {
     ctx.save()
@@ -120,7 +117,6 @@ const drawRect = (ctx, object, size) => {
 
 const drawCircle = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
-  ctx.clearRect(0, 0, size.width, size.height)
 
   if (object.opacity) ctx.globalAlpha = object.opacity
   if (object.shadow) {
@@ -168,7 +164,6 @@ const drawCircle = (ctx, object, size) => {
 
 const drawTriangle = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
-  ctx.clearRect(0, 0, size.width, size.height)
 
   if (object.rotate) {
     ctx.save()
@@ -242,7 +237,6 @@ const drawImage = (ctx, object, size) => {
   const width = object.width * size.width
   const height = object.height * size.height
 
-  ctx.clearRect(0, 0, size.width, size.height)
   if (object.rotate) {
     ctx.save()
     ctx.translate(x, y) // translate to the shape center
@@ -289,7 +283,6 @@ const drawImage = (ctx, object, size) => {
 
 const drawText = (ctx, object, size) => {
   const [x, y] = setAbsXY(object, size)
-  ctx.clearRect(0, 0, size.width, size.height)
 
   if (object.rotate) {
     ctx.save()
@@ -309,8 +302,10 @@ const drawText = (ctx, object, size) => {
   if (object.rotate) ctx.restore()
 }
 
-const render = (object, size) => {
+const render = (object, size, beforeDraw=()=>{}) => {
   const ctx = object.canvas.getContext('2d')
+  ctx.clearRect(0, 0, size.width, size.height)
+  beforeDraw()
   
   switch (object?.type) {
     case 'rectangle':

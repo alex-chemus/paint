@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import classes from './Rightbar.module.scss'
 import { useSelector, useDispatch } from 'react-redux'
+import render from '../../templates/render'
 
 const Rightbar = () => {
   // state
   const [objects, setObjects] = useState([])
+  const [containerWidth, setContainerWidth] = useState(document.body.clientWidth - 266 - 85)
+  const [containerHeight, setContainerHeight] = useState(document.body.clientHeight - 100)
 
 
   // store
@@ -19,18 +22,29 @@ const Rightbar = () => {
     array.shift()
     setObjects(array)
     setTimeout(() => {
-      console.log(objects)
+      //console.log(objects)
     })
   }, [canvasObjects])
-
-  useEffect(() => {
-    console.log('current layer: ', currentLayer)
-  }, [currentLayer])
 
 
   // utility methods
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  function calcMiniCanvas() {
+    const maxWidth = 77
+    const maxHeight = 40
+
+    if (maxWidth*containerWidth < maxHeight*containerHeight) {
+      const width = maxWidth
+      const height = (maxWidth * containerHeight) / containerWidth
+      return [width, height]
+    } else {
+      const height = maxHeight
+      const width = (maxHeight * containerWidth) / containerHeight
+      return [width, height]
+    }
   }
 
 
@@ -42,20 +56,45 @@ const Rightbar = () => {
     })
   }
 
+  function drawCanvas(width, height, item) {
+    const canvas = (
+      <canvas width={width} height={height} data-id={item.id}></canvas>
+    )
+      
+    setTimeout(() => {
+      const elem = document.querySelector(`[data-id="${item.id}"]`)
+      if (!elem) return
+      const object = {
+        ...item,
+        canvas: elem
+      }
+      render(object, {width, height}, () => {
+        const ctx = object.canvas.getContext('2d')
+        ctx.fillStyle = 'white'
+        ctx.fillRect(0, 0, width, height)
+      }) 
+    });
+
+    return canvas
+  }
+
 
   // jsx-objects
   const layers = (
-    <ul className={classes.layers}> 
+    <ul>  
       {
         objects.map(item => {
           const cls = [classes.layer]
           if (item.id === currentLayer) cls.push(classes.selected)
+          const [width, height] = calcMiniCanvas()
+          console.log('item from layer object: ', item)
           return (
             <li 
               className={cls.join(' ')}
               key={item.z}
               onClick={() => select(item.id)}
             >
+              { drawCanvas(width, height, item) }
               { capitalizeFirstLetter(item.type) }
             </li>
           )

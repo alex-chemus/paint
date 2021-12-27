@@ -8,21 +8,39 @@
   border-radius: 20px 0 0 20px;
   width: 226px;
   height: calc(100vh - 100px);
-  display: grid;
-  grid-template-rows: 1fr 5px 1fr;
+  //display: grid;
+  //grid-template-rows: 1fr 5px 1fr;
 }
 
 section {
   text-align: center;
+  height: calc(50% - 2.5px);
 }
 
-.layers {
-  list-style: none;
-  padding: 0;
-  
+::-webkit-scrollbar {
+  width: 4px;
+
+  &-track {
+    max-height: 100%;
+  }
+
+  &-thumb {
+    border-radius: 2px;
+    background-color: rgb(148, 148, 148);
+  }
+}
+
+.layers {  
+  overflow-y: clip;
+
   ul {
+    margin: 0;
+    max-height: calc(100% - 59px);
     @include flex(flex-start, stretch);
     flex-direction: column-reverse;
+    overflow-y: scroll;
+    list-style: none;
+    padding: 0;
   }
 
   .layer {
@@ -35,6 +53,10 @@ section {
     
     &.selected {
       background: $bg;
+    }
+
+    canvas {
+      margin-right: 10px;
     }
   }
 }
