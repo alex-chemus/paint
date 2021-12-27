@@ -8,8 +8,6 @@
   border-radius: 20px 0 0 20px;
   width: 226px;
   height: calc(100vh - 100px);
-  //display: grid;
-  //grid-template-rows: 1fr 5px 1fr;
 }
 
 section {
@@ -35,12 +33,14 @@ section {
 
   ul {
     margin: 0;
-    max-height: calc(100% - 59px);
-    @include flex(flex-start, stretch);
+    height: calc(100% - 59px);
+    @include flex(flex-end, stretch);
     flex-direction: column-reverse;
     overflow-y: scroll;
     list-style: none;
     padding: 0;
+    position: relative;
+    //min-height: 100px;
   }
 
   .layer {
@@ -48,9 +48,16 @@ section {
     @include textParams(#ccc);
     font-size: 12px;
     font-family: 'Roboto';
+    height: 50px;
+    box-sizing: border-box;
     @include flex(flex-start, center);
     cursor: pointer;
     
+    &.draged {
+      position: relative;
+      z-index: 2;
+    }
+
     &.selected {
       background: $bg;
     }
