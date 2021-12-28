@@ -19,6 +19,7 @@ const CanvasContainer = () => {
   const [containerHeight, setContainerHeight] = useState(document.body.clientHeight - 100)
   const [clicked, setClicked] = useState(false)
   const [currentObject, setCurrentObject] = useState()
+  //const [textRef, setTextRef] = useState()
 
 
   // store
@@ -31,6 +32,7 @@ const CanvasContainer = () => {
 
   // refs
   const containerRef = useRef(null)
+  const textRef = useRef(null)
 
 
   //effects
@@ -97,18 +99,49 @@ const CanvasContainer = () => {
 
   // insert text for image drag'n'drop and set/reset drag'n'drop handlers
   useEffect(() => {
+    if (currentTool === 'image') {
+      textRef.current = createCanvas(containerRef)
+      setCurrentObject(setText({
+        coords: {
+          x: 0.5, y: 0.5
+        }, 
+        size: {
+          width: containerWidth,
+          height: containerHeight
+        }, 
+        params: {
+          fill: '#ccc',
+          value: 'Drag an image here',
+          canvas: textRef.current,
+          id: Date.now(),
+          z: canvasObjects.length + 1,
+        }
+      }))
+      console.log('text ref', textRef.current)
+    } else {
+      setCurrentObject()
+      console.log('changed tool')
+      textRef.current?.remove()
+    }
+
     const addImage = img => dispatch({ type: 'add canvas object', value: img })
     const createCanvasWrapper = (width, height) => {
       const containerWidth = width
       const containerHeight = height
       return createCanvas
     }
+    const removeText = () => {
+      console.log('text ref: ', textRef.current)
+      textRef.current?.remove()
+      setCurrentObject()
+    }
     const removeHanlders = setHanlders(
       containerRef, 
       currentTool, 
       addImage, 
       createCanvasWrapper(containerWidth, containerHeight),
-      canvasObjects.find(item => item.z === canvasObjects.length)
+      canvasObjects.find(item => item.z === canvasObjects.length),
+      removeText 
     )
     return removeHanlders
   }, [currentTool])

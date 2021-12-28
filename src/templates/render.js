@@ -255,9 +255,11 @@ const drawImage = (ctx, object, size) => {
   const img = new Image()
   img.src = object.src
   if (object.rotate) {
-    img.onload = () => ctx.drawImage(img, 0, 0, width, height)
+    //img.onload = () => ctx.drawImage(img, 0, 0, width, height)
+    img.onload = () => ctx.drawImage(img, 0, 0, width, height, 0, 0, width, height)
   } else {
-    img.onload = () => ctx.drawImage(img, x, y, width, height)
+    //img.onload = () => ctx.drawImage(img, x, y, width, height)
+    img.onload = () => ctx.drawImage(img, 0, 0, width, height, x, y, width, height)
   }
 
   if (object.shadow) {
@@ -292,7 +294,8 @@ const drawText = (ctx, object, size) => {
   if (object.opacity) ctx.globalAlpha = object.opacity
 
   ctx.scale(object.scale.x, object.scale.y)
-  ctx.fillStyle = 'black'
+  ctx.fillStyle = object.fill
+  ctx.textAlign = 'center'
 
   const fontSize = object.font.size * size.height
   ctx.font = `${object.font.style} ${object.font.weight} ${fontSize}px/${object.font.height}em ${object.font.family}`

@@ -2,8 +2,8 @@ const sheet = {
   type: 'image',
   x: 0, 
   y: 0,
-  width: 0.2,
-  height: 0.2,
+  width: 0.4,
+  height: 0.4,
   src: '',
   id: 0,
   z: 0,
@@ -21,14 +21,23 @@ const setImage = ({ params }) => {
   }
 }
 
-const setHanlders = (container, currentTool, callback=()=>{}, createCanvas, topObject) => {
-  const onDragOver = event => event.preventDefault()
+const setHanlders = (container, currentTool, callback=()=>{}, createCanvas, topObject, removeText) => {
+  const onDragOver = event => {
+    event.preventDefault()
+    removeText()
+  }
   container.current.addEventListener('dragover', onDragOver)
 
-  const onDragLeave = event => event.preventDefault()
+  const onDragLeave = event => {
+    event.preventDefault()
+    removeText()
+  }
   container.current.addEventListener('dragleave', onDragLeave)
 
-  const onDragEnd = event => event.preventDefault()
+  const onDragEnd = event => {
+    event.preventDefault()
+    removeText()
+  }
   container.current.addEventListener('dragend', onDragEnd)
 
   const onDrop = event => {

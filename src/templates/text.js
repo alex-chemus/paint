@@ -3,13 +3,14 @@ const sheet = {
   x: 0, y: 0,
   id: 0,
   z: 0,
-  fill: null, // text color
+  fill: 'black', // text color
   stroke: null, // {width, color}
   opacity: null, // number
   rotate: null, // angle
   scale: {x: 1, y: 1},
   canvas: null, // ref
   value: 'Text',
+  textAlign: 'center'
 }
 
 const setText = ({ coords, size, params }) => {
