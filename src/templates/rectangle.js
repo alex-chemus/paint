@@ -9,7 +9,7 @@ const sheet = {
   id: 0,
   z: 0,
   scale: {x: 1, y: 1},
-  fill: '#000',
+  fill: 'blue',
   opacity: 0,
   stroke: null,
   rotate: null,

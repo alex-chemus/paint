@@ -26,7 +26,7 @@ const Rightbar = () => {
     array.shift()
     setObjects(array)
     setTimeout(() => {
-      //console.log(objects)
+      //console.log('objects changed: ', objects)
     })
   }, [canvasObjects])
 
@@ -73,6 +73,10 @@ const Rightbar = () => {
     list[nextI].z = aboba
     list.sort((a, b) => a.z > b.z ? 1 : -1)
     setObjects(list)
+    dispatch({
+      type: 'swap objects',
+      prevI, nextI
+    })
   }
 
 
@@ -167,7 +171,7 @@ const Rightbar = () => {
 
   function dropLayer(object, i, event) {
     event.currentTarget.classList.remove(classes.draged)
-    console.log('drop layer')
+    //console.log('drop layer')
     setClicked(false)
     setObjects(objects.map((item, j) => {
       if (i !== j) return item
@@ -186,7 +190,7 @@ const Rightbar = () => {
     return (
       <li
         className={cls.join(' ')}
-        key={object.z}
+        key={i}
         onClick={() => select(object.id)}
         onMouseDown={e => dragLayer(object, i, e)}
         onMouseUp={e => dropLayer(object, i, e)}

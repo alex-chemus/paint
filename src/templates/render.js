@@ -303,6 +303,7 @@ const drawText = (ctx, object, size) => {
 }
 
 const render = (object, size, beforeDraw=()=>{}) => {
+  object.canvas.dataset.z = object.z
   const ctx = object.canvas.getContext('2d')
   ctx.clearRect(0, 0, size.width, size.height)
   beforeDraw()
