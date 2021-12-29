@@ -63,29 +63,31 @@ const CanvasContainer = () => {
         height: containerHeight
       })
     })*/
+    // nextFull - полный массив новых объектов
+    // prevFull - полный массив предыдущих объектов
     const nextFull = [...canvasObjects]
     const versions = [...canvasVersions].concat([...interimVersions])
     const prevFull = [...versions[versions.length-2]]
 
+    // из prevFull и nextFull убираются общие объекты
     const [prev, next] = removeDuplicates(prevFull, nextFull)
+
+    // объекты, которых нет в новой версии, удаляются из контейнера
     prev.forEach(item => item.canvas.remove())
+
+    // новые объекте, которых раньше не было, или были изменения в самом объекте, рендерятся 
     next.sort((a, b) => a.z > b.z ? 1 : -1).forEach(item => {
+      // если объекта раньше не было и в контейнере нет соответсвующего канваса,
+      // добавить объект по z, чтобы соблюдались слои
       if (!containerRef.current.contains(item.canvas)) {
-        //containerRef.current.append(item.canvas)
         const prevElem = containerRef.current.querySelector(`[data-z="${item.z-1}"]`)
         prevElem.after(item.canvas)
       }
-      //setCanvasRefs([...canvasRefs, item.canvas])
       render(item, {
         width: containerWidth,
         height: containerHeight
       })
     })
-    /*prev.forEach(item => {
-      if (!canvasRefs.some(i => i === item)) {
-        item.canvas.remove()
-      }
-    })*/
   }, [canvasObjects])
 
   // render currentObject on change
@@ -100,6 +102,11 @@ const CanvasContainer = () => {
   // insert text for image drag'n'drop and set/reset drag'n'drop handlers
   useEffect(() => {
     if (currentTool === 'image') {
+      /*
+        когда задаётся инструмент имадж, создать канвас для текста-ворнинга
+        и задать текущий объект текстом. потом, когда изменится инструмент (в else), 
+        удалить ссылку и очистить currentObject
+      */
       textRef.current = createCanvas(containerRef)
       setCurrentObject(setText({
         coords: {
@@ -122,16 +129,22 @@ const CanvasContainer = () => {
       textRef.current?.remove()
     }
 
+    // вспомогательные функции, которые имеют скоуп этого компонента,
+    // чтобы вызвать их внутри setHandlers
     const addImage = img => dispatch({ type: 'add canvas object', value: img })
     const createCanvasWrapper = (width, height) => {
       const containerWidth = width
       const containerHeight = height
       return createCanvas
     }
+    // функция, удаляющая текст при дропе
     const removeText = () => {
       textRef.current?.remove()
       setCurrentObject()
     }
+    // setHandlers устанавливает хэндлеры для контейнера для 
+    // drag-ивентов, возвращает функцию-клинер, которая вызвается
+    // перед следующим инструментом (для оптимизации)
     const removeHanlders = setHanlders(
       containerRef, 
       currentTool, 
@@ -288,6 +301,19 @@ const CanvasContainer = () => {
     callback(coords)
     return coords
   }
+
+  /*
+    при mousedown:
+      задаётся startPosition (возвращается start на время, пока setStartPosition
+      не сработает)
+      задаётся endPosition (возвращается end на время, пока setEndPosition не сработает)
+      вызывается функция draw
+    при move:
+      меняется endPosition => draw всё перерисовывает
+    при mouseup:
+      задаётся endPosition
+      startPosition и endPosition передаются в dispatch
+  */
 
   function setStart(event) {
     if (currentTool === 'move') return

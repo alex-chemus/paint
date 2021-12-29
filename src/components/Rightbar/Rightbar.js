@@ -22,6 +22,10 @@ const Rightbar = () => {
 
   // effects
   useEffect(() => {
+    /*
+      когда меняется canvasObject, создаётся объект, над которым будут
+      производиться манипуляции, чтобы не диспатчить все измения
+    */
     const array = [...canvasObjects].sort((a, b) => a.z > b.z ? 1 : -1)
     array.shift()
     setObjects(array)
@@ -48,21 +52,8 @@ const Rightbar = () => {
     }
   }
 
-  function swapElements(nodeA, nodeB) {
-    const parentA = nodeA.parentNode;
-    const siblingA = nodeA.nextSibling === nodeB ? nodeA : nodeA.nextSibling;
-    // Move `nodeA` to before the `nodeB`
-    nodeB.parentNode.insertBefore(nodeA, nodeB);
-    // Move `nodeB` to before the sibling of `nodeA`
-    parentA.insertBefore(nodeB, siblingA);
-  }
-
-  function swapObjects(prevIndex, nextIndex) {
-    const prev = objects[prevIndex]
-    const next = objects[nextIndex]
-    objects.slice(prevIndex, 2, next, prev)
-  }
-
+  // меняет значения z для объектов по 2 индексам (prevI, nextI)
+  // а также сортирует массив по новым значениям z
   function swapZ(prevI, nextI) {
     const list = objects
     const aboba = list[prevI].z
@@ -78,6 +69,7 @@ const Rightbar = () => {
 
 
   // methods
+  // выбирает текущий слой при клике
   function select(id) {
     dispatch({
       type: 'set current layer',
@@ -85,18 +77,24 @@ const Rightbar = () => {
     })
   }
 
+  // отрисовывает канвас для каждого слоя, принимает ширину и высоту
+  // канваса для слоя и сам объект
   function drawCanvas(width, height, item) {
     const canvas = (
       <canvas width={width} height={height} data-id={item.id}></canvas>
     )
-      
+    
+    // асинхронно выполнить код, кода канвас вставится в dom
     setTimeout(() => {
+      // элемент канваса, связян с js-кодом таким костылём
       const elem = document.querySelector(`[data-id="${item.id}"]`)
       if (!elem) return
+      // создаёт отдельный объект, но при этом с ссылкой на мини-канвас
       const object = {
         ...item,
         canvas: elem
       }
+      // рендерит мини-канвас, при этом делая заливку фона
       render(object, {width, height}, () => {
         const ctx = object.canvas.getContext('2d')
         ctx.fillStyle = 'white'
@@ -106,6 +104,23 @@ const Rightbar = () => {
 
     return canvas
   }
+
+  /*
+    dragLayer:
+      добавляет драгнутому элементу класс draged, отвечающий за 
+      position relative
+      глобально устанавливает offset (от верха элемента до контейнера)
+      глоабльно устанавливает startTop (от верха элемента до места "захвата")
+    moveLayer:
+      кверит предыдущий и следующий элемент для драгнутого
+      устанавливает значение top для элемента в shift
+      если элемент сдвинули на его же высоту, то:
+        вызывается swapZ, меняющая элементы порядков и по z
+        всем элементам обнуляют стиль top
+        заканчивается drag'n'drop, элементы остаются на новых местах
+    dropLayer:
+      отменяет стили и классы, заданные в dragLayer
+  */
 
   function dragLayer(object, i, event) {
     const li = event.currentTarget
@@ -186,7 +201,6 @@ const Rightbar = () => {
       value: id
     })
   }
-
 
   function renderItem(object, i) {
     const [width, height] = calcMiniCanvas()
