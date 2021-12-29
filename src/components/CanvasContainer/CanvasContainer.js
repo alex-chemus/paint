@@ -214,14 +214,16 @@ const CanvasContainer = () => {
 
 
   // methods
-  function draw() {
-    if (!endPosition || !startPosition) return
+  function draw(s, e) {
+    const start = !startPosition && s
+    const end = !endPosition && e
+
     const topObject = canvasObjects.find(item => item.z === canvasObjects.length)
     switch (currentTool) {
       case 'circle':
         setCurrentObject(setCircle({
-          startPosition,
-          endPosition,
+          startPosition: startPosition ?? start,
+          endPosition: endPosition ?? end,
           params: {
             canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef),
             id: Date.now(),
@@ -232,8 +234,8 @@ const CanvasContainer = () => {
       
       case 'rectangle':
         setCurrentObject(setRectangle({
-          startPosition,
-          endPosition,
+          startPosition: startPosition ?? start,
+          endPosition: endPosition ?? end,
           params: {
             canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef),
             id: Date.now(),
@@ -243,9 +245,10 @@ const CanvasContainer = () => {
         break
 
       case 'line':
+        //console.log('set current object to line')
         setCurrentObject(setLine({
-          startPosition,
-          endPosition,
+          startPosition: startPosition ?? start,
+          endPosition: endPosition ?? end,
           params: {
             canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef),
             id: Date.now(),
@@ -256,8 +259,8 @@ const CanvasContainer = () => {
 
       case 'triangle':
         setCurrentObject(setTriangle({
-          startPosition,
-          endPosition,
+          startPosition: startPosition ?? start,
+          endPosition: endPosition ?? end,
           params: {
             canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef),
             id: Date.now(),
@@ -283,11 +286,12 @@ const CanvasContainer = () => {
 
     func(coords)
     callback(coords)
+    return coords
   }
 
   function setStart(event) {
     if (currentTool === 'move') return
-    setCoords(event, setStartPosition, (coords) => {
+    const start = setCoords(event, setStartPosition, (coords) => {
       if (currentTool === 'text') {
         const topObject = canvasObjects.find(item => item.z === canvasObjects.length)
         dispatch({
@@ -302,10 +306,16 @@ const CanvasContainer = () => {
           }})
         })
       }
-
       setEndPosition(null)
       setClicked(currentTool !== 'text')
     })
+    const end = setCoords(event, setEndPosition)
+    /*
+      setStartPosition и setEndPosition не успевают отрабатывать
+       => draw не работает => setCurrentObject равен null => 
+       setEnd не отрабатывает при первом тригере, когда юзер только нажал
+    */
+    draw(start, end)
   }
 
   function setEnd(event) {
