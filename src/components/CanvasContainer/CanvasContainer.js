@@ -117,10 +117,8 @@ const CanvasContainer = () => {
           z: canvasObjects.length + 1,
         }
       }))
-      console.log('text ref', textRef.current)
     } else {
       setCurrentObject()
-      console.log('changed tool')
       textRef.current?.remove()
     }
 
@@ -131,7 +129,6 @@ const CanvasContainer = () => {
       return createCanvas
     }
     const removeText = () => {
-      console.log('text ref: ', textRef.current)
       textRef.current?.remove()
       setCurrentObject()
     }
@@ -192,9 +189,6 @@ const CanvasContainer = () => {
       let removed = false
       next.forEach((nextItem, i) => {
         prev.forEach((prevItem, j) => {
-          if (nextItem.type === 'circle' && prevItem.type === 'circle') {
-            //console.log('circle comparison', treesEqual(nextItem, prevItem))
-          }
           if ( treesEqual(nextItem, prevItem) ) {
             prev.splice(j, 1)
             next.splice(i, 1)

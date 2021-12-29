@@ -25,9 +25,6 @@ const Rightbar = () => {
     const array = [...canvasObjects].sort((a, b) => a.z > b.z ? 1 : -1)
     array.shift()
     setObjects(array)
-    setTimeout(() => {
-      //console.log('objects changed: ', objects)
-    })
   }, [canvasObjects])
 
 
@@ -171,7 +168,6 @@ const Rightbar = () => {
 
   function dropLayer(object, i, event) {
     event.currentTarget.classList.remove(classes.draged)
-    //console.log('drop layer')
     setClicked(false)
     setObjects(objects.map((item, j) => {
       if (i !== j) return item
@@ -182,6 +178,16 @@ const Rightbar = () => {
     }))
   }
 
+  function removeObject(event) {
+    const btn = event.currentTarget
+    const id = +btn.dataset.id
+    dispatch({
+      type: 'remove object',
+      value: id
+    })
+  }
+
+
   function renderItem(object, i) {
     const [width, height] = calcMiniCanvas()
     const cls = [classes.layer]
@@ -191,7 +197,10 @@ const Rightbar = () => {
       <li
         className={cls.join(' ')}
         key={i}
-        onClick={() => select(object.id)}
+        onClick={e => {
+          if (e.target.tagName === 'BUTTON') return
+          select(object.id)
+        }}
         onMouseDown={e => dragLayer(object, i, e)}
         onMouseUp={e => dropLayer(object, i, e)}
         onMouseLeave={e => dropLayer(object, i, e)}
@@ -200,6 +209,10 @@ const Rightbar = () => {
       >
         { drawCanvas(width, height, object) }
         { capitalizeFirstLetter(object.type) }
+        <button
+          data-id={object.id}
+          onClick={removeObject}
+        ></button>
       </li>
     )
   }
