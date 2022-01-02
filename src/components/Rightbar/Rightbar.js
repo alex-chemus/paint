@@ -55,15 +55,21 @@ const Rightbar = () => {
   // меняет значения z для объектов по 2 индексам (prevI, nextI)
   // а также сортирует массив по новым значениям z
   function swapZ(prevI, nextI) {
+    console.log('prevI:', prevI, ' nextI:', nextI)
     const list = objects
+    console.log('list[prevI].z:', list[prevI].z, ' list[nextI].z:', list[nextI].z)
     const aboba = list[prevI].z
+    console.log('aboba:', aboba)
     list[prevI].z = list[nextI].z
+    console.log('list[prevI].z:', list[prevI].z)
     list[nextI].z = aboba
+    console.log('list[nextI].z:', list[nextI].z)
+    console.log('list[prevI].z:', list[prevI].z, ' list[nextI].z:', list[nextI].z)
     list.sort((a, b) => a.z > b.z ? 1 : -1)
     setObjects(list)
     dispatch({
       type: 'swap objects',
-      prevI, nextI
+      value: [canvasObjects[0], ...list]
     })
   }
 

@@ -68,7 +68,7 @@ const reducer = (state=initState, action) => {
       }
 
     case 'swap objects':
-      function swapObjects(prevI, nextI) {
+      /*function swapObjects(prevI, nextI) {
         const list = []
         state.canvasObjects.forEach(obj => {
           list.push({...obj})
@@ -78,7 +78,7 @@ const reducer = (state=initState, action) => {
         list[nextI].z = amogus
         list.sort((a, b) => a.z > b.z ? 1 : -1)
         return list
-      }
+      }*/
       // if there's undo chain
       if (state.currentVersion !== null) {
         return {
@@ -86,14 +86,15 @@ const reducer = (state=initState, action) => {
           canvasVersions: [
             ...state.canvasVersions,
             ...state.interimVersions,
-            swapObjects(action.prevI+1, action.nextI+1)
+            //swapObjects(action.prevI+1, action.nextI+1)
+            action.value
           ],
           interimVersions: [],
           currentVersion: null,
-          canvasObjects: swapObjects(action.prevI+1, action.nextI+1),
+          canvasObjects: action.value //swapObjects(action.prevI+1, action.nextI+1),
         }
       }
-      const objects = swapObjects(action.prevI+1, action.nextI+1)
+      const objects = action.value //swapObjects(action.prevI+1, action.nextI+1)
       return {
         ...state,
         canvasObjects: objects,
