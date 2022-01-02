@@ -27,6 +27,7 @@ const CanvasContainer = () => {
   const currentTool = useSelector(state => state.currentTool)
   const canvasVersions = useSelector(state => state.canvasVersions)
   const interimVersions = useSelector(state => state.interimVersions)
+  const currentLayer = useSelector(state => state.currentLayer)
   const dispatch = useDispatch()
 
 
@@ -316,7 +317,14 @@ const CanvasContainer = () => {
   */
 
   function setStart(event) {
-    if (currentTool === 'move') return
+    if (currentTool === 'move') {
+      if (currentLayer === 0) return // base sheet
+      setCoords(event, setStartPosition, () => {
+        setEndPosition(null)
+        setClicked(true)
+      })
+      return 
+    }
     const start = setCoords(event, setStartPosition, (coords) => {
       if (currentTool === 'text') {
         const topObject = canvasObjects.find(item => item.z === canvasObjects.length)
@@ -345,7 +353,27 @@ const CanvasContainer = () => {
   }
 
   function setEnd(event) {
-    if (currentTool === 'move' || !startPosition) return
+    if (!startPosition) return
+    if (currentTool === 'move') {
+      setCoords(event, setEndPosition, coords => {
+        if (currentLayer === 0) return
+        const layer = canvasObjects.find(item => item.id === currentLayer)
+        const delta = {
+          x: coords.x - startPosition.x,
+          y: coords.y - startPosition.y
+        }
+        layer.canvas.style = ''
+        dispatch({
+          type: 'move object',
+          value: delta
+        }) 
+        setClicked(false)
+        setCurrentObject(null)
+        setStartPosition(null)
+        setEndPosition(null)
+      })
+      return
+    }
     setCoords(event, setEndPosition, (coords) => {
       if (!currentObject) return
       setClicked(false)
@@ -361,6 +389,18 @@ const CanvasContainer = () => {
 
   function onMove(event) {
     if (!clicked) return
+    if (currentTool === 'move') {
+      setCoords(event, setEndPosition, coords => {
+        if (currentLayer === 0) return
+        const layer = canvasObjects.find(item => item.id === currentLayer)
+        const delta = {
+          x: coords.x - startPosition.x,
+          y: coords.y - startPosition.y
+        }
+        layer.canvas.style.top = `${delta.y * containerHeight}px`
+        layer.canvas.style.left = `${delta.x * containerWidth}px`
+      })
+    }
     setCoords(event, setEndPosition, draw)
   } 
 
