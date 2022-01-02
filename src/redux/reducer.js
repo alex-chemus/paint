@@ -1,3 +1,4 @@
+import { act } from "react-dom/cjs/react-dom-test-utils.production.min"
 import initState from "./initState"
 
 const reducer = (state=initState, action) => {
@@ -174,6 +175,26 @@ const reducer = (state=initState, action) => {
         ...state,
         canvasVersions: [...state.canvasVersions, [...oldObjects, setNewObject()]],
         canvasObjects: [...oldObjects, setNewObject()] 
+      }
+
+    case 'change params':
+      if (state.currentVersion !== null) {
+        return {
+          ...state,
+          canvasVersions: [
+            ...state.canvasVersions,
+            ...state.interimVersions,
+            action.value
+          ],
+          interimVersions: [],
+          currentVersion: null,
+          canvasObjects: action.value
+        }
+      }
+      return {
+        ...state,
+        canvasVersions: [...state.canvasVersions, action.value],
+        canvasObjects: action.value
       }
 
     default: 

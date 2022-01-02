@@ -23,7 +23,7 @@ const drawLine = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
   
   if (object.rotate) ctx.save()
-  if (object.opacity) ctx.globalAlpha = object.opacity
+  if (object.opacity) ctx.globalAlpha = 1 - object.opacity/100
 
   ctx.scale(object.scale.x, object.scale.y)
   ctx.strokeStyle = object.stroke.color
@@ -43,6 +43,7 @@ const drawLine = (ctx, object, size) => {
     ctx.translate(-translate.x, -translate.y) // translate back
     ctx.restore()
   }
+  if (object.opacity) ctx.globalAlpha = 1
 }
 
 const drawRect = (ctx, object, size) => {
@@ -58,7 +59,7 @@ const drawRect = (ctx, object, size) => {
     ctx.translate(translate.x, translate.y) // translate to the shape center
     ctx.rotate(object.rotate)
   }
-  if (object.opacity) ctx.globalAlpha = object.opacity
+  if (object.opacity) ctx.globalAlpha = 1 - object.opacity/100
 
   if (object.shadow) {
     ctx.shadowOffsetX = object.shadow.x
@@ -113,12 +114,13 @@ const drawRect = (ctx, object, size) => {
   }
 
   if (object.rotate) ctx.restore()
+  if (object.opacity) ctx.globalAlpha = 1
 }
 
 const drawCircle = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
 
-  if (object.opacity) ctx.globalAlpha = object.opacity
+  if (object.opacity) ctx.globalAlpha = 1 - object.opacity/100
   if (object.shadow) {
     ctx.shadowOffsetX = object.shadow.x
     ctx.shadowOffsetY = object.shadow.y
@@ -150,16 +152,18 @@ const drawCircle = (ctx, object, size) => {
     ctx.strokeStyle = object.stroke.color
     ctx.lineWidth = object.stroke.width
     ctx.beginPath()
-  ctx.arc(
-    start.x, start.y, 
-    Math.sqrt(
-      (end.x - start.x)**2 + (end.y - start.y)**2
-    ),
-    0, Math.PI*2
-  )
-  ctx.stroke()
-  ctx.closePath()
+    ctx.arc(
+      start.x, start.y, 
+      Math.sqrt(
+        (end.x - start.x)**2 + (end.y - start.y)**2
+      ),
+      0, Math.PI*2
+    )
+    ctx.stroke()
+    ctx.closePath()
   }
+
+  if (object.opacity) ctx.globalAlpha = 1
 }
 
 const drawTriangle = (ctx, object, size) => {
@@ -175,7 +179,7 @@ const drawTriangle = (ctx, object, size) => {
     ctx.translate(translate.x, translate.y) // translate to the shape center
     ctx.rotate(object.rotate)
   }
-  if (object.opacity) ctx.globalAlpha = object.opacity
+  if (object.opacity) ctx.globalAlpha = 1 - object.opacity/100
 
   ctx.scale(object.scale.x, object.scale.y)
   ctx.fillStyle = object.fill
@@ -230,6 +234,7 @@ const drawTriangle = (ctx, object, size) => {
   ctx.stroke()
 
   if (object.rotate) ctx.restore()
+  if (object.opacity) ctx.globalAlpha = 1
 }
 
 const drawImage = (ctx, object, size) => {
@@ -242,7 +247,7 @@ const drawImage = (ctx, object, size) => {
     ctx.translate(x, y) // translate to the shape center
     ctx.rotate(object.rotate)
   }
-  if (object.opacity) ctx.globalAlpha = object.opacity
+  if (object.opacity) ctx.globalAlpha = 1 - object.opacity/100
 
   if (object.shadow) {
     ctx.shadowOffsetX = object.shadow.x
@@ -281,6 +286,7 @@ const drawImage = (ctx, object, size) => {
   }
 
   if (object.rotate) ctx.restore()
+  if (object.opacity) ctx.globalAlpha = 1
 }
 
 const drawText = (ctx, object, size) => {
@@ -291,7 +297,7 @@ const drawText = (ctx, object, size) => {
     ctx.translate(x, y) // translate to the shape center
     ctx.rotate(object.rotate)
   }
-  if (object.opacity) ctx.globalAlpha = object.opacity
+  if (object.opacity) ctx.globalAlpha = 1 - object.opacity/100
 
   ctx.scale(object.scale.x, object.scale.y)
   ctx.fillStyle = object.fill
@@ -303,6 +309,7 @@ const drawText = (ctx, object, size) => {
 
   if (object.stroke) ctx.strokeText(object.value, x, y)
   if (object.rotate) ctx.restore()
+  if (object.opacity) ctx.globalAlpha = 1
 }
 
 const render = (object, size, beforeDraw=()=>{}) => {

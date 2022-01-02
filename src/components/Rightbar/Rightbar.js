@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import classes from './Rightbar.module.scss'
 import { useSelector, useDispatch } from 'react-redux'
 import render from '../../templates/render'
+import Params from './Params/Params'
 
 const Rightbar = () => {
   // state
@@ -231,6 +232,22 @@ const Rightbar = () => {
     )
   }
 
+  function updateObjects(object={}) {
+    for (let i=0; i<objects.length; i++) {
+      if (objects[i].id !== object.id) continue
+      const list = objects
+      list.splice(i, 1, object)
+      setObjects(list)
+      dispatch({
+        type: 'change params',
+        value: [canvasObjects[0], ...list]
+      })
+    }
+  }
+
+  useEffect(() => {
+    //console.log('current object:', objects.filter(item => item.id === currentLayer))
+  }, [objects])
 
   return (
     <aside
@@ -244,7 +261,13 @@ const Rightbar = () => {
       </section>
 
       <div className={classes.line}></div>
-      <section></section>
+      <section>
+        <h2>Parameters</h2>
+        { objects.filter(item => item.id === currentLayer).map((item, i) => {
+          //console.log('current object in return:', item)
+          return (<Params object={item} updateObjects={updateObjects} key={i} />)
+        })}
+      </section>
     </aside>
   )
 }

@@ -12,7 +12,7 @@ const sheet = {
     color: '#000',
     width: 1,
   },
-  opacity: null,
+  opacity: 0,
   rotate: null,
   scale: {x: 1, y: 1},
   canvas: null,
