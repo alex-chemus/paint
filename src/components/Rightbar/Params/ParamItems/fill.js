@@ -1,0 +1,1 @@
+export const fill = (param, {object, setObject, updateObjects}) => {}

@@ -1,0 +1,1 @@
+export const scale = (param, {object, setObject, updateObjects}) => {}

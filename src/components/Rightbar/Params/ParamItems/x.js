@@ -1,0 +1,1 @@
+export const x = (param, {object, setObject, updateObjects}) => {}

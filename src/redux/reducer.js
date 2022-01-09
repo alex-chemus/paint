@@ -1,4 +1,3 @@
-import { act } from "react-dom/cjs/react-dom-test-utils.production.min"
 import initState from "./initState"
 
 const reducer = (state=initState, action) => {

@@ -1,0 +1,1 @@
+export const stroke = (param, {object, setObject, updateObjects}) => {}

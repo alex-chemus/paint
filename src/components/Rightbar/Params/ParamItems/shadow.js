@@ -1,0 +1,1 @@
+export const shadow = (param, {object, setObject, updateObjects}) => {}

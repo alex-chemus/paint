@@ -1,0 +1,1 @@
+export const width = (param, {object, setObject, updateObjects}) => {}

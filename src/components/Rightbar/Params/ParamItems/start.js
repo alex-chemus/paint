@@ -1,0 +1,1 @@
+export const start = (param, {object, setObject, updateObjects}) => {}

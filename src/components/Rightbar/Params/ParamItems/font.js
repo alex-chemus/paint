@@ -1,0 +1,1 @@
+export const font = (param, {object, setObject, updateObjects}) => {}
