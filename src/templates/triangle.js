@@ -8,7 +8,7 @@ const sheet = {
   z: 0,
   opacity: 0,
   scale: {x: 1, y: 1},
-  rotate: null,
+  rotate: 0,
   stroke: null,
   shadow: null,
   canvas: null,

@@ -13,7 +13,7 @@ const sheet = {
     width: 1,
   },
   opacity: 0,
-  rotate: null,
+  rotate: 0,
   scale: {x: 1, y: 1},
   canvas: null,
 }

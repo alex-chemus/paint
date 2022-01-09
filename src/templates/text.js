@@ -5,8 +5,8 @@ const sheet = {
   z: 0,
   fill: 'black', // text color
   stroke: null, // {width, color}
-  opacity: null, // number
-  rotate: null, // angle
+  opacity: 0, // number
+  rotate: 0, // angle
   scale: {x: 1, y: 1},
   canvas: null, // ref
   value: 'Text',
