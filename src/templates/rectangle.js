@@ -12,7 +12,7 @@ const sheet = {
   fill: 'blue',
   opacity: 0,
   stroke: null,
-  rotate: null,
+  rotate: 0,
   shadow: null,
   canvas: null,
 }
