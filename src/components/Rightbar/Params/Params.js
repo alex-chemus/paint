@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import classes from './Params.module.scss'
 
 import { opacity, rotate, scale, start, end, stroke, fill,
-shadow, x, y } from './ParamItems/exports'
+shadow, x, y, width, height } from './ParamItems/exports'
 
 const Params = ({ object: layer, updateObjects }) => {
   const [object, setObject] = useState(layer) 
@@ -51,6 +51,14 @@ const Params = ({ object: layer, updateObjects }) => {
 
           case 'y':
             func = y
+            break
+
+          case 'width':
+            func = width
+            break
+
+          case 'height':
+            func = height
             break
 
           default: 
