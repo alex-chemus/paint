@@ -4,7 +4,10 @@ const sheet = {
   id: 0,
   z: 0,
   fill: 'black', // text color
-  stroke: null, // {width, color}
+  stroke: {
+    width: 0,
+    color: '#000'
+  }, // {width, color}
   opacity: 0, // number
   rotate: 0, // angle
   scale: {x: 1, y: 1},

@@ -8,6 +8,7 @@
   border-radius: 20px 0 0 20px;
   width: 226px;
   height: calc(100vh - 100px);
+  overflow: hidden;
 }
 
 section {
@@ -26,6 +27,10 @@ section {
     border-radius: 2px;
     background-color: rgb(148, 148, 148);
   }
+}
+
+.params {
+  overflow-y: scroll;
 }
 
 .layers {  

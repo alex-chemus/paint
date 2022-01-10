@@ -37,6 +37,7 @@ const drawLine = (ctx, object, size) => {
   ctx.scale(object.scale.x, object.scale.y)
   ctx.strokeStyle = object.stroke.color
   ctx.lineWidth = object.stroke.width
+  ctx.lineJoin = 'round'
   ctx.beginPath()
 
   if (object.rotate) {
@@ -97,7 +98,7 @@ const drawRect = (ctx, object, size) => {
     ctx.strokeStyle = object.stroke.color
     ctx.lineWidth = object.stroke.width
     ctx.lineJoin = 'round'
-    ctx.strokeRect(
+    if (object.stroke.width>0) ctx.strokeRect(
       -Math.abs(start.x - end.x) / 2,
       -Math.abs(start.y - end.y) / 2,
       Math.abs(end.x - start.x),
@@ -156,13 +157,14 @@ const drawCircle = (ctx, object, size) => {
     ctx.lineWidth = object.stroke.width
     ctx.beginPath()
     ctx.arc(
-      start.x, start.y, 
+      0, 0,
       Math.sqrt(
         (end.x - start.x)**2 + (end.y - start.y)**2
       ),
       0, Math.PI*2
     )
-    ctx.stroke()
+    //ctx.stroke()
+    if (object.stroke.width > 0) ctx.stroke()
     ctx.closePath()
   }
 
@@ -218,7 +220,7 @@ const drawTriangle = (ctx, object, size) => {
     ctx.shadowBlur = null
     ctx.shadowColor = null
   }
-  ctx.stroke()
+  if (object.stroke.width>0) ctx.stroke()
 
   //if (object.rotate) ctx.restore()
   ctx.translate(-translate.x, -translate.y)
@@ -269,7 +271,7 @@ const drawImage = (ctx, object, size) => {
     ctx.strokeStyle = object.stroke.color
     ctx.lineWidth = object.stroke.width
     ctx.lineJoin = 'round'
-    ctx.strokeRect(0, 0, width, height)
+    if (object.stroke.width>0) ctx.strokeRect(0, 0, width, height)
     /*if (object.rotate) { 
       ctx.strokeRect(0, 0, width, height)
     } else {
@@ -304,7 +306,12 @@ const drawText = (ctx, object, size) => {
   //else ctx.fillText(object.value, x, y)
   ctx.fillText(object.value, 0, 0)
 
-  if (object.stroke) ctx.strokeText(object.value, x, y)
+  if (object.stroke.width>0) {
+    ctx.strokeStyle = object.stroke.color
+    ctx.lineWidth = object.stroke.width
+    ctx.lineJoin = 'round'
+    ctx.strokeText(object.value, 0, 0)
+  }
   ctx.translate(-x, -y)
   ctx.restore()
   //if (object.rotate) ctx.restore()

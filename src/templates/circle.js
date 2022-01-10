@@ -7,7 +7,10 @@ const sheet = {
   scale: { x: 1, y: 1},
   opacity: 0,
   z: 0,
-  stroke: null,
+  stroke: {
+    width: 0,
+    color: '#000'
+  },
   shadow: null,
   canvas: null,
 }

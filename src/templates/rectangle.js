@@ -11,7 +11,10 @@ const sheet = {
   scale: {x: 1, y: 1},
   fill: 'blue',
   opacity: 0,
-  stroke: null,
+  stroke: {
+    color: '#000',
+    width: 0
+  },
   rotate: 0,
   shadow: null,
   canvas: null,

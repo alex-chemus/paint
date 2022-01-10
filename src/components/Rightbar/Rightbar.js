@@ -261,7 +261,8 @@ const Rightbar = () => {
       </section>
 
       <div className={classes.line}></div>
-      <section>
+      
+      <section className={classes.params}>
         <h2>Parameters</h2>
         { objects.filter(item => item.id === currentLayer).map((item, i) => {
           //console.log('current object in return:', item)
