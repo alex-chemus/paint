@@ -1,6 +1,5 @@
 export const rotate = (param, {object, setObject, updateObjects}) => {
   const toDegrees = radians => {
-    console.log(+radians * 180 / Math.PI)
     return (+radians * 180 / Math.PI).toFixed(0)
   }
   const test = () => {

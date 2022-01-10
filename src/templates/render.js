@@ -261,6 +261,8 @@ const drawImage = (ctx, object, size) => {
   img.onload = () => ctx.drawImage(img, 0, 0, width, height, 0, 0, width, height)
 
   if (object.shadow) {
+    //ctx.fillStyle = 'transparent'
+    ctx.fillRect(0, 0, width, height)
     ctx.shadowOffsetX = null
     ctx.shadowOffsetY = null
     ctx.shadowBlur = null

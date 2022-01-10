@@ -16,7 +16,9 @@ const sheet = {
     width: 0
   },
   rotate: 0,
-  shadow: null,
+  shadow: {
+    x: 0, y: 0, blur: 0, color: '#000'
+  },
   canvas: null,
 }
 
