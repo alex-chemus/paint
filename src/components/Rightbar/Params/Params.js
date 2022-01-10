@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import classes from './Params.module.scss'
 
-import { opacity, rotate } from './ParamItems/exports'
+import { opacity, rotate, scale } from './ParamItems/exports'
 
 const Params = ({ object: layer, updateObjects }) => {
   const [object, setObject] = useState(layer) 
@@ -18,6 +18,10 @@ const Params = ({ object: layer, updateObjects }) => {
 
           case 'rotate':
             func = rotate
+            break
+
+          case 'scale':
+            func = scale
             break
 
           default: 

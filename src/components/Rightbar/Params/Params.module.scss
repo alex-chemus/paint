@@ -9,6 +9,8 @@
     border-bottom: 1px solid $bg;
     display: grid;
     grid-template-columns: repeat(2, 50%);
+    grid-auto-rows: min-content;
+    row-gap: .5em;
   
     p {
       @include textParams(white);
@@ -28,6 +30,7 @@
       background-color: transparent;
       text-align: center;
       transition: border-color .15s;
+      grid-column-start: 2;
 
       &:focus {
         border-color: $accent;
