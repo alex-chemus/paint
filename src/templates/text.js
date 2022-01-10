@@ -3,7 +3,7 @@ const sheet = {
   x: 0, y: 0,
   id: 0,
   z: 0,
-  fill: 'black', // text color
+  fill: '#000', // text color
   stroke: {
     width: 0,
     color: '#000'

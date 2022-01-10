@@ -36,6 +36,11 @@
         border-color: $accent;
         outline: none;
       }
+
+      &[type="color"] {
+        padding: 2px 5px;
+        width: 100%;
+      }
     }
 
     &.focus {

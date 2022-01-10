@@ -28,7 +28,7 @@ export const stroke = (param, {object, setObject, updateObjects}) => {
         onChange={onChange}
         onBlur={onBlur}/>
       <input
-        type='text'
+        type='color'
         value={object[param].color}
         placeholder="Color"
         onChange={onChange}

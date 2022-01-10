@@ -2,7 +2,7 @@ const sheet = {
   type: 'circle',
   start: { x: 0, y: 0 },
   end: { x: 0, y: 0 },
-  fill: 'red',
+  fill: '#000',
   id: 0,
   scale: { x: 1, y: 1},
   opacity: 0,
