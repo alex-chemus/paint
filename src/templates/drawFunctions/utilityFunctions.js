@@ -48,3 +48,12 @@ export const setShadow = (object, size, containerSize) => {
   }
   return shadow
 }
+
+export const setFont = (object, size, containerSize) => {
+  const ratio = getRatio(size, containerSize)
+  const font = {
+    ...object.font,
+    size: object.font.size * ratio.avarage
+  }
+  return font
+}

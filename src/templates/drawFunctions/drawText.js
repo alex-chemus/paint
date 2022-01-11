@@ -1,9 +1,10 @@
-import { setAbsXY, setStroke } from "./utilityFunctions.js"
+import { setAbsXY, setFont, setStroke } from "./utilityFunctions.js"
 
 const drawText = (ctx, object, size, containerSize) => {
-  /* recalculate: x, y, stroke.width,  */
+  /* recalculate: x, y, stroke.width, font.size */
   const [x, y] = setAbsXY(object, size, containerSize)
   const stroke = setStroke(object, size, containerSize)
+  const font = setFont(object, size, containerSize)
 
   ctx.save()
   ctx.translate(x, y)
@@ -17,8 +18,9 @@ const drawText = (ctx, object, size, containerSize) => {
   ctx.fillStyle = object.fill
   ctx.textAlign = 'center'
 
-  const fontSize = object.font.size * size.height
-  ctx.font = `${object.font.style} ${object.font.weight} ${fontSize}px/${object.font.height}em ${object.font.family}`
+  //const fontSize = object.font.size * size.height
+  //ctx.font = `${object.font.style} ${object.font.weight} ${fontSize}px/${object.font.height}em ${object.font.family}`
+  ctx.font = `${font.style} ${font.weight} ${font.size}px/${font.height}em ${font.family}`
   //if (object.rotate) ctx.fillText(object.value, 0, 0)
   //else ctx.fillText(object.value, x, y)
   ctx.fillText(object.value, 0, 0)

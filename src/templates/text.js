@@ -17,7 +17,7 @@ const sheet = {
 }
 
 const setText = ({ coords, size, params }) => {
-  const relativeSize = 16 / size.height
+  //const relativeSize = 16 / size.height
   
   const text = {
     ...sheet,
@@ -25,7 +25,7 @@ const setText = ({ coords, size, params }) => {
     x: coords.x,
     y: coords.y, 
     font: {
-      size: relativeSize, // px
+      size: 16, // px
       family: 'Arial',
       style: 'normal',
       weight: 'normal',
