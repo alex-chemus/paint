@@ -1,7 +1,10 @@
-import { setAbsCoords } from './utilityFunctions.js'
+import { setAbsCoords, setShadow, setStroke } from './utilityFunctions.js'
 
-const drawCircle = (ctx, object, size) => {
-  const [start, end] = setAbsCoords(object, size)
+const drawCircle = (ctx, object, size, containerSize) => {
+  /* recalculate: start, end, stroke.width, shadow.x, shadow.y, shadow.blur */
+  const [start, end] = setAbsCoords(object, size, containerSize)
+  const stroke = setStroke(object, size, containerSize)
+  const shadow = setShadow(object, size, containerSize)
 
   ctx.save()
   /*const translate = {
@@ -12,11 +15,11 @@ const drawCircle = (ctx, object, size) => {
   ctx.translate(start.x, start.y)
 
   if (object.opacity) ctx.globalAlpha = 1 - object.opacity/100
-  if (object.shadow) {
-    ctx.shadowOffsetX = object.shadow.x
-    ctx.shadowOffsetY = object.shadow.y
-    ctx.shadowBlur = object.shadow.blur
-    ctx.shadowColor = object.shadow.color
+  if (shadow) {
+    ctx.shadowOffsetX = shadow.x
+    ctx.shadowOffsetY = shadow.y
+    ctx.shadowBlur = shadow.blur
+    ctx.shadowColor = shadow.color
   }
 
   ctx.scale(object.scale.x, object.scale.y)
@@ -34,16 +37,16 @@ const drawCircle = (ctx, object, size) => {
   ctx.fill()
   ctx.closePath()
 
-  if (object.shadow) {
+  if (shadow) {
     ctx.shadowOffsetX = null
     ctx.shadowOffsetY = null
     ctx.shadowBlur = null
     ctx.shadowColor = null
   }
 
-  if (object.stroke) {
-    ctx.strokeStyle = object.stroke.color
-    ctx.lineWidth = object.stroke.width
+  if (stroke) {
+    ctx.strokeStyle = stroke.color
+    ctx.lineWidth = stroke.width
     ctx.beginPath()
     ctx.arc(
       0, 0,
@@ -53,7 +56,7 @@ const drawCircle = (ctx, object, size) => {
       0, Math.PI*2
     )
     //ctx.stroke()
-    if (object.stroke.width > 0) ctx.stroke()
+    if (stroke.width > 0) ctx.stroke()
     ctx.closePath()
   }
 
