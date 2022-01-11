@@ -1,7 +1,9 @@
-import { setAbsCoords } from "./utilityFunctions.js"
+import { setAbsCoords, setStroke } from "./utilityFunctions.js"
 
-const drawLine = (ctx, object, size) => {
-  const [start, end] = setAbsCoords(object, size)
+const drawLine = (ctx, object, size, containerSize) => {
+  /* recalculate: start, end, stroke.width */
+  const [start, end] = setAbsCoords(object, size, containerSize)
+  const stroke = setStroke(object, size, containerSize)
   
   if (object.rotate) {
     ctx.save()
@@ -16,8 +18,8 @@ const drawLine = (ctx, object, size) => {
   if (object.opacity) ctx.globalAlpha = 1 - object.opacity/100
 
   ctx.scale(object.scale.x, object.scale.y)
-  ctx.strokeStyle = object.stroke.color
-  ctx.lineWidth = object.stroke.width
+  ctx.strokeStyle = stroke.color
+  ctx.lineWidth = Math.max(stroke.width, 0.5)
   ctx.lineJoin = 'round'
   ctx.beginPath()
 

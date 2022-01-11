@@ -3,7 +3,7 @@ const sheet = {
   start: {x: 0, y: 0},
   end: {x: 0, y: 0,},
   fill: '#000',
-  base: 0,
+  //base: 0,
   id: 0,
   z: 0,
   opacity: 0,

@@ -1,7 +1,9 @@
-import { setAbsXY } from "./utilityFunctions.js"
+import { setAbsXY, setStroke } from "./utilityFunctions.js"
 
-const drawText = (ctx, object, size) => {
-  const [x, y] = setAbsXY(object, size)
+const drawText = (ctx, object, size, containerSize) => {
+  /* recalculate: x, y, stroke.width,  */
+  const [x, y] = setAbsXY(object, size, containerSize)
+  const stroke = setStroke(object, size, containerSize)
 
   ctx.save()
   ctx.translate(x, y)
@@ -21,9 +23,9 @@ const drawText = (ctx, object, size) => {
   //else ctx.fillText(object.value, x, y)
   ctx.fillText(object.value, 0, 0)
 
-  if (object.stroke.width>0) {
-    ctx.strokeStyle = object.stroke.color
-    ctx.lineWidth = object.stroke.width
+  if (stroke.width>0) {
+    ctx.strokeStyle = stroke.color
+    ctx.lineWidth = stroke.width
     ctx.lineJoin = 'round'
     ctx.strokeText(object.value, 0, 0)
   }

@@ -1,7 +1,10 @@
-import { setAbsCoords } from './utilityFunctions.js'
+import { setAbsCoords, setShadow, setStroke } from './utilityFunctions.js'
 
-const drawTriangle = (ctx, object, size) => {
-  const [start, end] = setAbsCoords(object, size)
+const drawTriangle = (ctx, object, size, containerSize) => {
+  /* recalculate: start, end, stroke, shadow */
+  const [start, end] = setAbsCoords(object, size, containerSize)
+  const stroke = setStroke(object, size, containerSize)
+  const shadow = setShadow(object, size, containerSize)
 
   ctx.save()
   const translate = {
@@ -18,9 +21,9 @@ const drawTriangle = (ctx, object, size) => {
   ctx.scale(object.scale.x, object.scale.y)
   ctx.fillStyle = object.fill
   
-  if (object.stroke) {
-    ctx.strokeStyle = object.stroke.color
-    ctx.lineWidth = object.stroke.width
+  if (stroke) {
+    ctx.strokeStyle = stroke.color
+    ctx.lineWidth = stroke.width
   }
   ctx.lineJoin = 'round'
 
@@ -33,11 +36,11 @@ const drawTriangle = (ctx, object, size) => {
   ctx.lineTo(0, -Math.abs(start.y - end.y) / 2)
   ctx.closePath()
 
-  if (object.shadow) {
-    ctx.shadowOffsetX = object.shadow.x
-    ctx.shadowOffsetY = object.shadow.y
-    ctx.shadowBlur = object.shadow.blur
-    ctx.shadowColor = object.shadow.color
+  if (shadow) {
+    ctx.shadowOffsetX = shadow.x
+    ctx.shadowOffsetY = shadow.y
+    ctx.shadowBlur = shadow.blur
+    ctx.shadowColor = shadow.color
   }
   ctx.fill()
   if (object.shadow) {
@@ -46,7 +49,7 @@ const drawTriangle = (ctx, object, size) => {
     ctx.shadowBlur = null
     ctx.shadowColor = null
   }
-  if (object.stroke.width>0) ctx.stroke()
+  if (stroke.width>0) ctx.stroke()
 
   //if (object.rotate) ctx.restore()
   ctx.translate(-translate.x, -translate.y)
