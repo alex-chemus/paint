@@ -140,12 +140,6 @@ export const font = (param, {object, setObject, updateObjects}) => {
         placeholder="Size"
         onChange={onChange}
         onBlur={onBlur}/>
-      <input
-        type='text'
-        value={object[param].family}
-        placeholder="Family"
-        onChange={onChange}
-        onBlur={onBlur}/>
       <Select
         options={styleOptions}
         defaultValue={styleOptions[0]}
@@ -158,6 +152,12 @@ export const font = (param, {object, setObject, updateObjects}) => {
         onBlur={onBlur}
         onChange={e => onSelectChange(e, 'weight')}
         styles={styles}/>
+      <input
+        type='text'
+        value={object[param].family}
+        placeholder="Family"
+        onChange={onChange}
+        onBlur={onBlur}/>
       <input
         type='text'
         value={`${object[param].height}em`}

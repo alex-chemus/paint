@@ -8,12 +8,13 @@
   border-radius: 20px 0 0 20px;
   width: 226px;
   height: calc(100vh - 100px);
-  overflow: hidden;
 }
 
 section {
   text-align: center;
   height: calc(50% - 2.5px);
+  box-sizing: border-box;
+  padding-top: 20px;
 }
 
 ::-webkit-scrollbar {
@@ -116,5 +117,6 @@ h2 {
   @include textParams(white);
   font-family: 'Roboto';
   font-weight: normal;
-  margin: 20px 0 30px;
+  margin: 0;
+  margin-bottom: 30px;
 }
