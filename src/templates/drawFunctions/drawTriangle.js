@@ -1,4 +1,4 @@
-import { setAbsCoords } from './setCoords.js'
+import { setAbsCoords } from './utilityFunctions.js'
 
 const drawTriangle = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)

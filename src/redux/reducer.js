@@ -2,6 +2,30 @@ import initState from "./initState"
 
 const reducer = (state=initState, action) => {
   switch (action.type) {
+    case 'set size':
+      console.log('from reducer')
+      return {
+        ...state,
+        containerSize: {
+          width: action.value.width,
+          height: action.value.height
+        },
+        canvasObjects: [{
+          ...state.canvasObjects[0],
+          end: {
+            x: action.value.width,
+            y: action.value.height
+          }
+        }],
+        canvasVersions: [[{
+          ...state.canvasVersions[0][0],
+          end: {
+            x: action.value.width,
+            y: action.value.height
+          }
+        }]]
+      }
+    
     case 'set tool':
       return {
         ...state,

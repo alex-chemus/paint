@@ -5,7 +5,7 @@ import drawTriangle from './drawFunctions/drawTriangle.js'
 import drawImage from './drawFunctions/drawImage.js'
 import drawText from './drawFunctions/drawText.js'
 
-const render = (object, size, beforeDraw=()=>{}) => {
+const render = (object, size, containerSize, beforeDraw=()=>{}) => {
   object.canvas.dataset.z = object.z
   const ctx = object.canvas.getContext('2d')
   ctx.clearRect(0, 0, size.width, size.height)
@@ -13,22 +13,22 @@ const render = (object, size, beforeDraw=()=>{}) => {
   
   switch (object?.type) {
     case 'rectangle':
-      drawRect(ctx, object, size)
+      drawRect(ctx, object, size, containerSize)
       break
     case 'line':
-      drawLine(ctx, object, size)
+      drawLine(ctx, object, size, containerSize)
       break
     case 'circle':
-      drawCircle(ctx, object, size)
+      drawCircle(ctx, object, size, containerSize)
       break
     case 'triangle':
-      drawTriangle(ctx, object, size)
+      drawTriangle(ctx, object, size, containerSize)
       break
     case 'image':
-      drawImage(ctx, object, size)
+      drawImage(ctx, object, size, containerSize)
       break
     case 'text':
-      drawText(ctx, object, size)
+      drawText(ctx, object, size, containerSize)
       break
     default:
       break

@@ -11,12 +11,18 @@ const initState = {
       },
       id: 0,
       z: 1,
-      fill: 'white',
-      opacity: null,
-      rotate: null,
-      stroke: null,
+      fill: '#ffffff',
+      opacity: 0,
+      rotate: 0,
+      stroke: {
+        color: '#ffffff',
+        width: 0,
+      },
       scale: {x: 1, y: 1},
       canvas: null,
+      shadow: {
+        x: 0, y: 0, blur: 0, color: '#ffffff'
+      }
     },
   ],
   // rectangle, triangle, circle, shape, text, image, move (default for resizing)
@@ -33,17 +39,27 @@ const initState = {
       },
       id: 0,
       z: 1,
-      fill: 'white',
-      rotate: null,
-      stroke: null,
+      fill: '#ffffff',
+      rotate: 0,
+      stroke: {
+        color: '#ffffff',
+        width: 0,
+      },
       scale: {x: 1, y: 1},
-      opacity: null,
+      opacity: 0,
+      shadow: {
+        x: 0, y: 0, blur: 0, color: '#ffffff'
+      },
       canvas: null,
     },
   ]],
   interimVersions: [],
   currentVersion: null,
-  currentLayer: 0 // id of the layer
+  currentLayer: 0, // id of the layer
+  containerSize: {
+    width: 0,
+    height: 0
+  },
 }
 
 export default initState 

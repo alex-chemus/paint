@@ -15,8 +15,10 @@ const CanvasContainer = () => {
   // state
   const [startPosition, setStartPosition] = useState(null)
   const [endPosition, setEndPosition] = useState(null)
-  const [containerWidth, setContainerWidth] = useState(document.body.clientWidth - 266 - 85)
-  const [containerHeight, setContainerHeight] = useState(document.body.clientHeight - 100)
+  /* эти значения надо загнать в стейт, потом передавать в render, чтобы 
+  расчитывать все значения относительно размера канваса */
+  //const [containerWidth, setContainerWidth] = useState(document.body.clientWidth - 266 - 85)
+  //const [containerHeight, setContainerHeight] = useState(document.body.clientHeight - 100)
   const [clicked, setClicked] = useState(false)
   const [currentObject, setCurrentObject] = useState()
   //const [textRef, setTextRef] = useState()
@@ -28,6 +30,8 @@ const CanvasContainer = () => {
   const canvasVersions = useSelector(state => state.canvasVersions)
   const interimVersions = useSelector(state => state.interimVersions)
   const currentLayer = useSelector(state => state.currentLayer)
+  const containerWidth = useSelector(state => state.containerSize.width)
+  const containerHeight = useSelector(state => state.containerSize.height)
   const dispatch = useDispatch()
 
 
@@ -41,18 +45,21 @@ const CanvasContainer = () => {
   useEffect(() => {
     if (!containerRef?.current) return
     if (!canvasObjects[0]?.canvas) {
+      if (canvasObjects[0].end.x === 1) return
       dispatch({
         type: 'add init canvas',
         value: createCanvas(containerRef)
       })
       canvasObjects.forEach(item => {
-        render(item, {
-          width: containerWidth,
-          height: containerHeight
-        })
+        const size = { // container size
+          width: containerWidth || document.body.clientWidth - 266 - 85,
+          height: containerHeight || document.body.clientWidth - 100
+        }
+        render(item, size, size)
       })
       return
     }
+    if (canvasObjects.length <= 1 && canvasVersions.length <= 1) return
     /*const children = containerRef.current.children
     for (let i=0; i<children.length; i++) {
       children[i].remove()
@@ -84,20 +91,22 @@ const CanvasContainer = () => {
         const prevElem = containerRef.current.querySelector(`[data-z="${item.z-1}"]`)
         prevElem.after(item.canvas)
       }
-      render(item, {
-        width: containerWidth,
-        height: containerHeight
-      })
+      const size = { // container size
+        width: containerWidth || document.body.clientWidth - 266 - 85,
+        height: containerHeight || document.body.clientWidth - 266 - 85
+      }
+      render(item, size, size)
     })
   }, [canvasObjects])
 
   // render currentObject on change
   useEffect(() => {
     if (!currentObject || !containerRef) return
-    render(currentObject, {
+    const size = {
       width: containerWidth,
       height: containerHeight
-    })
+    }
+    render(currentObject, size, size)
   }, [currentObject])
 
   // insert text for image drag'n'drop and set/reset drag'n'drop handlers
@@ -156,6 +165,17 @@ const CanvasContainer = () => {
     )
     return removeHanlders
   }, [currentTool])
+
+  useEffect(() => {
+    if (!containerRef.current) return
+    dispatch({
+      type: 'set size',
+      value: {
+        width: document.body.clientWidth - 266 - 85,
+        height: document.body.clientHeight - 100
+      }
+    })
+  }, [containerRef.current])
 
 
   // utility methods
@@ -290,12 +310,16 @@ const CanvasContainer = () => {
 
   function setCoords(event, func=()=>{}, callback=()=>{}) {
     // координаты в пикселях
-    const coordX = event.clientX-85
-    const coordY = event.clientY-50
+    //const coordX = event.clientX-85
+    //const coordY = event.clientY-50
     // координаты относительно холста
+    //const coords = {
+    //  x: coordX / containerWidth,
+    //  y: coordY / containerHeight
+    //}
     const coords = {
-      x: coordX / containerWidth,
-      y: coordY / containerHeight
+      x: event.clientX-85,
+      y: event.clientY-50
     }
 
     func(coords)
@@ -397,8 +421,10 @@ const CanvasContainer = () => {
           x: coords.x - startPosition.x,
           y: coords.y - startPosition.y
         }
-        layer.canvas.style.top = `${delta.y * containerHeight}px`
-        layer.canvas.style.left = `${delta.x * containerWidth}px`
+        //layer.canvas.style.top = `${delta.y * containerHeight}px`
+        //layer.canvas.style.left = `${delta.x * containerWidth}px`
+        layer.canvas.style.top = `${delta.y}px`
+        layer.canvas.style.left = `${delta.x}px`
       })
     }
     setCoords(event, setEndPosition, draw)

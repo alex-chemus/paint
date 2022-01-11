@@ -1,7 +1,12 @@
-import { setAbsCoords } from './setCoords.js'
+import { setAbsCoords, setStroke, setShadow } from './utilityFunctions.js'
 
-const drawRect = (ctx, object, size) => {
-  const [start, end] = setAbsCoords(object, size)
+const drawRect = (ctx, object, size, containerSize) => {
+  /*
+    recalculate: start, end, stroke.width, shadow.x, shadow.y, shadow.blur
+  */
+  const [start, end] = setAbsCoords(object, size, containerSize)
+  const stroke = setStroke(object, size, containerSize)
+  const shadow = setShadow(object, size, containerSize)
 
   ctx.save()
   const translate = {
@@ -15,11 +20,11 @@ const drawRect = (ctx, object, size) => {
   }
   if (object.opacity) ctx.globalAlpha = 1 - object.opacity/100
 
-  if (object.shadow) {
-    ctx.shadowOffsetX = object.shadow.x
-    ctx.shadowOffsetY = object.shadow.y
-    ctx.shadowBlur = object.shadow.blur
-    ctx.shadowColor = object.shadow.color
+  if (shadow) {
+    ctx.shadowOffsetX = shadow.x
+    ctx.shadowOffsetY = shadow.y
+    ctx.shadowBlur = shadow.blur
+    ctx.shadowColor = shadow.color
   }
 
   ctx.scale(object.scale.x, object.scale.y)
@@ -31,18 +36,18 @@ const drawRect = (ctx, object, size) => {
     Math.abs(end.y - start.y)
   )
   
-  if (object.shadow) {
+  if (shadow) {
     ctx.shadowOffsetX = null
     ctx.shadowOffsetY = null
     ctx.shadowBlur = null
     ctx.shadowColor = null
   }
 
-  if (object.stroke) {
-    ctx.strokeStyle = object.stroke.color
-    ctx.lineWidth = object.stroke.width
+  if (stroke) {
+    ctx.strokeStyle = stroke.color
+    ctx.lineWidth = stroke.width
     ctx.lineJoin = 'round'
-    if (object.stroke.width>0) ctx.strokeRect(
+    if (stroke.width>0) ctx.strokeRect(
       -Math.abs(start.x - end.x) / 2,
       -Math.abs(start.y - end.y) / 2,
       Math.abs(end.x - start.x),

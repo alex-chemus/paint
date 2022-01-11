@@ -1,4 +1,4 @@
-import { setAbsXY } from "./setCoords.js"
+import { setAbsXY } from "./utilityFunctions.js"
 
 const drawText = (ctx, object, size) => {
   const [x, y] = setAbsXY(object, size)

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import classes from './Rightbar.module.scss'
 import { useSelector, useDispatch } from 'react-redux'
 import render from '../../templates/render'
@@ -18,6 +18,7 @@ const Rightbar = () => {
   // store
   const canvasObjects = useSelector(state => state.canvasObjects)
   const currentLayer = useSelector(state => state.currentLayer)
+  const containerSize = useSelector(state => state.containerSize)
   const dispatch = useDispatch()
 
 
@@ -96,7 +97,7 @@ const Rightbar = () => {
         canvas: elem
       }
       // рендерит мини-канвас, при этом делая заливку фона
-      render(object, {width, height}, () => {
+      render(object, {width, height}, containerSize, () => {
         const ctx = object.canvas.getContext('2d')
         ctx.fillStyle = 'white'
         ctx.fillRect(0, 0, width, height)

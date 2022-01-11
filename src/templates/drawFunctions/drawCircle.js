@@ -1,4 +1,4 @@
-import { setAbsCoords } from './setCoords.js'
+import { setAbsCoords } from './utilityFunctions.js'
 
 const drawCircle = (ctx, object, size) => {
   const [start, end] = setAbsCoords(object, size)
