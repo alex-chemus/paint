@@ -2,7 +2,7 @@ const moveObject = (state, action) => {
   function setNewObject() {
     const object = state.canvasObjects.find(item => item.id === state.currentLayer)
     let newObj = {}
-    if (object.x && object.y) {
+    if ( (object.x && object.y) || object.type === 'image' ) {
       newObj = {
         ...object,
         x: object.x + action.value.x,

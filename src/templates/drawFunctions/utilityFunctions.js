@@ -57,3 +57,13 @@ export const setFont = (object, size, containerSize) => {
   }
   return font
 }
+
+export const getWidthRatio = (size, containerSize) => {
+  const ratio = getRatio(size, containerSize)
+  return ratio.width
+}
+
+export const getHeightRatio = (size, containerSize) => {
+  const ratio = getRatio(size, containerSize)
+  return ratio.height
+}

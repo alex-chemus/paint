@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import classes from './Rightbar.module.scss'
 import { useSelector, useDispatch } from 'react-redux'
 import render from '../../templates/render'
 import Params from './Params/Params'
+import MiniCanvas from './Layer/MiniCanvas'
+import Layer from './Layer/Layer'
 
 const Rightbar = () => {
   // state
   const [objects, setObjects] = useState([])
-  const [containerWidth, setContainerWidth] = useState(document.body.clientWidth - 266 - 85)
-  const [containerHeight, setContainerHeight] = useState(document.body.clientHeight - 100)
   const [startY, setStartY] = useState()
   const [startTop, setStartTop] = useState()
   const [endY, setEndY] = useState()
@@ -18,7 +18,6 @@ const Rightbar = () => {
   // store
   const canvasObjects = useSelector(state => state.canvasObjects)
   const currentLayer = useSelector(state => state.currentLayer)
-  const containerSize = useSelector(state => state.containerSize)
   const dispatch = useDispatch()
 
 
@@ -33,27 +32,6 @@ const Rightbar = () => {
     setObjects(array)
   }, [canvasObjects])
 
-
-  // utility methods
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
-  function calcMiniCanvas() {
-    const maxWidth = 77
-    const maxHeight = 40
-
-    if (maxWidth*containerWidth < maxHeight*containerHeight) {
-      const width = maxWidth
-      const height = (maxWidth * containerHeight) / containerWidth
-      return [width, height]
-    } else {
-      const height = maxHeight
-      const width = (maxHeight * containerWidth) / containerHeight
-      return [width, height]
-    }
-  }
-
   // меняет значения z для объектов по 2 индексам (prevI, nextI)
   // а также сортирует массив по новым значениям z
   function swapZ(prevI, nextI) {
@@ -67,44 +45,6 @@ const Rightbar = () => {
       type: 'swap objects',
       value: [canvasObjects[0], ...list]
     })
-  }
-
-
-  // methods
-  // выбирает текущий слой при клике
-  function select(id) {
-    dispatch({
-      type: 'set current layer',
-      value: id
-    })
-  }
-
-  // отрисовывает канвас для каждого слоя, принимает ширину и высоту
-  // канваса для слоя и сам объект
-  function drawCanvas(width, height, item) {
-    const canvas = (
-      <canvas width={width} height={height} data-id={item.id}></canvas>
-    )
-    
-    // асинхронно выполнить код, кода канвас вставится в dom
-    setTimeout(() => {
-      // элемент канваса, связян с js-кодом таким костылём
-      const elem = document.querySelector(`[data-id="${item.id}"]`)
-      if (!elem) return
-      // создаёт отдельный объект, но при этом с ссылкой на мини-канвас
-      const object = {
-        ...item,
-        canvas: elem
-      }
-      // рендерит мини-канвас, при этом делая заливку фона
-      render(object, {width, height}, containerSize, () => {
-        const ctx = object.canvas.getContext('2d')
-        ctx.fillStyle = 'white'
-        ctx.fillRect(0, 0, width, height)
-      }) 
-    });
-
-    return canvas
   }
 
   /*
@@ -124,9 +64,10 @@ const Rightbar = () => {
       отменяет стили и классы, заданные в dragLayer
   */
 
-  function dragLayer(object, i, event) {
+  function dragLayer(object, i, event, dragClass) {
     const li = event.currentTarget
-    li.classList.add(classes.draged)
+    //li.classList.add(classes.draged)
+    li.classList.add(dragClass)
     const offset = (objects.length-1-i)*50
     setStartY(event.clientY - offset - 50 - 79)
     setStartTop(offset)
@@ -183,8 +124,9 @@ const Rightbar = () => {
     setEndY(y)
   }
 
-  function dropLayer(object, i, event) {
-    event.currentTarget.classList.remove(classes.draged)
+  function dropLayer(object, i, event, dragClass) {
+    //event.currentTarget.classList.remove(classes.draged)
+    event.currentTarget.classList.remove(dragClass)
     setClicked(false)
     setObjects(objects.map((item, j) => {
       if (i !== j) return item
@@ -193,44 +135,6 @@ const Rightbar = () => {
         style: { top: null }
       }
     }))
-  }
-
-  function removeObject(event) {
-    const btn = event.currentTarget
-    const id = +btn.dataset.id
-    dispatch({
-      type: 'remove object',
-      value: id
-    })
-  }
-
-  function renderItem(object, i) {
-    const [width, height] = calcMiniCanvas()
-    const cls = [classes.layer]
-    object?.class && cls.push(object.class)
-    if (object.id === currentLayer) cls.push(classes.selected)
-    return (
-      <li
-        className={cls.join(' ')}
-        key={i}
-        onClick={e => {
-          if (e.target.tagName === 'BUTTON') return
-          select(object.id)
-        }}
-        onMouseDown={e => dragLayer(object, i, e)}
-        onMouseUp={e => dropLayer(object, i, e)}
-        onMouseLeave={e => dropLayer(object, i, e)}
-        onMouseMove={e => moveLayer(object, i, e)}
-        style={object?.style}
-      >
-        { drawCanvas(width, height, object) }
-        { capitalizeFirstLetter(object.type) }
-        <button
-          data-id={object.id}
-          onClick={removeObject}
-        ></button>
-      </li>
-    )
   }
 
   function updateObjects(object={}) {
@@ -246,10 +150,6 @@ const Rightbar = () => {
     }
   }
 
-  useEffect(() => {
-    //console.log('current object:', objects.filter(item => item.id === currentLayer))
-  }, [objects])
-
   return (
     <aside
       className={classes.Rightbar} 
@@ -257,7 +157,15 @@ const Rightbar = () => {
       <section className={classes.layers}>
         <h2>Layers</h2>
         <ul> {
-          objects.map(renderItem)
+          objects.map((item, i) => (
+            <Layer
+              object={item}
+              key={i}
+              i={i}
+              dragLayer={dragLayer}
+              dropLayer={dropLayer}
+              moveLayer={moveLayer}/>
+          ))
         } </ul>
       </section>
 
@@ -266,7 +174,6 @@ const Rightbar = () => {
       <section className={classes.params}>
         <h2>Parameters</h2>
         { objects.filter(item => item.id === currentLayer).map((item, i) => {
-          //console.log('current object in return:', item)
           return (<Params object={item} updateObjects={updateObjects} key={i} />)
         })}
       </section>

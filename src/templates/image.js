@@ -2,20 +2,16 @@ const sheet = {
   type: 'image',
   x: 0, 
   y: 0,
-  width: 400,
-  height: 400,
   src: '',
   id: 0,
   z: 0,
   scale: {x: 1, y: 1},
-  opacity: null,
-  rotate: 0,
   stroke: {
     width: 0,
-    color: '#000'
+    color: '#000000'
   },
   shadow: {
-    x: 0, y: 0, blur: 0, color: '#000'
+    x: 0, y: 0, blur: 0, color: '#000000'
   },
   canvas: null,
 }
@@ -59,7 +55,7 @@ const setHanlders = (container, currentTool, callback=()=>{}, createCanvas, topO
           src: url,
           canvas,
           id: Date.now(),
-          z: topObject.z + 1
+          z: topObject.z + 1,
         }
       }))
     }

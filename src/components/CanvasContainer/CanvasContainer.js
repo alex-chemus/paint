@@ -120,7 +120,8 @@ const CanvasContainer = () => {
       textRef.current = createCanvas(containerRef)
       setCurrentObject(setText({
         coords: {
-          x: 0.5, y: 0.5
+          x: containerWidth / 2, 
+          y: containerHeight / 2
         }, 
         size: {
           width: containerWidth,
