@@ -22,7 +22,7 @@ export const start = (param, {object, setObject, updateObjects}) => {
 
   return (
     <li>
-      <p>Start</p>
+      <p>{object.type==='circle' ? 'Center' : 'Start'}</p>
       <input
         type='text'
         value={`${object[param].x}`.slice(0, 7)}
