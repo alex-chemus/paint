@@ -1,30 +1,17 @@
 import initState from "./initState"
+import changeParam from "./reducer/changeParam"
+import moveObject from "./reducer/moveObject"
+import removeObject from "./reducer/removeObject"
+import swapObjects from "./reducer/swapObjects"
+import undo from "./reducer/undo"
+import addCanvasObject from "./reducer/addCanvasObject"
+import addInitCanvas from "./reducer/addInitCanvas"
+import setSize from "./reducer/setSize"
 
 const reducer = (state=initState, action) => {
   switch (action.type) {
     case 'set size':
-      console.log('from reducer')
-      return {
-        ...state,
-        containerSize: {
-          width: action.value.width,
-          height: action.value.height
-        },
-        canvasObjects: [{
-          ...state.canvasObjects[0],
-          end: {
-            x: action.value.width,
-            y: action.value.height
-          }
-        }],
-        canvasVersions: [[{
-          ...state.canvasVersions[0][0],
-          end: {
-            x: action.value.width,
-            y: action.value.height
-          }
-        }]]
-      }
+      return setSize(state, action)
     
     case 'set tool':
       return {
@@ -33,39 +20,10 @@ const reducer = (state=initState, action) => {
       }
 
     case 'add init canvas':
-      const canvasObjects = state.canvasObjects
-      canvasObjects[0].canvas = action.value
-      const canvasVersions = state.canvasVersions
-      canvasVersions[0][0].canvas = action.value
-
-      return {
-        ...state,
-        canvasObjects,
-        canvasVersions
-      }
+      return addInitCanvas(state, action)
 
     case 'add canvas object':
-      if (state.currentVersion !== null) {
-        return {
-          ...state,
-          canvasVersions: [
-            ...state.canvasVersions, 
-            ...state.interimVersions, 
-            [...state.canvasObjects, action.value]
-          ],
-          interimVersions: [],
-          currentVersion: null,
-          canvasObjects: [...state.canvasObjects, action.value],
-          currentLayer: action.value.id
-        }
-      }
-      const pushObjects = [...state.canvasObjects, action.value]
-      return {
-        ...state,
-        canvasVersions: [...state.canvasVersions, pushObjects],
-        canvasObjects: pushObjects,
-        currentLayer: action.value.id
-      }
+      return addCanvasObject(state, action)
 
     case 'clear':
       return {
@@ -75,15 +33,7 @@ const reducer = (state=initState, action) => {
       }
 
     case 'undo':
-      const currentVersion = Math.max(state.currentVersion!==null ? state.currentVersion-1 : state.canvasVersions.length-2, 0)
-      if (state.currentVersion === currentVersion) return { ...state }
-      const interimVersions = [...state.interimVersions, state.canvasVersions[currentVersion]]
-      return {
-        ...state,
-        currentVersion,
-        interimVersions,
-        canvasObjects: interimVersions[interimVersions.length-1]
-      }
+      return undo(state, action)
 
     case 'set current layer':
       return {
@@ -92,133 +42,16 @@ const reducer = (state=initState, action) => {
       }
 
     case 'swap objects':
-      /*function swapObjects(prevI, nextI) {
-        const list = []
-        state.canvasObjects.forEach(obj => {
-          list.push({...obj})
-        })
-        const amogus = list[prevI].z
-        list[prevI].z = list[nextI].z
-        list[nextI].z = amogus
-        list.sort((a, b) => a.z > b.z ? 1 : -1)
-        return list
-      }*/
-      // if there's undo chain
-      if (state.currentVersion !== null) {
-        return {
-          ...state,
-          canvasVersions: [
-            ...state.canvasVersions,
-            ...state.interimVersions,
-            //swapObjects(action.prevI+1, action.nextI+1)
-            action.value
-          ],
-          interimVersions: [],
-          currentVersion: null,
-          canvasObjects: action.value //swapObjects(action.prevI+1, action.nextI+1),
-        }
-      }
-      const objects = action.value //swapObjects(action.prevI+1, action.nextI+1)
-      return {
-        ...state,
-        canvasObjects: objects,
-        canvasVersions: [...state.canvasVersions, objects],
-      }
+      return swapObjects(state, action)
 
     case 'remove object': 
-      const newCanvasObjects = state.canvasObjects.filter(item => {
-        return item.id !== action.value
-      })
-      const getTopLayerId = () => {
-        const len = newCanvasObjects.length
-        return newCanvasObjects[len-1].id
-      }
-      const currentLayer = state.currentLayer===action.value ? getTopLayerId() : state.currentLayer
-      if (state.currentVersion !== null) {
-        return {
-          ...state,
-          canvasVersions: [
-            ...state.canvasVersions,
-            ...state.interimVersions,
-            newCanvasObjects
-          ],
-          interimVersions: [],
-          currentVersion: null,
-          canvasObjects: newCanvasObjects,
-          currentLayer,
-        }
-      }
-      return {
-        ...state,
-        canvasVersions: [...state.canvasVersions, newCanvasObjects],
-        canvasObjects: newCanvasObjects,
-        currentLayer,
-      }
+      return removeObject(state, action)
 
     case 'move object':
-      function setNewObject() {
-        const object = state.canvasObjects.find(item => item.id === state.currentLayer)
-        let newObj = {}
-        if (object.x && object.y) {
-          newObj = {
-            ...object,
-            x: object.x + action.value.x,
-            y: object.y + action.value.y
-          }
-        } else { // start: {x, y}, end: {x, y}
-          newObj = {
-            ...object,
-            start: {
-              x: object.start.x + action.value.x,
-              y: object.start.y + action.value.y
-            },
-            end: {
-              x: object.end.x + action.value.x,
-              y: object.end.y + action.value.y
-            }
-          }
-        }
-        return newObj
-      }
-      const oldObjects = state.canvasObjects.filter(item => item.id !== state.currentLayer)
-      if (state.currentVersion !== null) {
-        return {
-          ...state,
-          canvasVersions: [
-            ...state.canvasVersions,
-            ...state.interimVersions,
-            [...state.canvasObjects, setNewObject()],
-          ],
-          interimVersions: [],
-          currentVersion: null,
-          canvasObjects: [...oldObjects, setNewObject()],
-        }
-      }
-      return {
-        ...state,
-        canvasVersions: [...state.canvasVersions, [...oldObjects, setNewObject()]],
-        canvasObjects: [...oldObjects, setNewObject()] 
-      }
+      return moveObject(state, action)
 
     case 'change params':
-      if (state.currentVersion !== null) {
-        return {
-          ...state,
-          canvasVersions: [
-            ...state.canvasVersions,
-            ...state.interimVersions,
-            action.value
-          ],
-          interimVersions: [],
-          currentVersion: null,
-          canvasObjects: action.value
-        }
-      }
-      return {
-        ...state,
-        canvasVersions: [...state.canvasVersions, action.value],
-        canvasObjects: action.value
-      }
+      return changeParam(state, action)
 
     default: 
       return state
