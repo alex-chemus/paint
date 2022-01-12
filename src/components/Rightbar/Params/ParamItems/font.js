@@ -24,6 +24,7 @@ export const font = (param, {object, setObject, updateObjects}) => {
         list[param][key] = +list[param][key]
       } else if (key === 'height') {
         list[param][key] = +list[param][key]
+        if (isNaN(list[param][key])) list[param][key] = 1
       }
     })
     updateObjects(list)

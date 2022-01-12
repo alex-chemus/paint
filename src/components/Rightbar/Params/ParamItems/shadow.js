@@ -19,6 +19,7 @@ export const shadow = (param, {object, setObject, updateObjects}) => {
     Object.keys(list[param]).forEach(key => {
       if (key === 'color') return
       list[param][key] = +list[param][key]
+      if (isNaN(list[param][key])) list[param][key] = 0
     })
     updateObjects(list)
   }

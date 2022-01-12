@@ -14,7 +14,7 @@ export const stroke = (param, {object, setObject, updateObjects}) => {
 
   const onBlur = e => {
     const list = object
-    list[param].width = +list[param].width
+    list[param].width = isNaN(+list[param].width) ? 0 : +list[param].width
     updateObjects(list)
   }
 

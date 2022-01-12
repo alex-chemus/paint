@@ -8,7 +8,7 @@ export const x = (param, {object, setObject, updateObjects}) => {
 
   const onBlur = () => {
     const list = object
-    list[param] = +list[param]
+    list[param] = isNaN(+list[param]) ? 100 : +list[param]
     updateObjects(list)
   }
 

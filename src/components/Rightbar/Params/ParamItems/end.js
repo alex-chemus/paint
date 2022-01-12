@@ -15,7 +15,7 @@ export const end = (param, {object, setObject, updateObjects}) => {
     const list = object
     Object.keys(list[param]).forEach(coord => {
       object[param][coord] = +object[param][coord]
-      if (isNaN(object[param][coord])) object[param][coord] = 0.5
+      if (isNaN(object[param][coord])) object[param][coord] = 500
     })
     updateObjects(object)
   }

@@ -9,6 +9,7 @@ export const height = (param, {object, setObject, updateObjects}) => {
   const onBlur = () => {
     const list = object
     list[param] = +list[param]
+    if (isNaN(list[param])) list[param] = 100
     updateObjects(list)
   }
   
