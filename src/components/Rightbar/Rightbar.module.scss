@@ -1,0 +1,64 @@
+@import '../../main.scss';
+
+.Rightbar {
+  background: $dark;
+  position: absolute;
+  right: 0;
+  box-sizing: border-box;
+  border-radius: 20px 0 0 20px;
+  width: 226px;
+  height: calc(100vh - 100px);
+}
+
+section {
+  text-align: center;
+  height: calc(50% - 2.5px);
+  box-sizing: border-box;
+  padding-top: 20px;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+
+  &-track {
+    max-height: 100%;
+  }
+
+  &-thumb {
+    border-radius: 2px;
+    background-color: rgb(148, 148, 148);
+  }
+}
+
+.params {
+  overflow-y: scroll;
+}
+
+.layers {  
+  overflow-y: clip;
+
+  ul {
+    margin: 0;
+    height: calc(100% - 59px);
+    @include flex(flex-end, stretch);
+    flex-direction: column-reverse;
+    overflow-y: scroll;
+    list-style: none;
+    padding: 0;
+    position: relative;
+    //min-height: 100px;
+  }
+}
+
+.line {
+  height: 5px;
+  background: $bg;
+}
+
+h2 {
+  @include textParams(white);
+  font-family: 'Roboto';
+  font-weight: normal;
+  margin: 0;
+  margin-bottom: 30px;
+}

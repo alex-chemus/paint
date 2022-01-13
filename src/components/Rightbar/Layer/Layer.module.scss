@@ -1,0 +1,60 @@
+@import '../../../main.scss';
+
+
+.Layer {
+  padding: 5px 10px 5px 20px;
+  @include textParams(#ccc);
+  font-size: 12px;
+  font-family: 'Roboto';
+  height: 50px;
+  box-sizing: border-box;
+  @include flex(flex-start, center);
+  cursor: pointer;
+  
+  &.draged {
+    position: relative;
+    z-index: 2;
+  }
+
+  &.selected {
+    background: $bg;
+  }
+
+  canvas {
+    margin-right: 10px;
+  }
+
+  button {
+    @include resetButtons();
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    margin-left: auto;
+    color: #ccc;
+    transition: color .1s;
+    position: relative;
+
+    &:hover {
+      color: white;
+    }
+
+    &::before, &::after {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: currentColor;
+      position: absolute;
+      top: 8.5px;
+      transform-origin: center;
+    }
+
+    &::before {
+      transform: rotate(-45deg);
+    }
+
+    &::after {
+      transform: rotate(45deg);
+    }
+  }
+}

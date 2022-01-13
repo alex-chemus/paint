@@ -1,0 +1,18 @@
+@import '../../main.scss';
+
+.Warning {
+  padding: min(70px, 10vw);
+  background: $dark;
+  border-radius: 20px;
+  display: none;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, .15);
+
+  p {
+    @include textParams(white);
+    font-size: min(18px, 7vw);
+  }
+
+  @media (max-width: 850px), (pointer: none), (pointer: coarse) {
+    display: block;
+  }
+}

@@ -9,17 +9,7 @@
   @include flex(flex-start, stretch);
 
   button {
-    @include panelButtons()
+    @include panelButtons();
+    @include p2();
   }
-}
-
-.save,
-.clear {
-  @include p2()
-}
-
-.prev {
-}
-
-.next {
 }
