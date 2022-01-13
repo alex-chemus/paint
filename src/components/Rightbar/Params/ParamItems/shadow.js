@@ -7,7 +7,6 @@ export const shadow = (param, {object, setObject, updateObjects}) => {
       blur: type==='Blur' ? e.target.value : object[param].blur,
       color: type==='Color' ? e.target.value : object[param].color,
     }
-    console.log('new object:', newObject)
     setObject({
       ...object,
       [param]: newObject
