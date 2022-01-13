@@ -31,6 +31,7 @@ const Leftbar = () => {
       <button 
         className={`${classes.move} ${tool==='move' ? classes.selected : ''}`}
         onClick={() => changeTool('move')}
+        title='M - ove'
       >
         <svg width="23" height="26" viewBox="0 0 23 26" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="11.4718" y1="0.641021" x2="21.0872" y2="25.641" stroke="currentColor" stroke-width="2"/>
@@ -43,6 +44,7 @@ const Leftbar = () => {
       <button 
         className={`${classes.line} ${tool==='line' ? classes.selected : ''}`}
         onClick={() => changeTool('line')}
+        title='L - line'
       >
         <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="0.707107" y1="1.29289" x2="25.7071" y2="26.2929" stroke="currentColor" stroke-width="2"/>
@@ -52,6 +54,7 @@ const Leftbar = () => {
       <button 
         className={`${classes.circle} ${tool==='circle' ? classes.selected : ''}`}
         onClick={() => changeTool('circle')}
+        title='O - circle'
       >
         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12.5" cy="12.5" r="11.5" stroke="currentColor" stroke-width="2"/>
@@ -61,6 +64,7 @@ const Leftbar = () => {
       <button 
         className={`${classes.triangle} ${tool==='triangle' ? classes.selected : ''}`}
         onClick={() => changeTool('triangle')}
+        title='T - triangle'
       >
         <svg width="23" height="19" viewBox="0 0 23 19" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M2.40673 17.75L11.5 2L20.5933 17.75H2.40673Z" stroke="currentColor" stroke-width="2"/>
@@ -70,6 +74,7 @@ const Leftbar = () => {
       <button 
         className={`${classes.rectangle} ${tool==='rectangle' ? classes.selected : ''}`}
         onClick={() => changeTool('rectangle')}
+        title='R - rectangle'
       >
         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="1" y="1" width="23" height="23" stroke="currentColor" stroke-width="2"/>
@@ -79,6 +84,7 @@ const Leftbar = () => {
       <button 
         className={`${classes.text} ${tool==='text' ? classes.selected : ''}`}
         onClick={() => changeTool('text')}
+        title='F - text'
       >
         <svg width="13" height="16" viewBox="0 0 13 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12.5586 2.05664H7.53125V16H5.47949V2.05664H0.462891V0.359375H12.5586V2.05664Z" fill="currentColor"/>
@@ -88,6 +94,7 @@ const Leftbar = () => {
       <button 
         className={`${classes.image} ${tool==='image' ? classes.selected : ''}`}
         onClick={() => changeTool('image')}
+        title='I - image'
       >
         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="18" cy="7" r="3" fill="currentColor"/>

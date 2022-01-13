@@ -51,14 +51,15 @@ function App() {
   // изменении стейта/стора
   const save = useCallback((canvasObjects, containerSize) => {
     const objects = [...canvasObjects]
+    const size = [...containerSize]
     const canvas = document.createElement('canvas')
-    canvas.width = containerSize.width
-    canvas.height = containerSize.height
+    canvas.width = size.width
+    canvas.height = size.height
 
     objects
       .sort((a, b) => a.z > b.z)
       .map(item => { return { ...item, canvas } })
-      .forEach(item => render(item, containerSize, containerSize, ()=>{}, false))
+      .forEach(item => render(item, size, size, ()=>{}, false))
 
     download(canvas, 'image.png')
   }, [])
