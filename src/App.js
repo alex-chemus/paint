@@ -6,6 +6,7 @@ import CanvasContainer from './components/CanvasContainer/CanvasContainer'
 import Leftbar from './components/Leftbar/Leftbar'
 import Rightbar from './components/Rightbar/Rightbar'
 import Topbar from './components/Topbar/Topbar'
+import Warning from './components/Warning/Warning'
 import render from './templates/render'
 
 function App() {
@@ -169,6 +170,7 @@ function App() {
       <Rightbar
         reference={rightbarRef}/>
       <CanvasContainer/>
+      <Warning/>
     </>
   );
 }

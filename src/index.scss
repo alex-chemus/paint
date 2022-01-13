@@ -36,3 +36,14 @@ code {
 button {
   cursor: pointer;
 }
+
+@media (max-width: 850px), (pointer: coarse), (pointer: none) {
+  #root *:not(#warning, #warning *) {
+    display: none;
+  }
+
+  body {
+    padding: 0 15px;
+    @include flex(center, center)
+  }
+}
