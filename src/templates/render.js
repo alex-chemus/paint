@@ -5,10 +5,10 @@ import drawTriangle from './drawFunctions/drawTriangle.js'
 import drawImage from './drawFunctions/drawImage.js'
 import drawText from './drawFunctions/drawText.js'
 
-const render = (object, size, containerSize, beforeDraw=()=>{}) => {
+const render = (object, size, containerSize, beforeDraw=()=>{}, shouldClear=true) => {
   object.canvas.dataset.z = object.z
   const ctx = object.canvas.getContext('2d')
-  ctx.clearRect(0, 0, size.width, size.height)
+  shouldClear && ctx.clearRect(0, 0, size.width, size.height)
   beforeDraw()
   
   switch (object?.type) {

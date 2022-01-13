@@ -1,27 +1,66 @@
 import React, { useEffect, useRef, useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import useThrottle from './hooks/useThrottle'
 // components
 import CanvasContainer from './components/CanvasContainer/CanvasContainer'
 import Leftbar from './components/Leftbar/Leftbar'
 import Rightbar from './components/Rightbar/Rightbar'
 import Topbar from './components/Topbar/Topbar'
+import render from './templates/render'
 
 function App() {
   /*
     todos:
     - сделать валидацию (достаточно широкий экран, мышь) и элемент-ворнинг
-    - добавить сохранение документа
   */
 
   const dispatch = useDispatch()
+  const containerSize = useSelector(state => state.containerSize)
+  const canvasObjects = useSelector(state => state.canvasObjects)
 
   const mouseTarget = useRef(null)
   const rightbarRef = useRef(null)
   const ctrl = useRef(false)
 
-  const save = useCallback(() => {
+  const download = useCallback((canvas, filename) => {
+    /// create an "off-screen" anchor tag
+    var lnk = document.createElement('a'), e;
+  
+    /// the key here is to set the download attribute of the a tag
+    lnk.download = filename;
+  
+    /// convert canvas content to data-uri for link. When download
+    /// attribute is set the content pointed to by link will be
+    /// pushed as "download" in HTML5 capable browsers
+    lnk.href = canvas.toDataURL("image/png;base64");
+  
+    /// create a "fake" click-event to trigger the download
+    if (document.createEvent) {
+      e = document.createEvent("MouseEvents");
+      e.initMouseEvent("click", true, true, window,
+                       0, 0, 0, 0, 0, false, false, false,
+                       false, 0, null);
+  
+      lnk.dispatchEvent(e);
+    } else if (lnk.fireEvent) {
+      lnk.fireEvent("onclick");
+    }
+  }, [])
 
+  // из-за того, что у юз колбека нет зависимостей, он не обновляется при 
+  // изменении стейта/стора
+  const save = useCallback((canvasObjects, containerSize) => {
+    const objects = [...canvasObjects]
+    const canvas = document.createElement('canvas')
+    canvas.width = containerSize.width
+    canvas.height = containerSize.height
+
+    objects
+      .sort((a, b) => a.z > b.z)
+      .map(item => { return { ...item, canvas } })
+      .forEach(item => render(item, containerSize, containerSize, ()=>{}, false))
+
+    download(canvas, 'image.png')
   }, [])
 
   const onKeyUp = useCallback(e => {
@@ -91,7 +130,7 @@ function App() {
         break
 
       case 'KeyS':
-        // +  ctrl - save
+        if (ctrl.current) save(canvasObjects, containerSize)
         break
 
       default:
@@ -105,8 +144,9 @@ function App() {
     }, []), 100)
 
   const onKeyDown = useCallback(e => {
+    if (e.code === 'KeyS' && ctrl.current) e.preventDefault()
     if (e.key === 'Control') ctrl.current = true
-  })
+  }, [])
 
   useEffect(() => {
     document.addEventListener('keyup', onKeyUp)
@@ -122,7 +162,8 @@ function App() {
 
   return (
     <>
-      <Topbar/>
+      <Topbar
+        save={save}/>
       <Leftbar/>
       <Rightbar
         reference={rightbarRef}/>
