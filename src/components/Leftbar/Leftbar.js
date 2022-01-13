@@ -29,7 +29,7 @@ const Leftbar = () => {
       ref={container}
     >
       <button 
-        className={`${classes.move} ${tool=='move' ? classes.selected : ''}`}
+        className={`${classes.move} ${tool==='move' ? classes.selected : ''}`}
         onClick={() => changeTool('move')}
       >
         <svg width="23" height="26" viewBox="0 0 23 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -41,7 +41,7 @@ const Leftbar = () => {
       </button>
 
       <button 
-        className={`${classes.line} ${tool=='line' ? classes.selected : ''}`}
+        className={`${classes.line} ${tool==='line' ? classes.selected : ''}`}
         onClick={() => changeTool('line')}
       >
         <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,7 +50,7 @@ const Leftbar = () => {
       </button>
 
       <button 
-        className={`${classes.circle} ${tool=='circle' ? classes.selected : ''}`}
+        className={`${classes.circle} ${tool==='circle' ? classes.selected : ''}`}
         onClick={() => changeTool('circle')}
       >
         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -59,7 +59,7 @@ const Leftbar = () => {
       </button>
 
       <button 
-        className={`${classes.triangle} ${tool=='triangle' ? classes.selected : ''}`}
+        className={`${classes.triangle} ${tool==='triangle' ? classes.selected : ''}`}
         onClick={() => changeTool('triangle')}
       >
         <svg width="23" height="19" viewBox="0 0 23 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -68,7 +68,7 @@ const Leftbar = () => {
       </button>
 
       <button 
-        className={`${classes.rectangle} ${tool=='rectangle' ? classes.selected : ''}`}
+        className={`${classes.rectangle} ${tool==='rectangle' ? classes.selected : ''}`}
         onClick={() => changeTool('rectangle')}
       >
         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -77,7 +77,7 @@ const Leftbar = () => {
       </button>
 
       <button 
-        className={`${classes.text} ${tool=='text' ? classes.selected : ''}`}
+        className={`${classes.text} ${tool==='text' ? classes.selected : ''}`}
         onClick={() => changeTool('text')}
       >
         <svg width="13" height="16" viewBox="0 0 13 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -86,7 +86,7 @@ const Leftbar = () => {
       </button>
 
       <button 
-        className={`${classes.image} ${tool=='image' ? classes.selected : ''}`}
+        className={`${classes.image} ${tool==='image' ? classes.selected : ''}`}
         onClick={() => changeTool('image')}
       >
         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">

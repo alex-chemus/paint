@@ -6,7 +6,7 @@ import Params from './Params/Params'
 import MiniCanvas from './Layer/MiniCanvas'
 import Layer from './Layer/Layer'
 
-const Rightbar = () => {
+const Rightbar = ({ reference }) => {
   // state
   const [objects, setObjects] = useState([])
   const [startY, setStartY] = useState()
@@ -153,6 +153,7 @@ const Rightbar = () => {
   return (
     <aside
       className={classes.Rightbar} 
+      ref={reference}
     >
       <section className={classes.layers}>
         <h2>Layers</h2>
