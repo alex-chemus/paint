@@ -31,7 +31,7 @@ const Leftbar = () => {
       <button 
         className={`${classes.move} ${tool==='move' ? classes.selected : ''}`}
         onClick={() => changeTool('move')}
-        title='M - ove'
+        title='M - move'
       >
         <svg width="23" height="26" viewBox="0 0 23 26" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="11.4718" y1="0.641021" x2="21.0872" y2="25.641" stroke="currentColor" stroke-width="2"/>
