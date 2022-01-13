@@ -157,26 +157,30 @@ const Rightbar = ({ reference }) => {
     >
       <section className={classes.layers}>
         <h2>Layers</h2>
-        <ul> {
-          objects.map((item, i) => (
-            <Layer
-              object={item}
-              key={i}
-              i={i}
-              dragLayer={dragLayer}
-              dropLayer={dropLayer}
-              moveLayer={moveLayer}/>
-          ))
-        } </ul>
+        <div className={classes.wrapper}>
+          <ul> {
+            objects.map((item, i) => (
+              <Layer
+                object={item}
+                key={i}
+                i={i}
+                dragLayer={dragLayer}
+                dropLayer={dropLayer}
+                moveLayer={moveLayer}/>
+            ))
+          } </ul>
+        </div>
       </section>
 
       <div className={classes.line}></div>
       
       <section className={classes.params}>
         <h2>Parameters</h2>
-        { objects.filter(item => item.id === currentLayer).map((item, i) => {
-          return (<Params object={item} updateObjects={updateObjects} key={i} />)
-        })}
+        <div className={classes.wrapper}>
+          { objects.filter(item => item.id === currentLayer).map((item, i) => {
+            return (<Params object={item} updateObjects={updateObjects} key={i} />)
+          })}
+        </div>
       </section>
     </aside>
   )

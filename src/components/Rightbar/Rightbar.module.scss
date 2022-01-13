@@ -13,6 +13,7 @@
 section {
   text-align: center;
   height: calc(50% - 2.5px);
+  //height: 100%;
   box-sizing: border-box;
   padding-top: 20px;
 }
@@ -31,22 +32,27 @@ section {
 }
 
 .params {
-  overflow-y: scroll;
+  //overflow-y: auto;
+  overflow-y: hidden;
+}
+
+.wrapper {
+  margin: 0;
+  height: calc(100% - 59px);
+  overflow-y: auto;
 }
 
 .layers {  
-  overflow-y: clip;
+  overflow-y: hidden;
 
   ul {
     margin: 0;
-    height: calc(100% - 59px);
     @include flex(flex-end, stretch);
     flex-direction: column-reverse;
-    overflow-y: scroll;
     list-style: none;
     padding: 0;
     position: relative;
-    //min-height: 100px;
+    min-height: 100px;
   }
 }
 
