@@ -12,16 +12,13 @@ import setText from '../../templates/text'
 import setHanlders from '../../templates/image'
 
 const CanvasContainer = () => {
-  // state
-  const [startPosition, setStartPosition] = useState(null)
-  const [endPosition, setEndPosition] = useState(null)
-  /* эти значения надо загнать в стейт, потом передавать в render, чтобы 
-  расчитывать все значения относительно размера канваса */
-  //const [containerWidth, setContainerWidth] = useState(document.body.clientWidth - 266 - 85)
-  //const [containerHeight, setContainerHeight] = useState(document.body.clientHeight - 100)
-  const [clicked, setClicked] = useState(false)
+  // state, refs
+  const startPosition = useRef(null)
+  const endPosition = useRef(null)
+  const clicked = useRef(false)
+  const containerRef = useRef(null)
+  const textRef = useRef(null)
   const [currentObject, setCurrentObject] = useState()
-  //const [textRef, setTextRef] = useState()
 
 
   // store
@@ -33,11 +30,6 @@ const CanvasContainer = () => {
   const containerWidth = useSelector(state => state.containerSize.width)
   const containerHeight = useSelector(state => state.containerSize.height)
   const dispatch = useDispatch()
-
-
-  // refs
-  const containerRef = useRef(null)
-  const textRef = useRef(null)
 
 
   //effects
@@ -60,17 +52,7 @@ const CanvasContainer = () => {
       return
     }
     if (canvasObjects.length <= 1 && canvasVersions.length <= 1) return
-    /*const children = containerRef.current.children
-    for (let i=0; i<children.length; i++) {
-      children[i].remove()
-    }
-    canvasObjects.forEach(item => {
-      containerRef.current.append(item.canvas)
-      render(item, {
-        width: containerWidth,
-        height: containerHeight
-      })
-    })*/
+
     // nextFull - полный массив новых объектов
     // prevFull - полный массив предыдущих объектов
     const nextFull = [...canvasObjects]
@@ -183,16 +165,10 @@ const CanvasContainer = () => {
   function treesEqual(tree1, tree2) {
     // проверка на соответсвие ключей деревьев друг другу
     for (let key in tree1) {
-      if (!Object.keys(tree2).includes(key)) {
-        //console.log('not equal 1:', tree1, tree2)
-        return false
-      }
+      if (!Object.keys(tree2).includes(key)) return false
     }
     for (let key in tree2) {
-      if (!Object.keys(tree1).includes(key)) {
-        //console.log('not equal 2:', tree1, tree2)
-        return false
-      }
+      if (!Object.keys(tree1).includes(key)) return false
     }
     // проверка на соответствие значений деревьев
     for (let i=0; i<Object.values(tree1).length; i++) {
@@ -202,7 +178,6 @@ const CanvasContainer = () => {
       if (typeof arr1[i] !== 'object') { 
         // не объект, проверка по примитивам
         if (arr1[i] !== arr2[i]) { 
-          //console.log('not equal 3:', tree1, tree2)
           return false
         }
       } else if (arr1[i] instanceof HTMLElement && arr2[i] instanceof HTMLElement) {
@@ -210,7 +185,6 @@ const CanvasContainer = () => {
       } else if (typeof arr1[i] === typeof arr2[i] && arr1[i] && arr2[i]) {
         // два объекта, рекурсия
         if ( !treesEqual(arr1[i], arr2[i]) ) { 
-          //console.log('not equal 4:', tree1, tree2)
           return false
         }
       } // другой случай - оба значения null, проходит проверку всегда
@@ -250,15 +224,15 @@ const CanvasContainer = () => {
 
   // methods
   function draw(s, e) {
-    const start = !startPosition && s
-    const end = !endPosition && e
+    const start = !startPosition.current && s
+    const end = !endPosition.current && e
 
     const topObject = canvasObjects.find(item => item.z === canvasObjects.length)
     switch (currentTool) {
       case 'circle':
         setCurrentObject(setCircle({
-          startPosition: startPosition ?? start,
-          endPosition: endPosition ?? end,
+          startPosition: startPosition.current ?? start,
+          endPosition: endPosition.current ?? end,
           params: {
             canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef),
             id: Date.now(),
@@ -269,8 +243,8 @@ const CanvasContainer = () => {
       
       case 'rectangle':
         setCurrentObject(setRectangle({
-          startPosition: startPosition ?? start,
-          endPosition: endPosition ?? end,
+          startPosition: startPosition.current ?? start,
+          endPosition: endPosition.current ?? end,
           params: {
             canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef),
             id: Date.now(),
@@ -280,10 +254,9 @@ const CanvasContainer = () => {
         break
 
       case 'line':
-        //console.log('set current object to line')
         setCurrentObject(setLine({
-          startPosition: startPosition ?? start,
-          endPosition: endPosition ?? end,
+          startPosition: startPosition.current ?? start,
+          endPosition: endPosition.current ?? end,
           params: {
             canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef),
             id: Date.now(),
@@ -294,8 +267,8 @@ const CanvasContainer = () => {
 
       case 'triangle':
         setCurrentObject(setTriangle({
-          startPosition: startPosition ?? start,
-          endPosition: endPosition ?? end,
+          startPosition: startPosition.current ?? start,
+          endPosition: endPosition.current ?? end,
           params: {
             canvas: currentObject?.canvas ? currentObject.canvas : createCanvas(containerRef),
             id: Date.now(),
@@ -344,13 +317,13 @@ const CanvasContainer = () => {
   function setStart(event) {
     if (currentTool === 'move') {
       if (currentLayer === 0) return // base sheet
-      setCoords(event, setStartPosition, () => {
-        setEndPosition(null)
-        setClicked(true)
+      setCoords(event, value => startPosition.current = value, () => {
+        endPosition.current = null
+        clicked.current = true
       })
       return 
-    }
-    const start = setCoords(event, setStartPosition, (coords) => {
+    }                                 
+    const start = setCoords(event, value => startPosition.current = value, (coords) => {
       if (currentTool === 'text') {
         const topObject = canvasObjects.find(item => item.z === canvasObjects.length)
         dispatch({
@@ -365,10 +338,10 @@ const CanvasContainer = () => {
           }})
         })
       }
-      setEndPosition(null)
-      setClicked(currentTool !== 'text')
+      endPosition.current = null
+      clicked.current = currentTool !== 'text'
     })
-    const end = setCoords(event, setEndPosition)
+    const end = setCoords(event, value => endPosition.current = value)
     /*
       setStartPosition и setEndPosition не успевают отрабатывать
        => draw не работает => setCurrentObject равен null => 
@@ -378,57 +351,56 @@ const CanvasContainer = () => {
   }
 
   function setEnd(event) {
-    if (!startPosition) return
+    if (!startPosition.current) return
     if (currentTool === 'move') {
-      setCoords(event, setEndPosition, coords => {
+      setCoords(event, value => endPosition.current = value, coords => {
         if (currentLayer === 0) return
         const layer = canvasObjects.find(item => item.id === currentLayer)
         const delta = {
-          x: coords.x - startPosition.x,
-          y: coords.y - startPosition.y
+          x: coords.x - startPosition.current.x,
+          y: coords.y - startPosition.current.y
         }
         layer.canvas.style = ''
         dispatch({
           type: 'move object',
           value: delta
         }) 
-        setClicked(false)
+        clicked.current = false
         setCurrentObject(null)
-        setStartPosition(null)
-        setEndPosition(null)
+        startPosition.current = null
+        endPosition.current = null
       })
       return
     }
-    setCoords(event, setEndPosition, (coords) => {
+    setCoords(event, value => endPosition.current = value, (coords) => {
       if (!currentObject) return
-      setClicked(false)
+      clicked.current = false
       dispatch({
         type: 'add canvas object',
         value: currentObject
       })
       setCurrentObject(null)
-      setStartPosition(null)
-      setEndPosition(null)
+      startPosition.current = null
+      endPosition.current = null
     })
   }
 
   function onMove(event) {
-    if (!clicked) return
+    if (!clicked.current) return
     if (currentTool === 'move') {
-      setCoords(event, setEndPosition, coords => {
+      setCoords(event, value => endPosition.current = value, coords => {
         if (currentLayer === 0) return
         const layer = canvasObjects.find(item => item.id === currentLayer)
         const delta = {
-          x: coords.x - startPosition.x,
-          y: coords.y - startPosition.y
+          x: coords.x - startPosition.current.x,
+          y: coords.y - startPosition.current.y
         }
-        //layer.canvas.style.top = `${delta.y * containerHeight}px`
-        //layer.canvas.style.left = `${delta.x * containerWidth}px`
+
         layer.canvas.style.top = `${delta.y}px`
         layer.canvas.style.left = `${delta.x}px`
       })
     }
-    setCoords(event, setEndPosition, draw)
+    setCoords(event, value => endPosition.current = value, draw)
   } 
 
 
