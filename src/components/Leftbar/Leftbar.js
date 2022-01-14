@@ -12,10 +12,6 @@ const Leftbar = () => {
   const tool = useSelector(state => state.currentTool)
   const dispatch = useDispatch()
 
-  /*useEffect(() => {
-    console.log(tool)
-  }, [tool])*/
-
   const changeTool = (newTool) => {
     dispatch({
       type: 'set tool',

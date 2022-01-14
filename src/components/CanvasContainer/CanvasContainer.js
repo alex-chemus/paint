@@ -66,7 +66,8 @@ const CanvasContainer = () => {
     prev.forEach(item => item.canvas.remove())
 
     // новые объекте, которых раньше не было, или были изменения в самом объекте, рендерятся 
-    next.sort((a, b) => a.z > b.z ? 1 : -1).forEach(item => {
+    console.log(next.sort((a, b) => a.z > b.z))
+    next.sort((a, b) => a.z > b.z/* ? 1 : -1*/).forEach(item => {
       // если объекта раньше не было и в контейнере нет соответсвующего канваса,
       // добавить объект по z, чтобы соблюдались слои
       if (!containerRef.current.contains(item.canvas)) {
@@ -193,7 +194,9 @@ const CanvasContainer = () => {
     return true
   }
 
-  function removeDuplicates(prev, next) {
+  function removeDuplicates(prevOrig, nextOrig) {
+    const prev = [...prevOrig]
+    const next = [...nextOrig]
     while (true) {
       let removed = false
       next.forEach((nextItem, i) => {

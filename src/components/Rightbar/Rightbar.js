@@ -7,11 +7,13 @@ import MiniCanvas from './Layer/MiniCanvas'
 import Layer from './Layer/Layer'
 
 const Rightbar = ({ reference }) => {
-  // state
+  // state, refs
   const [objects, setObjects] = useState([])
-  const [startY, setStartY] = useState()
-  const [startTop, setStartTop] = useState()
-  const [endY, setEndY] = useState()
+  //const [startY, setStartY] = useState()
+  const startY = useRef()
+  //const [startTop, setStartTop] = useState()
+  const startTop = useRef()
+  //const [endY, setEndY] = useState()
   const [clicked, setClicked] = useState()
 
 
@@ -69,8 +71,10 @@ const Rightbar = ({ reference }) => {
     //li.classList.add(classes.draged)
     li.classList.add(dragClass)
     const offset = (objects.length-1-i)*50
-    setStartY(event.clientY - offset - 50 - 79)
-    setStartTop(offset)
+    //setStartY(event.clientY - offset - 50 - 79)
+    startY.current = event.clientY - offset - 50 - 79
+    //setStartTop(offset)
+    startTop.current = offset
     setClicked(true)
   }
 
@@ -81,7 +85,7 @@ const Rightbar = ({ reference }) => {
     const prev = li.previousElementSibling
     const next = li.nextElementSibling
     // y coordinate from original location
-    const shift = y - 50 - 79 - startTop - startY
+    const shift = y - 50 - 79 - startTop.current - startY.current
     
     // element is dragged down
     if (shift > li.clientHeight && prev) {
@@ -96,7 +100,8 @@ const Rightbar = ({ reference }) => {
           }
         }
       }))
-      setStartTop(offset)
+      //setStartTop(offset)
+      startTop.current = offset
     } else if (-shift > li.clientHeight && next) {
       swapZ(i, i+1)
       const offset = (objects.length-i)*50
@@ -109,7 +114,8 @@ const Rightbar = ({ reference }) => {
           }
         }
       }))
-      setStartTop(offset)
+      //setStartTop(offset)
+      startTop.current = offset
     } else {
       setObjects(objects.map((item, j) => {
         if (i !== j) return item
@@ -121,7 +127,7 @@ const Rightbar = ({ reference }) => {
         }
       }))
     }
-    setEndY(y)
+    //setEndY(y)
   }
 
   function dropLayer(object, i, event, dragClass) {
