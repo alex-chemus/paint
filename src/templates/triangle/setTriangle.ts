@@ -19,7 +19,18 @@ const sheet = {
   canvas: null,
 }
 
-const setTriangle = ({startPosition, endPosition, params}) => {
+interface Position {
+  x: number,
+  y: number
+}
+
+interface Params {
+  startPosition: Position,
+  endPosition: Position,
+  params: any
+}
+
+const setTriangle = ({ startPosition, endPosition, params }: Params) => {
   const triangle = {
     ...sheet,
     ...params,

@@ -22,7 +22,18 @@ const sheet = {
   canvas: null,
 }
 
-const setRectangle = ({startPosition, endPosition, params}) => {
+interface Position {
+  x: number,
+  y: number
+}
+
+interface Params {
+  startPosition: Position,
+  endPosition: Position,
+  params: any
+}
+
+const setRectangle = ({ startPosition, endPosition, params }: Params) => {
   const rectangle = {
     ...sheet,
     ...params,

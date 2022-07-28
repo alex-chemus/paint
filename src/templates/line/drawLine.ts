@@ -1,6 +1,19 @@
 import { setAbsCoords, setStroke } from "../utilities"
 
-const drawLine = (ctx, object, size, containerSize) => {
+interface Props {
+  ctx: CanvasRenderingContext2D,
+  object: any, // ISheet
+  size: {
+    width: number,
+    height: number
+  },
+  containerSize: {
+    width: number,
+    height: number
+  }
+}
+
+const drawLine = ({ ctx, object, size, containerSize }: Props) => {
   /* recalculate: start, end, stroke.width */
   const [start, end] = setAbsCoords(object, size, containerSize)
   const stroke = setStroke(object, size, containerSize)

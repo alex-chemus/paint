@@ -1,6 +1,18 @@
 import { setAbsCoords, setShadow, setStroke } from '../utilities'
 
-const drawTriangle = (ctx, object, size, containerSize) => {
+interface Size {
+  width: number,
+  height: number
+}
+
+interface Params {
+  ctx: CanvasRenderingContext2D,
+  object: any, // ISheet
+  size: Size,
+  containerSize: Size
+}
+
+const drawTriangle = ({ ctx, object, size, containerSize }: Params) => {
   /* recalculate: start, end, stroke, shadow */
   const [start, end] = setAbsCoords(object, size, containerSize)
   const stroke = setStroke(object, size, containerSize)
@@ -44,10 +56,10 @@ const drawTriangle = (ctx, object, size, containerSize) => {
   }
   ctx.fill()
   if (object.shadow) {
-    ctx.shadowOffsetX = null
-    ctx.shadowOffsetY = null
-    ctx.shadowBlur = null
-    ctx.shadowColor = null
+    ctx.shadowOffsetX = 0 //null
+    ctx.shadowOffsetY = 0 //null
+    ctx.shadowBlur = 0 //null
+    ctx.shadowColor = '' //null
   }
   if (stroke.width>0) ctx.stroke()
 

@@ -16,7 +16,19 @@ const sheet = {
   textAlign: 'center'
 }
 
-const setText = ({ coords, size, params }) => {
+interface Params {
+  coords: {
+    x: number,
+    y: number,
+  },
+  size: {
+    width: number,
+    height: number
+  },
+  params: any
+}
+
+const setText = ({ coords, size, params }: Params) => {
   //const relativeSize = 16 / size.height
   
   const text = {

@@ -1,6 +1,19 @@
 import { setAbsXY, getHeightRatio, getWidthRatio, setShadow, setStroke } from '../utilities'
 
-const drawImage = (ctx, object, size, containerSize) => {
+interface Props {
+  ctx: CanvasRenderingContext2D,
+  object: any, // ISheet
+  size: {
+    width: number,
+    height: number,
+  },
+  containerSize: {
+    width: number,
+    height: number
+  }
+}
+
+const drawImage = ({ ctx, object, size, containerSize }: Props) => {
   const [x, y] = setAbsXY(object, size, containerSize)
   const ratio = {
     width: getWidthRatio(size, containerSize),
@@ -37,10 +50,10 @@ const drawImage = (ctx, object, size, containerSize) => {
 
     if (shadow.blur) {
       ctx.fillRect(0, 0, width, height)
-      ctx.shadowOffsetX = null
-      ctx.shadowOffsetY = null
-      ctx.shadowBlur = null
-      ctx.shadowColor = null
+      ctx.shadowOffsetX = 0 //null
+      ctx.shadowOffsetY = 0 //null
+      ctx.shadowBlur = 0 //null
+      ctx.shadowColor = '' //null
     }
   
     if (object.stroke) {

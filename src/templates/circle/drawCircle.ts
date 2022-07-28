@@ -1,6 +1,19 @@
 import { setAbsCoords, setShadow, setStroke } from '../utilities'
 
-const drawCircle = (ctx, object, size, containerSize) => {
+interface Props {
+  ctx: CanvasRenderingContext2D,
+  object: any, // ISheet
+  size: {
+    width: number,
+    height: number,
+  },
+  containerSize: {
+    width: number,
+    height: number
+  }
+}
+
+const drawCircle = ({ ctx, object, size, containerSize }: Props) => {
   /* recalculate: start, end, stroke.width, shadow.x, shadow.y, shadow.blur */
   const [start, end] = setAbsCoords(object, size, containerSize)
   const stroke = setStroke(object, size, containerSize)
@@ -38,10 +51,10 @@ const drawCircle = (ctx, object, size, containerSize) => {
   ctx.closePath()
 
   if (shadow) {
-    ctx.shadowOffsetX = null
-    ctx.shadowOffsetY = null
-    ctx.shadowBlur = null
-    ctx.shadowColor = null
+    ctx.shadowOffsetX = 0 //null
+    ctx.shadowOffsetY = 0 //null
+    ctx.shadowBlur = 0 //null
+    ctx.shadowColor = '' //null
   }
 
   if (stroke) {

@@ -1,6 +1,18 @@
 import { setAbsCoords, setStroke, setShadow } from '../utilities'
 
-const drawRect = (ctx, object, size, containerSize) => {
+interface Size {
+  width: number,
+  height: number
+}
+
+interface Params {
+  ctx: CanvasRenderingContext2D,
+  object: any, // ISheet
+  size: Size,
+  containerSize: Size
+}
+
+const drawRect = ({ ctx, object, size, containerSize }: Params) => {
   /*
     recalculate: start, end, stroke.width, shadow.x, shadow.y, shadow.blur
   */
@@ -37,10 +49,10 @@ const drawRect = (ctx, object, size, containerSize) => {
   )
   
   if (shadow) {
-    ctx.shadowOffsetX = null
-    ctx.shadowOffsetY = null
-    ctx.shadowBlur = null
-    ctx.shadowColor = null
+    ctx.shadowOffsetX = 0 //null
+    ctx.shadowOffsetY = 0 //null
+    ctx.shadowBlur = 0 //null
+    ctx.shadowColor = '' //null
   }
 
   if (stroke) {

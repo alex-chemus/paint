@@ -17,7 +17,18 @@ const sheet = {
   canvas: null,
 }
 
-const setCircle = ({startPosition, endPosition, params}) => {
+interface Position { 
+  x: number,
+  y: number
+}
+
+interface Params {
+  startPosition: Position,
+  endPosition: Position,
+  params: any
+}
+
+const setCircle = ({startPosition, endPosition, params}: Params) => {
   /*const radius = Math.max(
     Math.abs(endPosition.x - startPosition.x) / 2,
     Math.abs(endPosition.y - startPosition.y) / 2

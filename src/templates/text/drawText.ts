@@ -1,6 +1,18 @@
 import { setAbsXY, setFont, setStroke } from "../utilities"
 
-const drawText = (ctx, object, size, containerSize) => {
+interface Size {
+  width: number,
+  height: number
+}
+
+interface Params {
+  ctx: CanvasRenderingContext2D,
+  object: any, // ISheet
+  size: Size,
+  containerSize: Size
+}
+
+const drawText = ({ ctx, object, size, containerSize }: Params) => {
   /* recalculate: x, y, stroke.width, font.size */
   const [x, y] = setAbsXY(object, size, containerSize)
   const stroke = setStroke(object, size, containerSize)

@@ -23,5 +23,6 @@ export interface ISheet {
     y: number,
     blur: number,
     color: string
-  }
+  },
+  canvas: null | HTMLCanvasElement
 }

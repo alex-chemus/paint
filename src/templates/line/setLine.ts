@@ -18,7 +18,18 @@ const sheet = {
   canvas: null,
 }
 
-const setLine = ({ startPosition, endPosition, params }) => {
+interface Position {
+  x: number,
+  y: number
+}
+
+interface Params {
+  startPosition: Position,
+  endPosition: Position,
+  params: any
+}
+
+const setLine = ({ startPosition, endPosition, params }: Params) => {
   const line = {
     ...sheet,
     ...params,
