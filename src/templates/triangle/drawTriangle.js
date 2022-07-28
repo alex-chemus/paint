@@ -1,4 +1,4 @@
-import { setAbsCoords, setShadow, setStroke } from './utilityFunctions.js'
+import { setAbsCoords, setShadow, setStroke } from '../utilities'
 
 const drawTriangle = (ctx, object, size, containerSize) => {
   /* recalculate: start, end, stroke, shadow */

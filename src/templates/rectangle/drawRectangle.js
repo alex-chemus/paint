@@ -1,4 +1,4 @@
-import { setAbsCoords, setStroke, setShadow } from './utilityFunctions.js'
+import { setAbsCoords, setStroke, setShadow } from '../utilities'
 
 const drawRect = (ctx, object, size, containerSize) => {
   /*

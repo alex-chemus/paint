@@ -1,4 +1,4 @@
-import { setAbsXY, getHeightRatio, getWidthRatio, setShadow, setStroke } from './utilityFunctions.js'
+import { setAbsXY, getHeightRatio, getWidthRatio, setShadow, setStroke } from '../utilities'
 
 const drawImage = (ctx, object, size, containerSize) => {
   const [x, y] = setAbsXY(object, size, containerSize)

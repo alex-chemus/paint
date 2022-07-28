@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
 import classes from './Rightbar.module.scss'
 import { useSelector, useDispatch } from 'react-redux'
-import render from '../../templates/render'
+//import { render } from '@/templates'
 import Params from './Params/Params'
-import MiniCanvas from './Layer/MiniCanvas'
+//import MiniCanvas from './Layer/MiniCanvas'
 import Layer from './Layer/Layer'
 
 const Rightbar = ({ reference }) => {

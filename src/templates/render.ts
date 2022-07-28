@@ -1,19 +1,26 @@
-import drawRect from './drawFunctions/drawRect.js'
-import drawLine from './drawFunctions/drawLine.js'
-import drawCircle from './drawFunctions/drawCircle.js'
-import drawTriangle from './drawFunctions/drawTriangle.js'
-import drawImage from './drawFunctions/drawImage.js'
-import drawText from './drawFunctions/drawText.js'
+import drawRectangle from './rectangle/drawRectangle.js'
+import drawLine from './line/drawLine.js'
+import drawCircle from './circle/drawCircle.js'
+import drawTriangle from './triangle/drawTriangle.js'
+import drawImage from './image/drawImage.js'
+import drawText from './text/drawText.js'
 
-const render = (object, size, containerSize, beforeDraw=()=>{}, shouldClear=true) => {
+interface Size {
+  width: number,
+  height: number
+}
+
+const render = (
+  object: any, size: Size, containerSize: Size, beforeDraw=()=>{}, shouldClear=true
+) => {
   object.canvas.dataset.z = object.z
   const ctx = object.canvas.getContext('2d')
-  shouldClear && ctx.clearRect(0, 0, size.width, size.height)
+  if (shouldClear) ctx.clearRect(0, 0, size.width, size.height)
   beforeDraw()
   
   switch (object?.type) {
     case 'rectangle':
-      drawRect(ctx, object, size, containerSize)
+      drawRectangle(ctx, object, size, containerSize)
       break
     case 'line':
       drawLine(ctx, object, size, containerSize)

@@ -1,4 +1,4 @@
-import { setAbsCoords, setShadow, setStroke } from './utilityFunctions.js'
+import { setAbsCoords, setShadow, setStroke } from '../utilities'
 
 const drawCircle = (ctx, object, size, containerSize) => {
   /* recalculate: start, end, stroke.width, shadow.x, shadow.y, shadow.blur */

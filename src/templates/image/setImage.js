@@ -23,7 +23,7 @@ const setImage = ({ params }) => {
   }
 }
 
-const setHanlders = (container, currentTool, callback=()=>{}, createCanvas, topObject, removeText) => {
+const setHandlers = (container, currentTool, callback=()=>{}, createCanvas, topObject, removeText) => {
   const onDragOver = event => {
     event.preventDefault()
     removeText()
@@ -70,4 +70,4 @@ const setHanlders = (container, currentTool, callback=()=>{}, createCanvas, topO
   }
 }
 
-export default setHanlders
+export default setHandlers

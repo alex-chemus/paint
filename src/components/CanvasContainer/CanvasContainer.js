@@ -1,15 +1,17 @@
 import React, { useRef, useEffect, useState } from 'react'
 import classes from './CanvasContainer.module.scss'
 //import EasyC from '../../EasyC'
-import render from '../../templates/render'
 import { useSelector, useDispatch } from 'react-redux'
 // templates
-import setCircle from '../../templates/circle'
+/*import setCircle from '../../templates/circle'
 import setRectangle from '../../templates/rectangle'
 import setLine from '../../templates/line'
 import setTriangle from '../../templates/triangle'
 import setText from '../../templates/text'
-import setHanlders from '../../templates/image'
+import setHanlders from '../../templates/image'*/
+import {
+  setCircle, setRectangle, setLine, setTriangle, setText, setHandlers, render
+} from '@/templates'
 
 const CanvasContainer = () => {
   // state, refs
@@ -138,7 +140,7 @@ const CanvasContainer = () => {
     // setHandlers устанавливает хэндлеры для контейнера для 
     // drag-ивентов, возвращает функцию-клинер, которая вызвается
     // перед следующим инструментом (для оптимизации)
-    const removeHanlders = setHanlders(
+    const removeHanlders = setHandlers(
       containerRef, 
       currentTool, 
       addImage, 

@@ -1,4 +1,4 @@
-import { setAbsXY, setFont, setStroke } from "./utilityFunctions.js"
+import { setAbsXY, setFont, setStroke } from "../utilities"
 
 const drawText = (ctx, object, size, containerSize) => {
   /* recalculate: x, y, stroke.width, font.size */

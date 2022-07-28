@@ -1,4 +1,4 @@
-import { setAbsCoords, setStroke } from "./utilityFunctions.js"
+import { setAbsCoords, setStroke } from "../utilities"
 
 const drawLine = (ctx, object, size, containerSize) => {
   /* recalculate: start, end, stroke.width */

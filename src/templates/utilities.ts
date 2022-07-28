@@ -1,14 +1,22 @@
-const getRatio = (size, containerSize) => {
+//import { ISheet } from '@/types'
+
+interface Size {
+  width: number, 
+  height: number
+}
+
+const getRatio = (size: Size, containerSize: Size) => {
   const ratio = {
     width: size.width / containerSize.width,
-    height: size.height / containerSize.height
+    height: size.height / containerSize.height,
+    avarage: 0
   }
   ratio.avarage = ((ratio.width + ratio.height)/2)
   return ratio
 }
 
 // relative coordinates -> absolute coordinates
-export const setAbsCoords = (object, size, containerSize) => {
+export const setAbsCoords = (object: any, size: Size, containerSize: Size) => {
   const ratio = getRatio(size, containerSize)
   const start = {
     x: object.start.x * ratio.width,
@@ -22,14 +30,14 @@ export const setAbsCoords = (object, size, containerSize) => {
   return [start, end]
 }
 
-export const setAbsXY = (object, size, containerSize) => {
+export const setAbsXY = (object: any, size: Size, containerSize: Size) => {
   const ratio = getRatio(size, containerSize)
   const x = object.x * ratio.width
   const y = object.y * ratio.height
   return [x, y]
 }
 
-export const setStroke = (object, size, containerSize) => {
+export const setStroke = (object: any, size: Size, containerSize: Size) => {
   const ratio = getRatio(size, containerSize)
   const stroke = {
     color: object.stroke.color,
@@ -38,7 +46,7 @@ export const setStroke = (object, size, containerSize) => {
   return stroke
 }
 
-export const setShadow = (object, size, containerSize) => {
+export const setShadow = (object: any, size: Size, containerSize: Size) => {
   const ratio = getRatio(size, containerSize)
   const shadow = {
     color: object.shadow.color,
@@ -49,7 +57,7 @@ export const setShadow = (object, size, containerSize) => {
   return shadow
 }
 
-export const setFont = (object, size, containerSize) => {
+export const setFont = (object: any, size: Size, containerSize: Size) => {
   const ratio = getRatio(size, containerSize)
   const font = {
     ...object.font,
@@ -58,12 +66,12 @@ export const setFont = (object, size, containerSize) => {
   return font
 }
 
-export const getWidthRatio = (size, containerSize) => {
+export const getWidthRatio = (size: Size, containerSize: Size) => {
   const ratio = getRatio(size, containerSize)
   return ratio.width
 }
 
-export const getHeightRatio = (size, containerSize) => {
+export const getHeightRatio = (size: Size, containerSize: Size) => {
   const ratio = getRatio(size, containerSize)
   return ratio.height
 }
