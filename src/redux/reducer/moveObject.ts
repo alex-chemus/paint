@@ -1,4 +1,6 @@
-const moveObject = (state, action) => {
+import { IState, IAction } from "@/types"
+
+const moveObject = (state: IState, action: IAction) => {
   function setNewObject() {
     const object = state.canvasObjects.find(item => item.id === state.currentLayer)
     let newObj = {}

@@ -1,17 +1,17 @@
 import React from 'react'
 import classes from './Topbar.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
+import { useSave } from '@/hooks'
 
-const Topbar = ({ save }) => {
+const Topbar = () => {
   const dispatch = useDispatch() 
-  const canvasObjects = useSelector(state => state.canvasObjects)
-  const containerSize = useSelector(state => state.containerSize)
+  const save = useSave()
 
   return (
     <div className={classes.Topbar}>
       <button 
         className={classes.save}
-        onClick={() => save(canvasObjects, containerSize)}
+        onClick={save}
       >
         Save
       </button>

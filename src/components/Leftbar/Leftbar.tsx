@@ -1,18 +1,20 @@
 import React, { useRef, useEffect } from 'react'
-import { useSelector, useDispatch, useStore } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import classes from './Leftbar.module.scss'
+import { IState, Tool } from '@/types'
 
 const Leftbar = () => {
-  const container = useRef(null)
+  const container = useRef<HTMLDivElement | null>(null)
   // adjust the bar vertically on mounted
   useEffect(() => {
-    container.current.style.top = `calc(50% - ${container.current.offsetHeight/2}px)`
+    if (container.current)
+      container.current.style.top = `calc(50% - ${container.current.offsetHeight/2}px)`
   }, [])
 
-  const tool = useSelector(state => state.currentTool)
+  const tool = useSelector((state: IState) => state.currentTool)
   const dispatch = useDispatch()
 
-  const changeTool = (newTool) => {
+  const changeTool = (newTool: Tool) => {
     dispatch({
       type: 'set tool',
       value: newTool

@@ -1,4 +1,6 @@
-const addCanvasObject = (state, action) => {
+import { IAction, IState } from "@/types"
+
+const addCanvasObject = (state: IState, action: IAction) => {
   if (state.currentVersion !== null) {
     return {
       ...state,

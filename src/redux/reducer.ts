@@ -1,4 +1,6 @@
 import initState from "./initState"
+import { IState, IAction } from "@/types"
+
 import changeParam from "./reducer/changeParam"
 import moveObject from "./reducer/moveObject"
 import removeObject from "./reducer/removeObject"
@@ -8,7 +10,7 @@ import addCanvasObject from "./reducer/addCanvasObject"
 import addInitCanvas from "./reducer/addInitCanvas"
 import setSize from "./reducer/setSize"
 
-const reducer = (state=initState, action) => {
+const reducer = (state=initState, action: IAction): IState => {
   switch (action.type) {
     case 'set size':
       return setSize(state, action)

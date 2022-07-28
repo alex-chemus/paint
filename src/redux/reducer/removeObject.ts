@@ -1,4 +1,6 @@
-const removeObject = (state, action) => {
+import { IState, IAction } from "@/types"
+
+const removeObject = (state: IState, action: IAction) => {
   const newCanvasObjects = state.canvasObjects.filter(item => {
     return item.id !== action.value
   })

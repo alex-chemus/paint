@@ -1,0 +1,7 @@
+export type Tool = 'move' 
+  | 'line' 
+  | 'circle' 
+  | 'triangle' 
+  | 'rectangle'
+  | 'text'
+  | 'image'

@@ -1,4 +1,6 @@
-const changeParam = (state, action) => {
+import { IState, IAction } from "@/types"
+
+const changeParam = (state: IState, action: IAction) => {
   if (state.currentVersion !== null) {
     return {
       ...state,

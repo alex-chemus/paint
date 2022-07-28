@@ -1,4 +1,6 @@
-const initState = {
+import { IState } from "@/types"
+
+const initState: IState = {
   canvasObjects: [
     // basic sheet
     {

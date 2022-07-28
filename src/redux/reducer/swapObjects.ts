@@ -1,4 +1,6 @@
-const swapObjects = (state, action) => {
+import { IState, IAction } from "@/types"
+
+const swapObjects = (state: IState, action: IAction) => {
   /*function swapObjects(prevI, nextI) {
     const list = []
     state.canvasObjects.forEach(obj => {

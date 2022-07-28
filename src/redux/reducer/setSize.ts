@@ -1,4 +1,6 @@
-const setSize = (state, action) => {
+import { IState, IAction } from "@/types"
+
+const setSize = (state: IState, action: IAction) => {
   return {
     ...state,
     containerSize: {
