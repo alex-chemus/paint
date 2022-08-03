@@ -60,6 +60,7 @@ const setHandlers = ({
   container.current.addEventListener('dragend', onDragEnd)
 
   const onDrop = (event: DragEvent) => {
+    console.log('drop')
     if (currentTool !== 'image') return
     event.preventDefault()
 

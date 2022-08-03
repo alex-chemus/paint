@@ -15,7 +15,7 @@ const useRenderObjects = (containerRef: MutableRefObject<HTMLDivElement | null>)
   const removeDuplicateObjects = useRemoveDuplicateObjects()
 
   useEffect(() => {
-    console.log('useRenderObjects', canvasObjects)
+    //console.log('useRenderObjects', canvasObjects)
 
     if (!containerRef.current) return
 

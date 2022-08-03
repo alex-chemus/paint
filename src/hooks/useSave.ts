@@ -9,11 +9,16 @@ const download = (canvas: HTMLCanvasElement, filename: string) => {
   link.href = canvas.toDataURL('image/png;base64')
 
   // create a fake click-event
-  document
+  /*document
     .createEvent('MouseEvent')
     .initMouseEvent("click", true, true, window,
     0, 0, 0, 0, 0, false, false, false,
-    false, 0, null) 
+    false, 0, null) */
+  const e = document.createEvent('MouseEvent')
+  e.initMouseEvent("click", true, true, window,
+  0, 0, 0, 0, 0, false, false, false,
+  false, 0, null)
+  link.dispatchEvent(e)
 }
 
 const useSave = () => {
@@ -21,6 +26,8 @@ const useSave = () => {
   const containerSize = useSelector((state: IState) => state.containerSize)
 
   return () => {
+    console.log('save')
+
     const objects = [...canvasObjects]
     const size = {...containerSize}
 

@@ -26,15 +26,6 @@ const useImageHandlers = ({ setCurrentObject, containerRef }: Params) => {
     setCurrentObject(null)
   }
 
-  const removeHandlers = setHandlers({
-    container: containerRef,
-    currentTool,
-    callback: addImg,
-    createCanvas,
-    topObject: canvasObjects.find(item => item.z === canvasObjects.length),
-    removeText
-  })
-
   useEffect(() => {
     if (currentTool === 'image' && containerRef?.current) {
       /*
@@ -64,6 +55,15 @@ const useImageHandlers = ({ setCurrentObject, containerRef }: Params) => {
       setCurrentObject(null)
       textRef.current?.remove()
     }
+
+    const removeHandlers = setHandlers({
+      container: containerRef,
+      currentTool,
+      callback: addImg,
+      createCanvas,
+      topObject: canvasObjects.find(item => item.z === canvasObjects.length),
+      removeText
+    })
 
     return removeHandlers
   }, [currentTool])

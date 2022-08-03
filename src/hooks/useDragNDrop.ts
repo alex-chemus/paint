@@ -58,24 +58,6 @@ const useDragNDrop = ({
         }))
       }
     }
-    /*if (
-      currentTool === 'circle' 
-      || currentTool === 'rectangle'
-      || currentTool === 'line'
-      || currentTool === 'triangle'
-    ) {
-      setCurrentObject(setCircle({
-        startPosition: start,
-        endPosition: end,
-        params: {
-          canvas: currentObject?.canvas 
-            ? currentObject.canvas
-            : createCanvas(containerRef),
-          id: Date.now(),
-          z: topObject.z + 1
-        }
-      }))
-    }*/
   }
 
   type Callback = (...args: any) => void

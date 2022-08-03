@@ -408,11 +408,15 @@ const CanvasContainer = () => {
   })
 
   const cls = [classes.CanvasContainer]
-  cls.push(currentTool==='move' ? classes['cursor-grab'] : classes['cursor-crosshair'])
+  cls.push(
+    currentTool==='move' 
+      ? classes['cursor-grab'] 
+      : classes['cursor-crosshair']
+  )
 
-  useEffect(() => {
+  /*useEffect(() => {
     console.log('currentTool has changed: ', currentTool)
-  }, [currentTool])
+  }, [currentTool])*/
 
   return (
     <div 
