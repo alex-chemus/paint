@@ -1,26 +1,30 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, RefObject, FC } from 'react'
 import classes from './Rightbar.module.scss'
-import { useSelector, useDispatch } from 'react-redux'
-//import { render } from '@/templates'
-import Params from './Params/Params'
-//import MiniCanvas from './Layer/MiniCanvas'
-import Layer from './Layer/Layer'
+import { useSelector } from 'react-redux'
+import { IState } from '@/types'
+import Layer from '@/components/Layer/Layer'
+import Params from '@/components/Params/Params'
+import { useDragLayers, useUpdateParams } from '@/hooks'
 
-const Rightbar = ({ reference }) => {
+interface Props {
+  reference: RefObject<HTMLElement>
+}
+
+const Rightbar: FC<Props> = ({ reference }) => {
   // state, refs
-  const [objects, setObjects] = useState([])
+  // not a ISheet, its any
+  const [objects, setObjects] = useState<any[]>([])
   //const [startY, setStartY] = useState()
-  const startY = useRef()
+  //const startY = useRef()
   //const [startTop, setStartTop] = useState()
-  const startTop = useRef()
+  //const startTop = useRef()
   //const [endY, setEndY] = useState()
-  const [clicked, setClicked] = useState()
+  //const [clicked, setClicked] = useState()
 
 
   // store
-  const canvasObjects = useSelector(state => state.canvasObjects)
-  const currentLayer = useSelector(state => state.currentLayer)
-  const dispatch = useDispatch()
+  const canvasObjects = useSelector((state: IState) => state.canvasObjects)
+  const currentLayer = useSelector((state: IState) => state.currentLayer)
 
 
   // effects
@@ -34,9 +38,15 @@ const Rightbar = ({ reference }) => {
     setObjects(array)
   }, [canvasObjects])
 
+  const { 
+    dragLayer, 
+    moveLayer, 
+    dropLayer 
+  } = useDragLayers({ objects, setObjects })
+
   // меняет значения z для объектов по 2 индексам (prevI, nextI)
   // а также сортирует массив по новым значениям z
-  function swapZ(prevI, nextI) {
+  /*function swapZ(prevI, nextI) {
     const list = objects
     const aboba = list[prevI].z
     list[prevI].z = list[nextI].z
@@ -47,7 +57,7 @@ const Rightbar = ({ reference }) => {
       type: 'swap objects',
       value: [canvasObjects[0], ...list]
     })
-  }
+  }*/
 
   /*
     dragLayer:
@@ -66,7 +76,7 @@ const Rightbar = ({ reference }) => {
       отменяет стили и классы, заданные в dragLayer
   */
 
-  function dragLayer(object, i, event, dragClass) {
+  /*function dragLayer(object, i, event, dragClass) {
     const li = event.currentTarget
     //li.classList.add(classes.draged)
     li.classList.add(dragClass)
@@ -141,9 +151,9 @@ const Rightbar = ({ reference }) => {
         style: { top: null }
       }
     }))
-  }
+  }*/
 
-  function updateObjects(object={}) {
+  /*function updateObjects(object={}) {
     for (let i=0; i<objects.length; i++) {
       if (objects[i].id !== object.id) continue
       const list = objects
@@ -154,7 +164,11 @@ const Rightbar = ({ reference }) => {
         value: [canvasObjects[0], ...list]
       })
     }
-  }
+  }*/
+
+  const updateObjects = useUpdateParams({
+    objects, setObjects
+  })
 
   return (
     <aside

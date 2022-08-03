@@ -8,12 +8,6 @@ const download = (canvas: HTMLCanvasElement, filename: string) => {
   link.download = filename
   link.href = canvas.toDataURL('image/png;base64')
 
-  // create a fake click-event
-  /*document
-    .createEvent('MouseEvent')
-    .initMouseEvent("click", true, true, window,
-    0, 0, 0, 0, 0, false, false, false,
-    false, 0, null) */
   const e = document.createEvent('MouseEvent')
   e.initMouseEvent("click", true, true, window,
   0, 0, 0, 0, 0, false, false, false,
