@@ -1,44 +1,35 @@
 import React, { useRef, useEffect, useState } from 'react'
 import classes from './CanvasContainer.module.scss'
-//import EasyC from '../../EasyC'
 import { useSelector, useDispatch } from 'react-redux'
-// templates
-/*import setCircle from '../../templates/circle'
-import setRectangle from '../../templates/rectangle'
-import setLine from '../../templates/line'
-import setTriangle from '../../templates/triangle'
-import setText from '../../templates/text'
-import setHanlders from '../../templates/image'*/
-import {
-  setCircle, setRectangle, setLine, setTriangle, setText, setHandlers, render
-} from '@/templates'
+import { render } from '@/templates'
+import { IState } from '@/types'
+import { useRenderObjects, useImageHandlers, useDragNDrop } from '@/hooks'
 
 const CanvasContainer = () => {
   // state, refs
-  const startPosition = useRef(null)
-  const endPosition = useRef(null)
-  const clicked = useRef(false)
-  const containerRef = useRef(null)
-  const textRef = useRef(null)
-  const [currentObject, setCurrentObject] = useState()
+  //const startPosition = useRef(null)
+  //const endPosition = useRef(null)
+  //const clicked = useRef(false)
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  //const textRef = useRef(null)
+  const [currentObject, setCurrentObject] = useState<any>()
 
 
   // store
-  const canvasObjects = useSelector(state => state.canvasObjects)
-  const currentTool = useSelector(state => state.currentTool)
-  const canvasVersions = useSelector(state => state.canvasVersions)
-  const interimVersions = useSelector(state => state.interimVersions)
-  const currentLayer = useSelector(state => state.currentLayer)
-  const containerWidth = useSelector(state => state.containerSize.width)
-  const containerHeight = useSelector(state => state.containerSize.height)
+  //const canvasObjects = useSelector((state: IState) => state.canvasObjects)
+  const currentTool = useSelector((state: IState) => state.currentTool)
+  //const currentLayer = useSelector((state: IState) => state.currentLayer)
+  const containerWidth = useSelector((state: IState) => state.containerSize.width)
+  const containerHeight = useSelector((state: IState) => state.containerSize.height)
   const dispatch = useDispatch()
 
 
   //effects
   // rerender all changes in store
-  useEffect(() => {
-    if (!containerRef?.current) return
-    if (!canvasObjects[0]?.canvas) {
+  useRenderObjects(containerRef)
+  /*useEffect(() => {
+    if (!containerRef.current) return
+    if (!canvasObjects[0]?.canvas) { // 0 - начальный канвас с белым фоном
       if (canvasObjects[0].end.x === 1) return
       dispatch({
         type: 'add init canvas',
@@ -68,9 +59,10 @@ const CanvasContainer = () => {
     prev.forEach(item => item.canvas.remove())
 
     // новые объекте, которых раньше не было, или были изменения в самом объекте, рендерятся 
-    next.sort((a, b) => a.z > b.z/* ? 1 : -1*/).forEach(item => {
+    next.sort((a, b) => a.z - b.z/* ? 1 : -1*//*).forEach(item => {
       // если объекта раньше не было и в контейнере нет соответсвующего канваса,
       // добавить объект по z, чтобы соблюдались слои
+      if (!containerRef.current) return
       if (!containerRef.current.contains(item.canvas)) {
         const prevElem = containerRef.current.querySelector(`[data-z="${item.z-1}"]`)
         prevElem.after(item.canvas)
@@ -81,7 +73,7 @@ const CanvasContainer = () => {
       }
       render(item, size, size)
     })
-  }, [canvasObjects])
+  }, [canvasObjects])*/
 
   // render currentObject on change
   useEffect(() => {
@@ -93,15 +85,19 @@ const CanvasContainer = () => {
     render(currentObject, size, size)
   }, [currentObject])
 
+  useImageHandlers({
+    setCurrentObject, containerRef
+  })
+
   // insert text for image drag'n'drop and set/reset drag'n'drop handlers
-  useEffect(() => {
-    if (currentTool === 'image') {
+  //useEffect(() => {
+    //if (currentTool === 'image') {
       /*
         когда задаётся инструмент имадж, создать канвас для текста-ворнинга
         и задать текущий объект текстом. потом, когда изменится инструмент (в else), 
         удалить ссылку и очистить currentObject
       */
-      textRef.current = createCanvas(containerRef)
+      /*textRef.current = createCanvas(containerRef)
       setCurrentObject(setText({
         coords: {
           x: containerWidth / 2, 
@@ -149,7 +145,7 @@ const CanvasContainer = () => {
       removeText 
     )
     return removeHanlders
-  }, [currentTool])
+  }, [currentTool])*/
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -160,11 +156,11 @@ const CanvasContainer = () => {
         height: document.body.clientHeight - 100
       }
     })
-  }, [containerRef.current])
+  }, []) // containerRef.current
 
 
   // utility methods
-  function treesEqual(tree1, tree2) {
+  /*function treesEqual(tree1, tree2) {
     // проверка на соответсвие ключей деревьев друг другу
     for (let key in tree1) {
       if (!Object.keys(tree2).includes(key)) return false
@@ -193,9 +189,9 @@ const CanvasContainer = () => {
     }
   
     return true
-  }
+  }*/
 
-  function removeDuplicates(prevOrig, nextOrig) {
+  /*function removeDuplicates(prevOrig, nextOrig) {
     const prev = [...prevOrig]
     const next = [...nextOrig]
     while (true) {
@@ -214,20 +210,20 @@ const CanvasContainer = () => {
     }
 
     return [prev, next]
-  }
+  }*/
 
-  function createCanvas(containerRef) {
+  /*function createCanvas(containerRef) {
     if (!containerRef?.current) return
     const canvas = document.createElement('canvas')
     canvas.width = containerWidth
     canvas.height = containerHeight
     containerRef.current.append(canvas)
     return canvas
-  }
+  }*/
 
 
   // methods
-  function draw(s, e) {
+  /*function draw(s, e) {
     const start = !startPosition.current && s
     const end = !endPosition.current && e
 
@@ -303,7 +299,7 @@ const CanvasContainer = () => {
     func(coords)
     callback(coords)
     return coords
-  }
+  }*/
 
   /*
     при mousedown:
@@ -318,7 +314,7 @@ const CanvasContainer = () => {
       startPosition и endPosition передаются в dispatch
   */
 
-  function setStart(event) {
+  /*function setStart(event) {
     if (currentTool === 'move') {
       if (currentLayer === 0) return // base sheet
       setCoords(event, value => startPosition.current = value, () => {
@@ -351,10 +347,10 @@ const CanvasContainer = () => {
        => draw не работает => setCurrentObject равен null => 
        setEnd не отрабатывает при первом тригере, когда юзер только нажал
     */
-    draw(start, end)
-  }
+    //draw(start, end)
+  //}
 
-  function setEnd(event) {
+  /*function setEnd(event) {
     if (!startPosition.current) return
     if (currentTool === 'move') {
       setCoords(event, value => endPosition.current = value, coords => {
@@ -405,22 +401,31 @@ const CanvasContainer = () => {
       })
     }
     setCoords(event, value => endPosition.current = value, draw)
-  } 
+  }*/
 
+  const { setStart, setEnd, onMove } = useDragNDrop({
+    setCurrentObject, currentObject, containerRef
+  })
 
   const cls = [classes.CanvasContainer]
   cls.push(currentTool==='move' ? classes['cursor-grab'] : classes['cursor-crosshair'])
+
+  useEffect(() => {
+    console.log('currentTool has changed: ', currentTool)
+  }, [currentTool])
 
   return (
     <div 
       className={cls.join(' ')} 
       ref={containerRef}
-      onMouseDown={setStart}
-      onMouseUp={setEnd}
-      onMouseLeave={setEnd}
-      onMouseMove={onMove}
-      width={containerWidth}
-      height={containerHeight}
+      onMouseDown={e => setStart(e)}
+      onMouseUp={e => setEnd(e)}
+      onMouseLeave={e => setEnd(e)}
+      onMouseMove={e => onMove(e)}
+      style={{
+        width: containerWidth,
+        height: containerHeight
+      }}
     ></div>
   )
 }

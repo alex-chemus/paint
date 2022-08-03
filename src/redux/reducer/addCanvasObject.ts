@@ -1,6 +1,7 @@
 import { IAction, IState } from "@/types"
 
 const addCanvasObject = (state: IState, action: IAction) => {
+  console.log('add canvas object: ', action.value)
   if (state.currentVersion !== null) {
     return {
       ...state,
