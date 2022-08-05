@@ -1,12 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, MouseEvent, FC } from 'react'
 import classes from './Layer.module.scss'
 import { useSelector, useDispatch } from 'react-redux'
 import MiniCanvas from './MiniCanvas'
+import { IState } from '@/types'
 
-const Layer = ({ object, i, dragLayer, dropLayer, moveLayer }) => {
-  const containerSize = useSelector(state => state.containerSize)
+interface Props {
+  object: any,
+  key: number,
+  i: number,
+  dragLayer(i: number, event: MouseEvent, dragClass: string): void,
+  dropLayer(i: number, event: MouseEvent, dragClass: string): void,
+  moveLayer(i: number, event: MouseEvent): void
+}
+
+const Layer: FC<Props> = ({ object, i, dragLayer, dropLayer, moveLayer }) => {
+  const containerSize = useSelector((state: IState) => state.containerSize)
   const [size, setSize] = useState(calcMiniCanvas())
-  const currentLayer = useSelector(state => state.currentLayer)
+  const currentLayer = useSelector((state: IState) => state.currentLayer)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -29,15 +39,16 @@ const Layer = ({ object, i, dragLayer, dropLayer, moveLayer }) => {
     }
   }
 
-  const select = id => {
+  const select = (id: number) => {
     dispatch({
       type: 'set current layer',
       value: id
     })
   }
 
-  const removeObject = event => {
-    const btn = event.currentTarget
+  const removeObject = (event: MouseEvent) => {
+    const btn = event.currentTarget as HTMLElement
+    if (!btn.dataset.id) return
     const id = +btn.dataset.id
     dispatch({
       type: 'remove object',
@@ -45,12 +56,13 @@ const Layer = ({ object, i, dragLayer, dropLayer, moveLayer }) => {
     })
   }
 
-  const capitalizeFirstLetter = string => {
+  const capitalizeFirstLetter = (string: string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  const onClick = e => {
-    if (e.target.tagName === 'BUTTON') return
+  const onClick = (e: MouseEvent) => {
+    const el = e.target as HTMLElement
+    if (el.tagName === 'BUTTON') return
     select(object.id)
   }
 
@@ -64,10 +76,10 @@ const Layer = ({ object, i, dragLayer, dropLayer, moveLayer }) => {
       key={i}
       onClick={onClick}
       style={object?.style}
-      onMouseDown={e => dragLayer(object, i, e, classes.draged)}
-      onMouseUp={e => dropLayer(object, i, e, classes.draged)}
-      onMouseLeave={e => dropLayer(object, i, e, classes.draged)}
-      onMouseMove={e => moveLayer(object, i, e)}  
+      onMouseDown={e => dragLayer(i, e, classes.draged)}
+      onMouseUp={e => dropLayer(i, e, classes.draged)}
+      onMouseLeave={e => dropLayer(i, e, classes.draged)}
+      onMouseMove={e => moveLayer(i, e)}  
     >
       <MiniCanvas
         width={size.width}

@@ -1,17 +1,23 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, FC, Fragment } from 'react'
 import classes from './Params.module.scss'
-
+import { Param } from '@/types'
 import { opacity, rotate, scale, start, end, stroke, fill,
 shadow, x, y, width, height, font, value } from './ParamItems/exports'
 
-const Params = ({ object: layer, updateObjects }) => {
+interface Props {
+  object: any,
+  updateObjects(object: any): void
+} 
+
+const Params: FC<Props> = ({ object: layer, updateObjects }) => {
   const [object, setObject] = useState(layer) 
   useEffect(() => setObject(layer), [layer])
 
   return (
     <ul className={classes.Params}> {
       Object.keys(object).map((param, i) => {
-        let func = () => {}
+        type Func = (...args: any) => any
+        let func: Func = (...args: any) => null
         switch (param) {
           case 'opacity':
             func = opacity
